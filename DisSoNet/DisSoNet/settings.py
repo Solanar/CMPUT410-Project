@@ -83,6 +83,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Indicates the local filesystem path for Django to get static files
+STATIC_PATH = os.path.abspath(os.path.join(BASE_DIR, 'static'))
+STATICFILES_DIRS = (
+    STATIC_PATH,
+)
+
+
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'data', 'templates'),
     os.path.join(BASE_DIR, 'front', 'templates'), 

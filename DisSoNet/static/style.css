@@ -1,0 +1,8 @@
+/*To adjust for the fixed nav bar*/
+body{
+	padding-top:60px;
+}
+
+.panel-primary > .panel-heading a{
+	color:white;
+}
