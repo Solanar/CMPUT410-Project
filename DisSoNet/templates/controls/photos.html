@@ -1,0 +1,15 @@
+<div class=""><span class="glyphicon glyphicon-trash"></span></div>
+<div class="row">
+  <div class="col-xs-6 col-md-3">
+  {% for pic in pic_list %}
+  	{% if F(forloop.counter) % 5 %}
+  	  </div>
+  	  <div class="col-xs-6 col-md-3">
+  	{% else %}
+  	  <img src="{{ pic }}">
+  	{% endif %}
+  {% empty %}
+    <div>Sorry, you have no photos yet.
+  {% endfor %}
+  </div>
+</div>
