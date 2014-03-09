@@ -1,4 +1,5 @@
 from django.contrib import admin
+from data import models
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as DUserAdmin
 from .forms import UserChangeForm, UserCreationForm
@@ -38,3 +39,5 @@ class UserAdmin(DUserAdmin):
 # Register your models here.
 admin.site.register(User, UserAdmin)
 admin.site.unregister(Group)
+admin.site.register(models.Post)
+admin.site.register(models.Comment)

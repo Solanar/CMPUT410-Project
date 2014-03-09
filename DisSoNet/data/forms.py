@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from .models import User
+from .models import User, Post
 
 
 class UserCreationForm(forms.ModelForm):  # UserCreationForm):
@@ -65,3 +65,10 @@ class UserChangeForm(forms.ModelForm):
             # This is done here, rather than on the field, because the
             # field does not have access to the initial value
             #  return self.initial['password']
+
+class PostCreationForm(forms.ModelForm):
+
+    class Meta:
+        model = Post
+        fields = ['title', 'source', 'origin', 'description',
+                  'content_type', 'content', 'author', 'visibility', ]
