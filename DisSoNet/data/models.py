@@ -1,35 +1,84 @@
 from django.db import models
-from django import forms
+=======
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+from django.forms import CharField, PasswordInput
 
 
-# ANDREW! This is just a placeholder for setting up foreignKeys,
-# please swap this out for the django user/auth stuff
-class User(models.Model):
-    """
-    TODO
+class UserManager(BaseUserManager):
+    def create_user(self, email, firstName, lastName, password=None):
+        if not email:
+            raise ValueError('Users must have an email address')
 
-    Fields:
-    id: unique to each author, sha1, or uuid
-    host: the URL path to the host/server the user belongs
-    display_name: The name the author choses to be displayed
+        user = self.model(email=UserManager.normalize_email(email),
+                          firstName=firstName,
+                          lastName=lastName,
+                          )
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
-    * Good example for this is in example-article.json
-    authors_information: URL to the authors information
-    """
-    name = models.CharField(max_length=20)
+    def create_superuser(self, email, firstName, lastName, password):
+        user = self.create_user(email=email,
+                                firstName=firstName,
+                                lastName=lastName,
+                                password=password,
+                                )
+        user.is_admin = True
+        user.save(using=self._db)
+        return user
+
+
+class User(AbstractBaseUser):
+
+    class Meta:
+        verbose_name_plural = 'Users'
+        verbose_name = 'User'
+
+    email = models.EmailField("Email", max_length=75, unique=True)
+    firstName = models.CharField("First Name", max_length=50)
+    lastName = models.CharField("Last Name", max_length=50)
+
+    is_active = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
+
+    objects = UserManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['firstName', 'lastName']
+
+    def get_full_name(self):
+        # The user is identified by full name
+        return self.firstName + " " + self.lastName
+
+    def get_short_name(self):
+        # The user is identified by their first name
+        return self.firstName
+
+    def __str__(self):
+        return self.email
+
+    def has_perm(self, perm, obj=None):
+        "Does the user have a specific permission?"
+        # Simplest possible answer: Yes, always
+        return True
+
+    def has_module_perms(self, app_label):
+        "Does the user have permissions to view the app `app_label`?"
+        # Simplest possible answer: Yes, always
+        return True
+
+    @property
+    def is_staff(self):
+        "Is the user a member of staff?"
+        # Simplest possible answer: All admins are staff
+        return self.is_admin
 
 
 class Category(models.Model):
     """
-    TODO
-
     This model tracks all the categories entered by the users.
     There isn't anything about this section in the spec, however it
     did appear in the example_artivle.json.
-
-    I think if we supply a static list for now, with a multi-select
-    functionality for adding categories to your posts will suffice for now.
-    We can add dynamic category adding stuff later if needed
     """
     pass
 
@@ -46,14 +95,9 @@ class Friends(models.Model):
     on the User model.
 
     """
-    pass
-    """
-    # For the user initiating the friend request
-    user_requester = models.ForeignKey(User, related_name='friends')
-    # For the receiver of the freind request
-    user_target = models.ForeignKey(User, related_name='friend_requests')
+    user_id_requester = models.ForeignKey(User, related_name='requester')
+    user_id_receiver = models.ForeignKey(User, related_name='receiver')
     accepted = models.BooleanField()
-    """
 
 
 class Post(models.Model):

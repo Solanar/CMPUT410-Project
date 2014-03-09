@@ -1,0 +1,20 @@
+<span class="glyphicon glyphicon-plus"></span>New Post
+{% for post in post_list %}
+    <div class="media">
+  		<span class="glyphicon glyphicon-remove"></span>
+    	{% if post.pic %}
+    	    <a class="pull-left" href="#">
+                <img class="media-object" src="{{ post.pic }}" alt="">
+  			</a>
+  		{% endif %}
+  		<div class="media-body">
+  			{% if post.title %}
+                <h4 class="media-heading">{{ post.title }}</h4>
+            {% endif %}
+            <p>{{ post.content }}</p>
+  		</div>
+    </div>
+{% empty %}
+    <div>Sorry, you have no posts yet.</div>
+{% endfor %}
+<span class="glyphicon glyphicon-Chevron-down"></span>More Posts

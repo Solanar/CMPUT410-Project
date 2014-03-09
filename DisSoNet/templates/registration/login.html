@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% block content %}
+
+{% if form.errors %}
+  <p>Your email and/or password didn't match. Please try again.</p>
+{% endif %}
+
+<div class="well well-lg">
+  {{ state }}
+</div>
+
+<form method="post" action="{% url 'login' %}" class="form-horizontal">
+{% csrf_token %}
+  {% bootstrap_form form layout="horizontal" %}
+  <!-- Email: <input type="text" name="email" value="" /><br />
+  Password: <input type="password" name="password" value="" /><br /> -->
+  {% buttons submit="Login" layout="horizontal" %}{% endbuttons %}
+  <!-- <input type="submit" value="Login" /> -->
+
+{% if next %}
+  <input type="hidden" name="next" value="{{ next }}" />
+{% endif %}
+</form>
+
+<div class="well well-sm">
+  <a href="{% url 'reset' %}">Forgot your password?</a><br />
+</div>
+
+{% endblock %}

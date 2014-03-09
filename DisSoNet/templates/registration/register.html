@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% block content %}
+
+<div class="well well-lg">
+  {{ state }}
+</div>
+
+<form method="post" action="{% url 'register' %}" class="form-horizontal">
+{% csrf_token %}
+    <table>
+    {% bootstrap_form form layout="horizontal" %}
+    {#{{ form }}#}
+    </table>
+    {% buttons submit="Create" layout="horizontal" %}{% endbuttons %}
+    <!-- <input type="submit" value="Create" name="_create" /> -->
+</form>
+
+{% endblock %}

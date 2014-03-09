@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% block content %}
+
+{% if state %}
+<div class="well well-lg">
+    {{ state }}
+</div>
+{% endif %}
+
+<form method="post" action="{% url 'user_view' %}" class="form-horizontal">
+{% csrf_token %}
+    {% bootstrap_form form layout="horizontal" %}
+    {#{{ form }}#}
+    {% buttons submit="Update" layout="horizontal" %}{% endbuttons %}
+    <!--<input type="submit" value="Update" name="_create" />-->
+</form>
+
+<div class="well well-sm">
+    <a href="{% url 'reset' email=user.email %}">Reset your password</a>
+</div>
+
+{% endblock %}

@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'data',
     'front', 
+    'bootstrap3',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -72,11 +73,8 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'America/Edmonton'
 
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
@@ -95,3 +93,11 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'front', 'templates'), 
     os.path.join(BASE_DIR, 'templates'),
 )
+
+
+MEDIA_ROOT = '/home/user/CMPUT410-Project/DisSoNet/media/'
+MEDIA_URL = '/media/'
+
+
+#change django's User model to our own
+AUTH_USER_MODEL = 'data.User'
