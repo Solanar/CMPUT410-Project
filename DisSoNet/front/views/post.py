@@ -1,4 +1,4 @@
-from base import BaseView
+from .base import BaseView
 from data.forms import PostCreationForm
 from data.models import Post
 from django.db.models import Q

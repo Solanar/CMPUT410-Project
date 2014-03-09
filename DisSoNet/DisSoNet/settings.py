@@ -101,3 +101,9 @@ MEDIA_URL = '/media/'
 
 #change django's User model to our own
 AUTH_USER_MODEL = 'data.User'
+
+#ssl/https/hsts
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+ENABLE_SSL = not DEBUG
+HSTS_INCLUDE_SUBDOMAINS = not DEBUG

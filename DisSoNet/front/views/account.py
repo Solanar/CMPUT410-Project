@@ -1,4 +1,4 @@
-from base import BaseView
+from .base import BaseView
 from data.forms import UserCreationForm, UserChangeForm
 from data.models import User
 from django.contrib.auth import authenticate, login, logout

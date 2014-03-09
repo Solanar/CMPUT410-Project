@@ -12,6 +12,7 @@ def home(request):
     context['register_form'] = UserCreationForm()
     return render(request, 'index.html', context)
 
+
 def reset(request, email=None, **kwargs):
     state = 'Please enter your email address below: '
     return password_reset(
@@ -34,6 +35,7 @@ def reset_done(request, **kwargs):
         template_name="registration/password_reset_done.html",
         extra_context={'state': state, })
 
+
 def reset_confirm(request, uidb64=None, token=None, **kwargs):
     return password_reset_confirm(
         request,
@@ -48,3 +50,4 @@ def reset_complete(request, **kwargs):
         request,
         template_name="registration/password_reset_complete.html",
         extra_context={'state': state, })
+
