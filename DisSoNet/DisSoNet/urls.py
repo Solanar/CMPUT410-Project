@@ -4,6 +4,7 @@ from django.conf import settings
 admin.autodiscover()
 
 from front.views.account import LoginView, LogoutView, UserView, RegisterView
+from front.views.stream import StreamView
 from front.views import views as front_views
 
 
@@ -17,7 +18,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'DisSoNet.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^$', front_views.home, name='home'), 
+    url(r'^$', front_views.home, name='home'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/login/', LoginView.as_view(), s, name='login'),
     url(r'^accounts/logout/', LogoutView.as_view(), s, name='logout'),
@@ -32,5 +33,5 @@ urlpatterns = patterns('',
         front_views.reset_confirm, s, name='reset_confirm'),
     url(r'^accounts/reset/complete/$', front_views.reset_complete,
         name='reset_complete'),
-
+    url(r'^stream/$', StreamView.as_view(), name='reset_complete'),
 )
