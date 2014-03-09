@@ -160,6 +160,9 @@ class Post(models.Model):
     guid = models.CharField("guid", max_length=40, blank=True)
     visibility = models.CharField("Visibility", max_length=20,
                                   choices=VISIBILITY_CHOICES)
+    # This is for image posts
+    #media_content = models.FileField(upload_to='post/%Y/%m/%d')
+
 
 
 class Comment(models.Model):
