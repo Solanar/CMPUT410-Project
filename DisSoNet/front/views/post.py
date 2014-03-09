@@ -7,7 +7,6 @@ from django.http import HttpResponseRedirect
 
 class PostEdit(BaseView):
 
-
     login_required = True
     # TODO Need to create an edit view, lots similiar in 401 proj
     #template_name = '.html'
@@ -17,6 +16,7 @@ class PostEdit(BaseView):
 
     def post(self, request, *args, **kwargs):
         pass
+
 
 class PostDelete(BaseView):
 

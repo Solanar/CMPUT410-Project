@@ -37,7 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'data',
-    'front', 
+    'front',
     'bootstrap3',
 )
 
@@ -90,7 +90,7 @@ STATICFILES_DIRS = (
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'data', 'templates'),
-    os.path.join(BASE_DIR, 'front', 'templates'), 
+    os.path.join(BASE_DIR, 'front', 'templates'),
     os.path.join(BASE_DIR, 'templates'),
 )
 

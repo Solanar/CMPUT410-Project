@@ -112,7 +112,8 @@ class Post(models.Model):
     author: Foreign key referenceing author
 
     * Need clarification of that implementation of this field
-    categories: List, multiple select options for categories this post falls under
+    categories: List, multiple select options for categories this post
+        falls under
 
     * Special case *
     Comments: Foreign key referencing a comment entry
@@ -124,8 +125,8 @@ class Post(models.Model):
     for that post
 
     Published date: Date the post was created, not modifiable afterwards
-    giud: Still to be implemented. A guid is a 40 digit sha1 thats unique globally between
-    all servers.
+    giud: Still to be implemented. A guid is a 40 digit sha1 thats unique
+        globally between all servers.
     visibility: choice of [PUBLIC, FOAF, FRIENDS, PRIVATE, SERVERONLY]
     * From the requirements there is another type. PRIVATE to another author
 
@@ -145,6 +146,7 @@ class Post(models.Model):
         ('PRIVATE', 'Private'),
         ('SERVERONLY', 'Server only'),
     )
+
     # ID/PK done auto for us
     title = models.CharField("Title", max_length=80)
     source = models.URLField("Source")
@@ -164,18 +166,18 @@ class Post(models.Model):
     #media_content = models.FileField(upload_to='post/%Y/%m/%d')
 
 
-
 class Comment(models.Model):
     """ Defines a Comment of a post, made by a user
 
     Fields:
-    post: This is a one-to-many field on posts, from the post we can call post.comments
-    to get all the comments for that post.
-    user: This is a many-to-one field on the comment. A user can author many posts
+    post: This is a one-to-many field on posts, from the post we can call
+        post.comments to get all the comments for that post.
+    user: This is a many-to-one field on the comment. A user can author many
+        posts
     content: Text field for inputing the contents of the comment message
     published_date: Date comment was published, unchangable after creation
-    giud: Still to be implemented. A guid is a 40 digit sha1 thats unique globally between
-    all servers.
+    giud: Still to be implemented. A guid is a 40 digit sha1 thats unique
+        globally between all servers.
     """
     post = models.ForeignKey(Post, related_name='comments')
     user = models.ForeignKey(User)

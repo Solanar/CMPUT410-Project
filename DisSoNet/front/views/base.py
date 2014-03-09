@@ -18,8 +18,6 @@ class BaseView(TemplateView):
         return self.context
 
     def preprocess(self, request, *args, **kwargs):
-        # print("------------Context:\n",self.context)
-        # print("------------kwargs:\n",kwargs)
         pass
 
     def dispatch(self, request, *args, **kwargs):
