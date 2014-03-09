@@ -12,4 +12,6 @@ class StreamView(BaseView):
     def get(self, request, *args, **kwargs):
         posts = Post.objects.all()
         self.context["posts"] = posts
+        form = PostCreationForm()
+        self.context["form"] = form
         return self.render_to_response(self.context)
