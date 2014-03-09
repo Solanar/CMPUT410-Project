@@ -37,6 +37,6 @@ urlpatterns = patterns('',
         name='post_edit'),
     url(r'^post/(?P<post_id>\w+)/delete/$', PostDelete.as_view(),
         name='post_delete'),
-    url(r'^user/("P<user_id>\w+)/posts', UserPosts.as_view(),
+    url(r'^user/("P<user_id>\w+)/posts', UserPostsView.as_view(),
         name='user_posts')
 )

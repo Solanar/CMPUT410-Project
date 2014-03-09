@@ -104,7 +104,7 @@ class UserView(BaseView):
         return self.render_to_response(self.context)
 
 
-class UserPosts(PostListMixin, BaseView):
+class UserPostsView(PostListMixin, BaseView):
 
     login_required = False
     #TODO: Needs a template
