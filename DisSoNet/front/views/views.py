@@ -2,10 +2,14 @@ from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.contrib.auth.views import password_reset, password_reset_confirm, \
     password_reset_done, password_reset_complete
+from django.contrib.auth.forms import AuthenticationForm
+from data.forms import UserCreationForm
 
 
 def home(request):
     context = {'state':'none'}
+    context['login_form'] = AuthenticationForm()
+    context['register_form'] = UserCreationForm()
     return render(request, 'index.html', context)
 
 def reset(request, email=None, **kwargs):
