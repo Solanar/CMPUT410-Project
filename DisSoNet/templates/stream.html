@@ -14,6 +14,15 @@
             {{ post.author }}</br>
         </p>
         <p>Spot for editting buttons</p>
+        <form method="post" action="{% url 'post_edit' post_id=post.id  %}">
+            {% csrf_token %}
+            <input type="submit" value="Edit"/>
+        </form>
+        <form method="post" action="{% url 'post_delete' post_id=post.id %}">
+            {% csrf_token %}
+            <input type="submit" value="Delete"/>
+        </form>
+        <hr>
     {% endfor %}
 {% else %}
     <strong>No posts on your stream yet</strong>
@@ -28,12 +37,12 @@
                 </div>
                 <div class="panel-body">
                     <!-- Add the action here to make it go to the post of a new post -->
-                    <form method="post">
+                    <form method="post" action="{% url 'stream' %}">
                     {% csrf_token %}
                     <table>
                         {{ form }}
                     </table>
-                    <input type="submit" value="Post" name="new_post" />
+                    <input type="submit" value="Post"/>
                 </form>
             </div>
         </div>

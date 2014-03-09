@@ -5,6 +5,7 @@ admin.autodiscover()
 
 from front.views.account import LoginView, LogoutView, UserView, RegisterView
 from front.views.stream import StreamView
+from front.views.post import PostEdit, PostDelete
 from front.views import views as front_views
 
 
@@ -33,5 +34,7 @@ urlpatterns = patterns('',
         front_views.reset_confirm, s, name='reset_confirm'),
     url(r'^accounts/reset/complete/$', front_views.reset_complete,
         name='reset_complete'),
-    url(r'^stream/$', StreamView.as_view(), name='reset_complete'),
+    url(r'^stream/$', StreamView.as_view(), name='stream'),
+    url(r'^post/(?P<post_id>\w+)/edit/$', PostEdit.as_view(), name='post_edit'),
+    url(r'^post/(?P<post_id>\w+)/delete/$', PostDelete.as_view(), name='post_delete'),
 )
