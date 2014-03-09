@@ -1,0 +1,19 @@
+<div class=""><span class="glyphicon glyphicon-trash"></span></div>
+<div class="row">
+  <div class="col-xs-6 col-md-3">
+  {% for friend in friend_list %}
+    <div id="{{ friend.name }}">
+      <figure>
+        <img draggable=true src="{{ friend.pic }}/110x150">
+        <figcaption>{{ friend.name }}</figcaption>
+      </figure>
+    </div>
+  	{% if forloop.counter % 5 == 0 %}
+  	  </div>
+  	  <div class="col-xs-6 col-md-3">
+  	{% endif %}
+  {% empty %}
+    <div>Sorry, you have no friends yet. <div hidden> Loser</div>
+  {% endfor %}
+  </div>
+</div>
