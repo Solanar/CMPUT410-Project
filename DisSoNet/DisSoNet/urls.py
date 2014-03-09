@@ -3,9 +3,7 @@ from django.contrib import admin
 from django.conf import settings
 admin.autodiscover()
 
-from front.views.account import LoginView, LogoutView, UserView, RegisterView
-from front.views.stream import StreamView
-from front.views.post import PostEdit, PostDelete
+from front.views import *
 from front.views import views as front_views
 
 
@@ -39,4 +37,6 @@ urlpatterns = patterns('',
         name='post_edit'),
     url(r'^post/(?P<post_id>\w+)/delete/$', PostDelete.as_view(),
         name='post_delete'),
+    url(r'^user/("P<user_id>\w+)/posts', UserPosts.as_view(),
+        name='user_posts')
 )

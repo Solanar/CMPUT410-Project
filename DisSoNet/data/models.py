@@ -96,7 +96,7 @@ class Friends(models.Model):
     """
     user_id_requester = models.ForeignKey(User, related_name='requester')
     user_id_receiver = models.ForeignKey(User, related_name='receiver')
-    accepted = models.BooleanField()
+    accepted = models.BooleanField(default=False)
 
 
 class Post(models.Model):

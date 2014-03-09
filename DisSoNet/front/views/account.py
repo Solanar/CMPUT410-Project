@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponseRedirect
 
+from .mixins.post_list import PostListMixin
+
 
 class RegisterView(BaseView):
 
@@ -100,3 +102,19 @@ class UserView(BaseView):
         self.context['form'] = form
 
         return self.render_to_response(self.context)
+
+
+class UserPosts(PostListMixin, BaseView):
+
+    login_required = False
+    #TODO: Needs a template
+    template_name = ''
+
+    def preprocess(self, request, *args, **kwargs):
+        try:
+            user = User.objects.get(id=kwargs['user_id'])
+            self.context['state'] = 'All posts for user ' + user
+            self.context['post_list_filter'] = {'user': user}
+        except:
+            self.context['state'] = 'User does not exist, so has no posts'
+        super(UserPosts, self).preprocess(request, *args, **kwargs)
