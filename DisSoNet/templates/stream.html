@@ -4,7 +4,7 @@
 
 <h2>My Steam</h2>
 
-<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#create_post">Create Post</button>
+<button class="newPost">Create Post</button>
 
 {% if posts %}
     {% for post in posts %}
@@ -28,24 +28,4 @@
     <strong>No posts on your stream yet</strong>
 {% endif %}
 
-<div class="modal" id="create_post" role="dialog">
-    <div id="create_post_box" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <div class="panel-heading">
-                    <h3>Post</h3>
-                </div>
-                <div class="panel-body">
-                    <!-- Add the action here to make it go to the post of a new post -->
-                    <form method="post" action="{% url 'stream' %}">
-                    {% csrf_token %}
-                    <table>
-                        {{ form }}
-                    </table>
-                    <input type="submit" value="Post"/>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock %}

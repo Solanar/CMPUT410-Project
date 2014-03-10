@@ -6,3 +6,31 @@ body{
 .panel-primary > .panel-heading a{
 	color:white;
 }
+
+#friendRequestsDropdown{
+	width:200px;
+	padding:5px;
+}
+
+.left{
+	float:left;
+}
+
+.right{
+	float:right;
+}
+
+.clear{
+	clear:both;
+}
+.acceptFriend{
+	color:green;
+}
+
+.rejectFriend{
+	color:red;
+}
+
+#friendRequestsDropdown span:hover{
+ 	cursor: pointer;
+}
