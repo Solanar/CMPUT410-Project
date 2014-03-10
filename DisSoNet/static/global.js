@@ -1,8 +1,10 @@
+var HOST = "http://127.0.0.1:41021";
+var AUTHENTICATED_USER = "AUTHUSERHASH1234";
 
 $(document).on('ready', function(){
 	$('.newPost').on('click', function(){$('#newPostModal').modal() });
-	$('.friendRequest .acceptFriend').on("click", function(){ processFriend($(this).parents('.friendRequest').data('friendid'), "accept") });
-	$('.friendRequest .rejectFriend').on("click", function(){ processFriend($(this).parents('.friendRequest').data('friendid'), "reject") });
+	$('.friendRequest .acceptFriend').on("click", function(){ processFriend($(this).parents('.friendRequest').data('friendid'), "accept", console.log) });
+	$('.friendRequest .rejectFriend').on("click", function(){ processFriend($(this).parents('.friendRequest').data('friendid'), "reject", console.log) });
     $('#newPostForm .post_type').on("change", function(){console.log($(this).val()); $(this).val() == "image" ? $('#newPostForm .image_field').removeClass('hide') : $('#newPostForm .image_field').addClass('hide') });
     $('#createPost').on('click', createPostGlobal);
 });
@@ -17,8 +19,34 @@ function getUserPost(callback, userid){
 }
 
 
-function processFriend(friendid, action){
+function processFriend(friendid, action, callback){
 	alert('Processing Friend Request From: ' + friendid + " action: " + action)
+	if(action == "accept"){
+		//Accept friend request by sending it to ourselves?
+		//should validate author id serverside
+		var data = {"query":"friendrequest",
+						"author":{
+						"id": AUTHENTICATED_USER,
+						"host":"http://127.0.0.1:5454/",
+						"displayname":"Greg"
+						},
+						"friend": 	{
+						                 "id":friendid,
+						                 "host":"http://127.0.0.1:5454/",
+						                 "displayname":"Lara",
+						                 "url":"http://127.0.0.1:5454/author/" + friendid
+						            }
+						}
+		$.post('/friendrequest', data, callback);
+		
+	}else{
+		//reject friend request, need a function
+		$.ajax({
+		  type: "DELETE",
+		  url: "/friends/"+AUTHENTICATED_USER+"/"+friendid,
+		  success: callback
+		});
+	}
 }
 
 function createPostGlobal(){
