@@ -34,3 +34,12 @@ body{
 #friendRequestsDropdown span:hover{
  	cursor: pointer;
 }
+
+#newPostModal .modal-content{
+	width:400px;
+	margin:auto;
+}
+
+#newPostForm label, #newPostForm input, #newPostForm textarea, #newPostForm select{
+	width:100%;
+}
