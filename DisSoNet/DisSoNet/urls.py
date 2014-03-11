@@ -6,6 +6,8 @@ admin.autodiscover()
 from front.views import *
 from front.views import views as front_views
 
+from django.views.decorators.csrf import csrf_exempt
+
 
 if not settings.DEBUG:
     s = {'SSL': settings.ENABLE_SSL}
@@ -18,7 +20,7 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$', front_views.home, name='home'),
-    url(r'^stream_debug/', front_views.stream_debug, name='stream'),    
+    url(r'^stream_debug/', front_views.stream_debug, name='stream'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/login/', LoginView.as_view(), s, name='login'),
     url(r'^accounts/logout/', LogoutView.as_view(), s, name='logout'),
@@ -40,6 +42,8 @@ urlpatterns = patterns('',
         name='post_delete'),
     url(r'^user/("P<user_id>\w+)/posts', UserPostsView.as_view(),
         name='user_posts'),
+    url(r'^friendrequest/$', csrf_exempt(FriendRequestView.as_view()),
+        name='friend_request'),
     url(r'^friends/(?P<user_id_1>\w+)/(?P<user_id_2>\w+)$',
         AreFriends.as_view(), name='are_friends'),
 )
