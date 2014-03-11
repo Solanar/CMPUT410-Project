@@ -64,6 +64,10 @@ border: 0px solid black;
 
 .profilePic {
 	margin-left: 100px;
+	margin-right: 100px;
+	width: 100px;
+	height: 150px;
+	float: left;
 }
 
 .trashy {
