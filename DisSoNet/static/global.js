@@ -11,6 +11,8 @@ $(document).on('ready', function(){
     $('#newPostForm .post_type').on("change", function(){console.log($(this).val()); $(this).val() == "image" ? $('#newPostForm .image_field').removeClass('hide') : $('#newPostForm .image_field').addClass('hide') });
     $('#createPost').on('click', createPostGlobal);
     $('#btn-login').on('click', submitLogin);
+    $('#btn-signup').on('click', submitSignup);    
+    $('.logout').on('click', actionLogout);
 });
 
 
@@ -93,16 +95,23 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function submitLogin(callback){
+function submitLogin(event){
 	var data = $('#loginform').serialize();
 	$.post("/accounts/login/", data, function(){
 		window.location = "/";
 	})
 }
 
-function submitLogin(callback){
-	var data = $('#loginform').serialize();
-	$.post("/accounts/login/", data, function(){
+function submitSignup(event){
+	var data = $('#signupform').serialize();
+	$.post("/accounts/register/", data, function(){
 		window.location = "/";
-	})
+	});
+}
+
+function actionLogout(event){
+	$.get("/accounts/logout/", function(){
+		window.location = "/";
+	});
+	event.preventDefault();
 }
