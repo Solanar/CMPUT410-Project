@@ -12,11 +12,13 @@ def home(request):
     context['register_form'] = UserCreationForm()
     return render(request, 'index.html', context)
 
+
 def stream_debug(request):
     context = {'state':'none'}
     context['login_form'] = AuthenticationForm()
     context['register_form'] = UserCreationForm()
     return render(request, 'stream.html', context)
+
 
 def reset(request, email=None, **kwargs):
     state = 'Please enter your email address below: '

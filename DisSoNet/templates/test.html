@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-Test thingy!
+{% if message %}
+	{% message %}
+{% endif %}
+{% if error %}
+	{% error %}
+{% endif %}
 {% endblock %}
