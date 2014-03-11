@@ -3,8 +3,6 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import AuthenticationForm
 from data.forms import UserCreationForm
 
-from data.models import User
-
 
 class BaseView(TemplateView):
 
