@@ -2,9 +2,15 @@
 {% load bootstrap3 %}
 {% block content %}
 
-<h2>My Steam</h2>
 
-<button class="newPost">Create Post</button>
+<div id="profileHeader">
+    {% if user.pic %}
+      <img class="thumbnail profilePic" data-src="{{ user.pic }}/134x180">
+    {% else %}
+      <img class="thumbnail profilePic" data-src="{{ static/images/no.jpg }}/134x180">
+    {% endif %}
+    <h1>{{ user.name }}'s Stream</h1>
+</div>
 
 {% for post in post_list %}
     <div class="media">
