@@ -10,6 +10,7 @@ $(document).on('ready', function(){
 	$('.friendRequest .rejectFriend').on("click", function(){ processFriend($(this).parents('.friendRequest').data('friendid'), "reject", console.log) });
     $('#newPostForm .post_type').on("change", function(){console.log($(this).val()); $(this).val() == "image" ? $('#newPostForm .image_field').removeClass('hide') : $('#newPostForm .image_field').addClass('hide') });
     $('#createPost').on('click', createPostGlobal);
+    $('#btn-login').on('click', submitLogin);
 });
 
 
@@ -90,4 +91,18 @@ function getCookie(name) {
         }
     }
     return cookieValue;
+}
+
+function submitLogin(callback){
+	var data = $('#loginform').serialize();
+	$.post("/accounts/login/", data, function(){
+		window.location = "/";
+	})
+}
+
+function submitLogin(callback){
+	var data = $('#loginform').serialize();
+	$.post("/accounts/login/", data, function(){
+		window.location = "/";
+	})
 }
