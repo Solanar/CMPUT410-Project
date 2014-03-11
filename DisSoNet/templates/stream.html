@@ -5,12 +5,12 @@
 
 
 <div id="profileHeader">
+    <h1 class="labell">{{ user.name }}'s Stream</h1>
     {% if user.pic %}
       <img class="thumbnail profilePic" src="{{ user.pic }}">
     {% else %}
       <img class="thumbnail profilePic" src="{% static 'images/no.jpg' %}">
     {% endif %}
-    <h1>{{ user.name }}'s Stream</h1>
 </div>
 </br></br>
 {% for post in post_list %}
