@@ -3,7 +3,7 @@
     {% if user.pic %}
       <img class="thumbnail/134x180 profilePic" src="{{ user.pic }}">
     {% else %}
-      <img class="thumbnail/134x180 profilePic" src="{{ static/images/no.jpg }}">
+      <img class="thumbnail/134x180 profilePic" src="{{ STATIC_URL }}images/no.jpg">
     {% endif %}
     <h1>{{ user.name }}</h1>
   </div>
