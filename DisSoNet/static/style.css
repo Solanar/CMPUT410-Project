@@ -8,8 +8,10 @@ body{
 }
 
 #friendRequestsDropdown{
-	width:200px;
+	min-width:200px;
 	padding:5px;
+	width:100%;
+	background-color:#efefef;
 }
 
 .left{
@@ -42,6 +44,11 @@ body{
 
 #newPostForm label, #newPostForm input, #newPostForm textarea, #newPostForm select{
 	width:100%;
+}
+
+
+.panel-primary {
+border: 0px solid black;
 }
 
 .feedbox {

@@ -1,5 +1,8 @@
 var HOST = "http://127.0.0.1:41021";
 var AUTHENTICATED_USER = "AUTHUSERHASH1234";
+var csrftoken = getCookie('csrftoken');
+
+console.log(csrftoken);
 
 $(document).on('ready', function(){
 	$('.newPost').on('click', function(){$('#newPostModal').modal() });
@@ -70,4 +73,21 @@ function sendPost(data, callback){
     author: Foreign key referenceing author 
     */
     $.post("/posts", data, callback, "json");
+}
+
+// using jQuery
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }

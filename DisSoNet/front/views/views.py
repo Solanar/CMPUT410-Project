@@ -13,6 +13,10 @@ def home(request):
     return render(request, 'index.html', context)
 
 
+def test(request):
+    context = {'state':'none'}
+    return render(request, 'profile.html', context)
+
 def stream_debug(request):
     context = {'state':'none'}
     context['login_form'] = AuthenticationForm()
