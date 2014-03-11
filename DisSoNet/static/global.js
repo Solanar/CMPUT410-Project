@@ -72,7 +72,7 @@ function sendPost(data, callback){
     content: Text field to input the contents of the post
     author: Foreign key referenceing author 
     */
-    $.post("/posts", data, callback, "json");
+    $.post("/post/create/", data, callback, "json");
 }
 
 // using jQuery
