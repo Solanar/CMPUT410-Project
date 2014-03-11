@@ -1,90 +1,33 @@
-<a id="addPost" href="#"><span class="glyphicon glyphicon-plus"></span>New Post</a>
-{% for post in post_list %}
-    <div class="media">
-  		<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove"></span></button>
-    	{% if post.pic %}
-        <a href="#" class="pull-left" id="{{ post.picName }}">
-          <img class="media-object" src="{{ post.pic }}" alt="">
-  			</div>
-  		{% endif %}
-  		<a href="#" class="media-body">
-  			{% if post.title %}
-                <h4 class="media-heading">{{ post.title }}</h4>
-            {% endif %}
-            <p>{{ post.content }}</p>
-  		</a>
-    </div>
-{% empty %}
-    <div>Sorry, you have no posts yet.</div>
-{% endfor %}
-<a href="#" id="morePosts">
-  <span class="glyphicon glyphicon-Chevron-down"></span>More Posts
-  <span class="glyphicon glyphicon-Chevron-down">
-</a>
-<!-- Post overlay code-->
-<div class="overlay-bg">
-  <div class="overlay-content">
-    <input id="postTitle" type="text">
-    <textarea class="postArea"></textarea>
-    <div class="btn-group">
-      <button id="getPhoto" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-        Link Photo<span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li><a href="#">Upload</a></li>
-        <li><a href="#">From Photos</a></li>
-      </ul>
-      <button id="makePost" class="btn btn-success">Post</button>
-    </div>
+<div class="feedbox">
+  <div id="profileHeader">
+    {% if user.pic %}
+      <img class="thumbnail/134x180 profilePic" src="{{ user.pic }}">
+    {% else %}
+      <img class="thumbnail/134x180 profilePic" src="{{ static/images/no.jpg }}">
+    {% endif %}
+    <h1>{{ user.name }}</h1>
   </div>
+  <a id="addPost" href="#"><span class="glyphicon glyphicon-plus"></span>New Post</a>
+  {% for post in post_list %}
+      <div class="media">
+  	   	<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove"></span></button>
+    	  {% if post.pic %}
+          <a href="#" class="pull-left" id="{{ post.picName }}">
+            <img class="media-object" src="{{ post.pic }}">
+  			  </div>
+  		  {% endif %}
+  		  <a href="#" class="media-body">
+  			  {% if post.title %}
+            <h4 class="media-heading">{{ post.title }}</h4>
+          {% endif %}
+          <p>{{ post.content }}</p>
+  		  </a>
+      </div>
+  {% empty %}
+    <div>Sorry, you have no posts yet.</div>
+  {% endfor %}
+  <a href="#" id="morePosts">
+    <span class="glyphicon glyphicon-Chevron-down"></span>More Posts
+    <span class="glyphicon glyphicon-Chevron-down">
+  </a>
 </div>
-<!-- 
-  http://hallofhavoc.com/2013/05/how-to-create-an-overlay-popup-box-using-html-css-and-jquery/
-.overlay-bg {
-display: none;
-position: fixed;
-top: 0;
-left: 0;
-height:100%;
-width: 100%;
-cursor: pointer;
-background: #000; /* fallback */
-background: rgba(0,0,0,0.75);
-}
-.overlay-content {
-background: #fff;
-padding: 1%;
-width: 40%;
-position: relative;
-top: 15%;
-left: 50%;
-margin: 0 0 0 -20%; /* add negative left margin for half the width to center the div */
-cursor: default;
-border-radius: 4px;
-box-shadow: 0 0 5px rgba(0,0,0,0.9);
-}
-And here’s the jQuery snippet we’ll use to trigger the popup to display (Note: I’m using jQuery version 1.9):
-
-$(document).ready(function(){
-// show popup when you click on the link
-$('.show-popup').click(function(event){
-event.preventDefault(); // disable normal link function so that it doesn't refresh the page
-$('.overlay-bg').show(); //display your popup
-});
- 
-// hide popup when user clicks on close button
-$('.close-btn').click(function(){
-$('.overlay-bg').hide(); // hide the overlay
-});
- 
-// hides the popup if user clicks anywhere outside the container
-$('.overlay-bg').click(function(){
-    $('.overlay-bg').hide();
-})
-// prevents the overlay from closing if user clicks inside the popup overlay
-$('.overlay-content').click(function(){
-    return false;
-});
- 
-});
- -->

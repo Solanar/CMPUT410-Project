@@ -6,26 +6,24 @@
 
 <button class="newPost">Create Post</button>
 
-{% if posts %}
-    {% for post in posts %}
-        <p>Post exists</p>
-        <p>
-            {{ post.title }}</br>
-            {{ post.author }}</br>
-        </p>
-        <p>Spot for editting buttons</p>
-        <form method="post" action="{% url 'post_edit' post_id=post.id  %}">
-            {% csrf_token %}
-            <input type="submit" value="Edit"/>
-        </form>
-        <form method="post" action="{% url 'post_delete' post_id=post.id %}">
-            {% csrf_token %}
-            <input type="submit" value="Delete"/>
-        </form>
-        <hr>
-    {% endfor %}
-{% else %}
-    <strong>No posts on your stream yet</strong>
-{% endif %}
+{% for post in post_list %}
+    <div class="media">
+        <button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove"></span></button>
+        {% if post.pic %}
+        <a href="#" class="pull-left" id="{{ post.picName }}">
+          <img class="media-object" src="{{ post.pic }}" alt="">
+            </div>
+        {% endif %}
+        <a href="#" class="media-body">
+            {% if post.title %}
+                <h4 class="media-heading">{{ post.title }}</h4>
+                <h1>by {{ post.author }}</h1></br>
+            {% endif %}
+            <p>{{ post.content }}</p>
+        </a>
+    </div>
+{% empty %}
+    <div>Sorry, you have no posts yet.</div>
+{% endfor %}
 
 {% endblock %}
