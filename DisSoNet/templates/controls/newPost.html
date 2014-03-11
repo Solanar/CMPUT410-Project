@@ -8,6 +8,7 @@
       <div class="modal-body">
         <!--TODO: Create form for the new post here-->
       <form id="newPostForm">
+        {% csrf_token %}
             <label >Title <input type="text" name="title" /></label>
             <label>Post Type <select class="post_type" name="content-type">
               <option value="text/html">HTML</option>
