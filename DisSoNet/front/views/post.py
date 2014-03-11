@@ -24,3 +24,15 @@ class PostDelete(BaseView):
 
     def post(self, request, post_id=None, *args, **kwargs):
         pass
+
+
+class PostCreate(BaseView):
+    def post(self, request, *args, **kwags):
+        print ("hi")
+        title = request.POST.get("title")
+        content_type = request.POST.get("content-type")
+        image_url = request.POST.get("image_url")
+        content = request.POST.get("content")
+        categories = request.POST.get("categories")
+        visibility = request.POST.get("visibility")
+        print ("hi1")
