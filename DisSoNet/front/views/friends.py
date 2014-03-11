@@ -6,15 +6,22 @@ from django.http import HttpResponseRedirect
 
 class FriendRequestView(BaseView):
 
+    login_required = False
+
     if settings.DEBUG:
         http_method_names = [u'get', u'post']
     else:
-        http_method_names = [u'post']
+        http_method_names = [u'post', u'put']
 
     template_name = 'test.html'
 
     def preprocess(self, request, *args, **kwargs):
+        print("I'm posting to things!!!!!")
         super(FriendRequestView, self).preprocess(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        response = request.PUT['friendRequestResponse']
+        return self.render_to_response(self.context)
 
     def post(self, request, *args, **kwargs):
         requester = request.POST['author']
