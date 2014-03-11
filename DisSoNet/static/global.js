@@ -58,9 +58,12 @@ function processFriend(friendid, action, callback){
 function createPostGlobal(){
     var data = $('#newPostForm').serialize();
     /*TODO Massage form data here to meet server spec*/
-    alert("Posting the following to /posts \n" + data);
-    sendPost(data, console.log);
-    $('#newPostModal').modal("close");
+    sendPost(data, function(data, text, xhr){ 
+    	console.log("test");
+    	console.log(xhr.getResponseHeader('Location'));
+    	window.location =  xhr.getResponseHeader('Location');
+    });
+    $('#newPostModal').modal("hide");
 }
 
 
@@ -75,7 +78,10 @@ function sendPost(data, callback){
     content: Text field to input the contents of the post
     author: Foreign key referenceing author 
     */
-    $.post("/post/create/", data, callback, "json");
+    //    $.post("/post/create/", data, callback, "json");
+    //    TODO: return should be json, but I forgive you
+    $.post("/post/create/", data, callback);
+
 }
 
 // using jQuery
