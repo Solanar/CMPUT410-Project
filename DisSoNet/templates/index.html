@@ -7,29 +7,17 @@
 
 {% if user.is_authenticated %}
 	<h2>Welcome {{user.get_username}}</h2>
-	<h3><a href="/stream">View your stream!</h2></h3>
+	<h3><a href="/stream">View your stream!</a></h3>
 {% else %}
-<h2>Have an account? <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#login">
-  Login
-</button> or <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#register">
-  Register
-</button>
-</h2>
+	<h2>Have an account? 
+		<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#login">
+		  Login
+		</button> or 
+		<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#register">
+		  Register
+		</button>
+	</h2>
 {% endif %}
 
-<div style="border:2px solid red; padding:10px" class="hidden">
-	<h3>DEBUG ZONE</h3><br />
-	Login States {{ user.is_authenticated }} <br />
-	Open your dev tool console for output.<br />
-	<button onclick="getActivityStream(console.log);">LOAD ACTIVITY STREAM</button>
-	<div></div>
-	
-	<div id="testbed"></div>
-	<br /><br />
-	
-	<div style="border:2px solid blue;>
-	{% include "stream.html" %}
-	</div>
-</div>
 
 {% endblock %}
