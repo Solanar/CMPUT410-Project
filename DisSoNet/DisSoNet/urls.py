@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$', front_views.home, name='home'),
+    url(r'^test/', front_views.test, name='test'), 
     url(r'^stream_debug/', front_views.stream_debug, name='stream'),    
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/login/', LoginView.as_view(), s, name='login'),
