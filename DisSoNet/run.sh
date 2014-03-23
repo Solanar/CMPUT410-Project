@@ -3,6 +3,6 @@
 python manage.py runserver 0.0.0.0:8080
 
 #other commands
-#/usr/bin/python3.3 manage.py syncdb
-#/usr/bin/python3.3 manage.py migrate
-#/usr/bin/python3.3 manage.py shell
+#/usr/bin/python manage.py syncdb
+#/usr/bin/python manage.py migrate
+#/usr/bin/python manage.py shell
