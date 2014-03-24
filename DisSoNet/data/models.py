@@ -131,6 +131,10 @@ class Post(models.Model):
     * From the requirements there is another type. PRIVATE to another author
 
     """
+
+    def __str__(self):
+        return self.title + " " + self.author.email
+
     # Choices for content_type field
     CONTENT_TYPE_CHOICES = (
         ('HTML', 'text/html'),
