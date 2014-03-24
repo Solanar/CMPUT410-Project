@@ -133,7 +133,7 @@ class Post(models.Model):
     """
 
     def __str__(self):
-        return self.title + " " + self.author.email
+        return self.title + " post " + self.author.email
 
     # Choices for content_type field
     CONTENT_TYPE_CHOICES = (
@@ -183,6 +183,8 @@ class Comment(models.Model):
     giud: Still to be implemented. A guid is a 40 digit sha1 thats unique
         globally between all servers.
     """
+    def __str__(self):
+        return self.post.title + " comment " + self.user.email
     post = models.ForeignKey(Post, related_name='comments')
     user = models.ForeignKey(User)
     content = models.TextField("Content")
