@@ -19,6 +19,9 @@ urlpatterns = patterns('',
     # url(r'^$', 'DisSoNet.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
+    # including urls for REST api
+    url(r'^', include('data.api.urls')),
+
     url(r'^$', front_views.home, name='home'),
     url(r'^test/', front_views.test, name='test'),
     url(r'^stream_debug/', front_views.stream_debug, name='stream'),
