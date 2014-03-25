@@ -16,6 +16,9 @@ class UserManager(BaseUserManager):
                           lastName=lastName,
                           )
         user.set_password(password)
+        timestring = datetime.now().strftime("%a %b %d %h:%m:%s mst %y")
+        stringtohash = timestring + user.email
+        user.guid = hashlib.sha1(stringtohash).hexdigest()
         user.save(using=self._db)
         return user
 
