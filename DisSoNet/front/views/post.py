@@ -68,12 +68,9 @@ class PostResource(BaseView):
             self.context['post'] = post_objects[0]
             return self.render_to_response(self.context)
 
-
     def post(self, request, *args, **kwargs):
         #if request.META.get('HTTP_ACCEPT') == 'application/json':
         self.get(request, *args, **kwargs)
-
-
 
 
 # http://service/author/posts (posts that are visible to the currently authenticated user)
@@ -106,54 +103,6 @@ class AuthorStream(BaseView):
 
 # http://service/author/{AUTHOR_ID}/posts (all posts made by {AUTHOR_ID} visible to the currently authenticated user)
 
-# TODO remove this stuff
-
-"""
-class PostEdit(BaseView):
-
-    # TODO Need to create an edit view, lots similiar in 401 proj
-    #template_name = '.html'
-
-    def preprocess(self, request, *args, **kwargs):
-        super(PostEdit, self).preprocess(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        pass
-"""
-
-"""
-class PostDelete(BaseView):
-
-    def preprocess(self, request, *args, **kwargs):
-        super(PostDelete, self).preprocess(request, *args, **kwargs)
-
-    def post(self, request, post_id=None, *args, **kwargs):
-        pass
-"""
-
-"""
-class PostCreate(BaseView):
-    def post(self, request, *args, **kwags):
-        title = request.POST.get("title")
-        content_type = request.POST.get("content-type")
-        image_url = request.POST.get("image_url")
-        content = request.POST.get("content")
-        categories = request.POST.get("categories")
-        visibility = request.POST.get("visibility")
-        try:
-            new_post = Post(title=title, source="", origin="", description="", content_type=content_type, content=content, author=request.user, visibility = visibility)
-            new_post.save()
-        except Exception,e:
-            print(e)
-        self.context['test'] = 'test'
-
-        try:
-            response = HttpResponse(status=201)
-            response['Location'] = '/post/' + str(new_post.id) + '/'
-            return response
-        except Exception,e:
-            print(e)
-"""
 
 def getPostDict(post_object):
     """ From all post URLS should return a list of posts like the following.
@@ -207,6 +156,7 @@ def getPostDict(post_object):
 
     return post_dict
 
+
 def getCommentDictList(comment_list):
     """ Take a list of comment objects, returns list of dict representations.
 
@@ -232,6 +182,7 @@ def getCommentDictList(comment_list):
         comment_dict_list.append(comment_dict)
 
     return comment_dict_list
+
 
 def getAuthorDict(author_object, include_url=False):
     """ Take a list of author objects, returns it's dict representations.
