@@ -37,6 +37,8 @@ class User(AbstractBaseUser):
     firstName = models.CharField("First Name", max_length=50)
     lastName = models.CharField("Last Name", max_length=50)
 
+    guid = models.CharField("guid", max_length=40, blank=True)
+
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
@@ -133,7 +135,7 @@ class Post(models.Model):
     """
 
     def __str__(self):
-        return self.title + " post " + self.author.email
+        return self.title + "-posted by-" + self.author.email
 
     # Choices for content_type field
     CONTENT_TYPE_CHOICES = (
@@ -184,7 +186,7 @@ class Comment(models.Model):
         globally between all servers.
     """
     def __str__(self):
-        return self.post.title + " comment " + self.user.email
+        return self.post.title + "-commented on by-" + self.user.email
     post = models.ForeignKey(Post, related_name='comments')
     user = models.ForeignKey(User)
     content = models.TextField("Content")
