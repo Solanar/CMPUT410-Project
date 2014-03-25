@@ -21,7 +21,7 @@ def stream_debug(request):
     context = {'state':'none'}
     context['login_form'] = AuthenticationForm()
     context['register_form'] = UserCreationForm()
-    return render(request, 'stream.html', context)
+    return render(request, 'authorStream.html', context)
 
 
 def reset(request, email=None, **kwargs):

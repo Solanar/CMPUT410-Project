@@ -11,7 +11,9 @@ class StreamView(BaseView):
     template_name = 'stream.html'
 
     def preprocess(self, request, *args, **kwargs):
+        # TODO filter these on public visibilty
         posts = Post.objects.all()
+        # TODO check if this was a html, or json request and handle differently
         self.context['posts'] = posts
         form = PostCreationForm()
         self.context["form"] = form
