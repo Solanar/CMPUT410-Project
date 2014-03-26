@@ -2,7 +2,7 @@ from django.db.models import Q
 from data.models import Friends
 
 
-class FriendsListMixin():
+class FriendsListMixin(object):
     '''
     Builds list of friends.
     user in filter MUST be a User object.
@@ -20,4 +20,5 @@ class FriendsListMixin():
             friends = self.get_filtered_list(kwargs['friend_list_filter'])
 
         self.context['friend_list'] = friends
+        print(friends)
         super(FriendsListMixin, self).preprocess(request, *args, **kwargs)

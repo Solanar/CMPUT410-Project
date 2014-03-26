@@ -4,6 +4,8 @@ from data.models import Post
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
 
+from .mixins.post_list import PostListMixin
+
 
 import json
 from django.http import HttpResponse
@@ -12,7 +14,7 @@ from data.models import Post, Comment
 
 
 # http://service/posts (all posts marked as public on the server)
-class PublicPosts(BaseView):
+class PublicPosts(PostListMixin, BaseView):
 
     login_required = False
     template_name = "publicStream.html"
@@ -39,7 +41,7 @@ class PublicPosts(BaseView):
 
 
 # http://service/posts/{POST_ID} access to a single post with id = {POST_ID}
-class PostResource(BaseView):
+class PostResource(PostListMixin, BaseView):
 
     login_required = False
 
@@ -74,21 +76,21 @@ class PostResource(BaseView):
 
 
 # http://service/author/posts (posts that are visible to the currently authenticated user)
-class AuthorStream(BaseView):
+class AuthorStream(PostListMixin, BaseView):
 
     login_required = False
     template_name = "authorStream.html"
 
     def preprocess(self, request, *args, **kwargs):
+        kwargs['post_list_filter'] = 'visible'
         super(AuthorStream, self).preprocess(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        # TODO this is only public for now, need to get friends and foaf working to change this
-        posts = Post.objects.filter(visibility="PUBLIC")
         #if request.META.get('HTTP_ACCEPT') == 'application/json':
         # This a json request from another server
         post_dict = {}
         post_dict_list = []
+        posts = self.context['post_list']
         for post_object in posts:
             post_dict_list.append(getPostDict(post_object))
 
@@ -97,13 +99,9 @@ class AuthorStream(BaseView):
         return HttpResponse(json_data, content_type="application/json")
         #else:
         # Serve django objects
-        self.context['post_list'] = posts
         return self.render_to_response(self.context)
 
-
 # http://service/author/{AUTHOR_ID}/posts (all posts made by {AUTHOR_ID} visible to the currently authenticated user)
-
-
 def getPostDict(post_object):
     """ From all post URLS should return a list of posts like the following.
 
