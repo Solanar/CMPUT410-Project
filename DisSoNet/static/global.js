@@ -32,24 +32,19 @@ function processFriend(friendid, action, callback){
 		//should validate author id serverside
 		var data = {"query":"friendrequest",
 						"author":{
-						"id": AUTHENTICATED_USER,
-						"host":"http://127.0.0.1:5454/",
-						"displayname":"Greg"
+							"id": AUTHENTICATED_USER,
 						},
-						"friend": 	{
-						                 "id":friendid,
-						                 "host":"http://127.0.0.1:5454/",
-						                 "displayname":"Lara",
-						                 "url":"http://127.0.0.1:5454/author/" + friendid
+						"friend": 	{ "author" : {
+						                 "id":friendid
 						            }
-						}
-		$.post('/friendrequest', data, callback);
+						}}
+		$.post('/friendrequest/', data, callback);
 		
 	}else{
 		//reject friend request, need a function
 		$.ajax({
 		  type: "DELETE",
-		  url: "/friends/"+AUTHENTICATED_USER+"/"+friendid,
+		  url: "/friends/"+AUTHENTICATED_USER+"/"+friendid+"/",
 		  success: callback
 		});
 	}
