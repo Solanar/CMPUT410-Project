@@ -1,15 +1,13 @@
-
-<div class=""><span class="glyphicon glyphicon-trash"></span></div>
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+{% block content %}
+</br>
 <div class="row">
   <div class="col-xs-6 col-md-3">
   {% for friend in friend_list %}
-    <div id="{{ friend.name }}">
-      <figure draggable=true >
-        <img src="{{ friend.pic }}/110x150">
-        <figcaption>{{ friend.name }}</figcaption>
-      </figure>
-    </div>
-  	{% if forloop.counter % 5 == 0 %}
+    <a href="">{{ friend.name }}</a>
+  	{% if forloop.counter % 2 == 0 %}
   	  </div>
   	  <div class="col-xs-6 col-md-3">
   	{% endif %}
