@@ -16,6 +16,9 @@ class UserManager(BaseUserManager):
                           lastName=lastName,
                           )
         user.set_password(password)
+        timestring = datetime.now().strftime("%a %b %d %h:%m:%s mst %y")
+        stringtohash = timestring + user.email
+        user.guid = hashlib.sha1(stringtohash).hexdigest()
         user.save(using=self._db)
         return user
 
@@ -35,6 +38,17 @@ class User(AbstractBaseUser):
     class Meta:
         verbose_name_plural = 'Users'
         verbose_name = 'User'
+
+    def __str__(self):
+        return self.email
+
+    def clean(self):
+        """ clean and validate the models fields. """
+        # only set the guid once
+        if not self.guid:
+            timestring = datetime.now().strftime("%a %b %d %h:%m:%s mst %y")
+            stringtohash = timestring + self.email
+            self.guid = hashlib.sha1(stringtohash).hexdigest()
 
     email = models.EmailField("Email", max_length=75, unique=True)
     firstName = models.CharField("First Name", max_length=50)

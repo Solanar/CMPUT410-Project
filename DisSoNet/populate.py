@@ -9,6 +9,7 @@ def populate():
 
     # create admin users
     u1 = add_user("eklinger@ualberta.ca", "Eric", "Klinger", "410", is_admin=True)
+    u2 = add_user("eric.klinger@gmail.com", "Eric", "Klinger", "410")
     # create normal users
     # ...
 
@@ -20,11 +21,23 @@ def populate():
     printAllPosts()
     printAllComments()
 
+
 def add_user(email, firstName, lastName, password, is_admin=False):
-    user = User.objects.get_or_create(email=email, firstName=firstName,
-                                      lastName=lastName, password=password,
-                                      is_admin=is_admin)
-    return user[0]
+    user = None
+    try:
+        user = User.objects.get(email=email)
+        return user
+    except:
+        pass
+    if not user:
+        if is_admin:
+            user = User.objects.create_superuser(email, firstName, lastName, password)
+            user.save()
+        else:
+            user = User.objects.create_user(email, firstName, lastName, password)
+            user.save()
+    return user
+
 
 def add_post(title, source, origin, description, content_type, author,
              published_date, visibility, guid=None):
@@ -35,6 +48,7 @@ def add_post(title, source, origin, description, content_type, author,
                                       visibility=visibility)
     return post[0]
 
+
 def add_comment(post, user, content, published_date, guid):
     comment = Post.objects.get_or_create(post=post,
                                          user=user,
@@ -42,13 +56,16 @@ def add_comment(post, user, content, published_date, guid):
                                          published_date=published_date,
                                          guid=guid)
 
+
 def printAllUsers():
     for user in User.objects.all():
         print user
 
+
 def printAllPosts():
     for post in Post.objects.all():
         print post
+
 
 def printAllComments():
     for comment in Comment.objects.all():

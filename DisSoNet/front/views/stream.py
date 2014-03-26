@@ -4,8 +4,11 @@ from data.models import Post
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 
+from .mixins.user import GetUserMixin
+from .mixins.post_list import PostListMixin
 
-class StreamView(BaseView):
+
+class StreamView(PostListMixin, GetUserMixin, BaseView):
     """ View of the 'stream' of all our posts. """
 
     template_name = 'stream.html'
@@ -17,6 +20,7 @@ class StreamView(BaseView):
         self.context['posts'] = posts
         form = PostCreationForm()
         self.context["form"] = form
+        kwargs['post_list_filter'] = 'visible'
         super(StreamView, self).preprocess(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
