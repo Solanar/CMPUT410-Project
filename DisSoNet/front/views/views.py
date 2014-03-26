@@ -10,6 +10,8 @@ def home(request):
     context = {'state':'none'}
     context['login_form'] = AuthenticationForm()
     context['register_form'] = UserCreationForm()
+    if request.user.is_authenticated():
+        print(request.user.id)
     return render(request, 'index.html', context)
 
 
