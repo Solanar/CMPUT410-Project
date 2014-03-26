@@ -78,7 +78,6 @@ class PostResource(PostListMixin, BaseView):
 # http://service/author/posts (posts that are visible to the currently authenticated user)
 class AuthorStream(PostListMixin, BaseView):
 
-    login_required = False
     template_name = "authorStream.html"
 
     def preprocess(self, request, *args, **kwargs):
