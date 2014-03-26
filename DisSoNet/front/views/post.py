@@ -20,14 +20,15 @@ class PublicPosts(PostListMixin, BaseView):
     template_name = "publicStream.html"
 
     def preprocess(self, request, *args, **kwargs):
+        kwargs['post_list_filter'] = 'public'
         super(PublicPosts, self).preprocess(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        posts = Post.objects.filter(visibility="PUBLIC")
         if request.META.get('HTTP_ACCEPT') == 'application/json':
             # This a json request from another server
             post_dict = {}
             post_dict_list = []
+            posts = self.context['post_list']
             for post_object in posts:
                 post_dict_list.append(getPostDict(post_object))
 
@@ -36,7 +37,6 @@ class PublicPosts(PostListMixin, BaseView):
             return HttpResponse(json_data, content_type="application/json")
         else:
             # Serve django objects
-            self.context['post_list'] = posts
             return self.render_to_response(self.context)
 
 
