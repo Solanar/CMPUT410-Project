@@ -4,23 +4,14 @@
 {% block content %}
 
 
-<div id="profileHeader">
-    <h1 class="labell">Public Stream</h1>
-    {% if user.pic %}
-      <img class="thumbnail profilePic" src="{{ user.pic }}">
-    {% else %}
-      <img class="thumbnail profilePic" src="{% static 'images/no.jpg' %}">
-    {% endif %}
-</div>
-</br></br>
-<h2>Public Posts</h2></br>
+</br>
 {% for post in post_list %}
     <div class="media">
         <button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove"></span></button>
         {% if post.pic %}
         <a href="#" class="pull-left" id="{{ post.picName }}">
-          <img class="media-object" src="{{ post.pic }}" alt="">
-            </div>
+          <img class="media-object" src="{{ post.picture }}">
+        </a>
         {% endif %}
         <a href="#" class="media-body">
             {% if post.title %}
