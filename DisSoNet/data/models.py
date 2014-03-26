@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from django.forms import CharField, PasswordInput
 
+import hashlib
+from datetime import datetime
+
 
 class UserManager(BaseUserManager):
     def create_user(self, email, firstName, lastName, password=None):
@@ -13,6 +16,9 @@ class UserManager(BaseUserManager):
                           lastName=lastName,
                           )
         user.set_password(password)
+        timestring = datetime.now().strftime("%a %b %d %h:%m:%s mst %y")
+        stringtohash = timestring + user.email
+        user.guid = hashlib.sha1(stringtohash).hexdigest()
         user.save(using=self._db)
         return user
 
@@ -33,9 +39,22 @@ class User(AbstractBaseUser):
         verbose_name_plural = 'Users'
         verbose_name = 'User'
 
+    def __str__(self):
+        return self.email
+
+    def clean(self):
+        """ clean and validate the models fields. """
+        # only set the guid once
+        if not self.guid:
+            timestring = datetime.now().strftime("%a %b %d %h:%m:%s mst %y")
+            stringtohash = timestring + self.email
+            self.guid = hashlib.sha1(stringtohash).hexdigest()
+
     email = models.EmailField("Email", max_length=75, unique=True)
     firstName = models.CharField("First Name", max_length=50)
     lastName = models.CharField("Last Name", max_length=50)
+
+    guid = models.CharField("guid", max_length=40, blank=True)
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -133,7 +152,19 @@ class Post(models.Model):
     """
 
     def __str__(self):
-        return self.title + " post " + self.author.email
+        return self.title + "-posted by-" + self.author.email
+
+    def clean(self):
+        """ clean and validate the models fields.
+
+        Also for posts adds the guid from the present data.
+
+        """
+        # only set the guid once
+        if not self.guid:
+            timestring = datetime.now().strftime("%a %b %d %h:%m:%s mst %y")
+            stringtohash = self.title + timestring + self.author.email
+            self.guid = hashlib.sha1(stringtohash).hexdigest()
 
     # Choices for content_type field
     CONTENT_TYPE_CHOICES = (
@@ -184,7 +215,16 @@ class Comment(models.Model):
         globally between all servers.
     """
     def __str__(self):
-        return self.post.title + " comment " + self.user.email
+        return self.post.title + "-commented on by-" + self.user.email
+
+    def clean(self):
+        """ clean and validate the models fields. """
+        # only set the guid once
+        if not self.guid:
+            timestring = datetime.now().strftime("%a %b %d %h:%m:%s mst %y")
+            stringtohash = self.post.title + timestring + self.user.email
+            self.guid = hashlib.sha1(stringtohash).hexdigest()
+
     post = models.ForeignKey(Post, related_name='comments')
     user = models.ForeignKey(User)
     content = models.TextField("Content")
