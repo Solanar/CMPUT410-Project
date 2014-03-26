@@ -100,7 +100,34 @@ class AuthorStream(PostListMixin, BaseView):
         # Serve django objects
         return self.render_to_response(self.context)
 
-# http://service/author/{AUTHOR_ID}/posts (all posts made by {AUTHOR_ID} visible to the currently authenticated user)
+
+# http://service/author/{AUTHOR_ID}/posts (all posts made by {AUTHOR_ID}
+# visible to the currently authenticated user)
+class VisiblePostToUser(PostListMixin, BaseView):
+
+    # todo make a template for this, if it becomes an actual view
+    template_name = "none"
+
+    def preprocess(self, request, *args, **kwargs):
+        kwargs['post_list_filter'] = 'visible_by_author'
+        super(VisiblePostToUser, self).preprocess(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if request.META.get('HTTP_ACCEPT') == 'application/json':
+        # This a json request from another server
+            post_dict = {}
+            post_dict_list = []
+            posts = self.context['post_list']
+            for post_object in posts:
+                post_dict_list.append(getPostDict(post_object))
+
+            post_dict["posts"] = post_dict_list
+            json_data = json.dumps(post_dict)
+        return HttpResponse(json_data, content_type="application/json")
+        else:
+            return self.render_to_response(self.context)
+
+
 def getPostDict(post_object):
     """ From all post URLS should return a list of posts like the following.
 
