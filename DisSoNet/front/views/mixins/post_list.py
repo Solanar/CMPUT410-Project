@@ -7,11 +7,11 @@ class PostListMixin(object):
     def preprocess(self, request, *args, **kwargs):
         posts = Post.objects.none()
         if 'post_list_filter' in kwargs:
-            posts = self.get_filtered_list(posts, kwargs['post_list_filter'])
+            posts = self.get_filtered_list(kwargs['post_list_filter'])
         self.context['post_list'] = posts
         super(PostListMixin, self).preprocess(request, *args, **kwargs)
 
-    def get_filtered_list(self, posts, filter):
+    def get_filtered_list(self, filter):
         filtered_list = Post.objects.all()
         if 'visible' in filter:  # /author/posts
             print('Visible posts!')
