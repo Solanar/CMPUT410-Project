@@ -8,9 +8,8 @@ from .mixins.post_list import PostListMixin
 
 
 import json
-from django.http import HttpResponse
 
-from data.models import Post, Comment
+from data.models import Comment
 
 
 # http://service/posts (all posts marked as public on the server)

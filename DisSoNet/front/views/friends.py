@@ -3,6 +3,10 @@ from data.models import Friends, User
 from django.conf import settings
 from django.http import HttpResponseRedirect
 
+from .mixins.friends_list import FriendsListMixin
+
+import json
+
 
 class FriendRequestView(BaseView):
 
@@ -24,6 +28,7 @@ class FriendRequestView(BaseView):
         return self.render_to_response(self.context)
 
     def post(self, request, *args, **kwargs):
+
         requester = request.POST['author']
         receiver = request.POST['friend']['author']
 
@@ -37,6 +42,14 @@ class FriendRequestView(BaseView):
         Friends.objects.create(user_id_requester=requester,
                                user_id_receiver=receiver)
         return self.render_to_response(self.context)
+
+
+class FriendsView(FriendsListMixin, BaseView):
+
+    template_name = 'controls/friends.html'
+
+    def preprocess(self, request, *args, **kwargs):
+        super(FriendsView, self).preprocess(request, *args, **kwargs)
 
 
 class AreFriends(BaseView):
