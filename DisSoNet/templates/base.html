@@ -14,20 +14,20 @@
           href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/cerulean/bootstrap.min.css" />
 
     <link rel="stylesheet"
-          href="{% static "style.css" %}" />     
+          href="{% static "style.css" %}" />
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js">
     </script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js">
-    </script>    
+    </script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js">
     </script>
     <script src="/static/global.js">
-    </script>    
+    </script>
     <script src="/static/debug.js">
     </script>
     {% block headext %}{% endblock %}
   </head>
-  
+
   <body>
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
@@ -50,8 +50,8 @@
           <ul class="nav navbar-nav">
             <li class=""><a href="/">Home</a></li>
             {% if user.is_authenticated %}
-            <li class=""><a href="/stream">My Stream</a></li>
-            {% endif %}         
+            <li class=""><a href="/posts">My Stream</a></li>
+            {% endif %}
           </ul>
            <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
@@ -78,15 +78,15 @@
                                    <span class="acceptFriend">Accept</span>
                                    <span class="rejectFriend">Reject</span>
                                 </div>
-                            </div>   
+                            </div>
                             <div class="clear" />
-               
+
                     </div>
               </li>
-              <li><a href="#" class="logout">Logout</a></li>  
+              <li><a href="#" class="logout">Logout</a></li>
               {% else %}
-                <li><a href="#" class="login" data-toggle="modal" data-target="#login">Login</a></li>    
-                <li><a href="#" class="register" data-toggle="modal" data-target="#register">Register</a></li>                            
+                <li><a href="#" class="login" data-toggle="modal" data-target="#login">Login</a></li>
+                <li><a href="#" class="register" data-toggle="modal" data-target="#register">Register</a></li>
               {% endif %}
            </ul>
         </div><!--/.nav-collapse -->

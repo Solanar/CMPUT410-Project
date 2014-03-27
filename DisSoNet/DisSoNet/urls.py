@@ -42,4 +42,6 @@ urlpatterns = patterns('',
         name='friend_request'),
     url(r'^friends/(?P<user_id_1>\w+)/(?P<user_id_2>\w+)/$',
         AreFriends.as_view(), name='are_friends'),
+    url(r'^friends/?', FriendsView.as_view(),
+        s, name='friends_view'),
 )
