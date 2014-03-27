@@ -8,9 +8,8 @@ from .mixins.post_list import PostListMixin
 
 
 import json
-from django.http import HttpResponse
 
-from data.models import Post, Comment
+from data.models import Comment
 
 
 # http://service/posts (all posts marked as public on the server)
@@ -137,6 +136,8 @@ def getPostDict(post_object):
     post_dict["content-type"] = post_object.content_type
     post_dict["content"] = post_object.content
     # TODO python datetime is not JSON serializable
+    timestring = post_object.published_date.strftime("%a %b %d %h:%m:%s mst %y")
+    post_dict["pubdate"] = timestring
     # post_dict["pubdate"] = post_object.published_date
     post_dict["guid"] = post_object.guid
     post_dict["visibility"] = post_object.visibility
@@ -174,7 +175,8 @@ def getCommentDictList(comment_list):
         comment_dict["author"] = getAuthorDict(comment.user)
         comment_dict["comment"] = comment.content
         # TODO python datetime is not JSON serializable
-        # comment_dict["pubDate"] = comment.published_date
+        timestring = comment.published_date.strftime("%a %b %d %h:%m:%s mst %y")
+        comment_dict["pubDate"] = timestring
         comment_dict["guid"] = comment.guid
         comment_dict_list.append(comment_dict)
 
