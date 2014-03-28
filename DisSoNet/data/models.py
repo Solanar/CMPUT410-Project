@@ -114,7 +114,9 @@ class Friends(models.Model):
     user_id_receiver = models.ForeignKey(User, related_name='receiver')
     accepted = models.BooleanField(default=False)
 
-    unique_together = ("user_id_requester", "user_id_receiver")
+    class Meta:
+        unique_together = ("user_id_requester", "user_id_receiver")
+
 
     def __str__(self):
         return self.user_id_requester.email + " -> " \
