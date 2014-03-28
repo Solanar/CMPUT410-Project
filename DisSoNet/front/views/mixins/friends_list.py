@@ -1,5 +1,5 @@
 from django.db.models import Q
-from data.models import Friends
+from data.models import Friends, User
 
 
 class FriendsListMixin(object):
@@ -8,17 +8,21 @@ class FriendsListMixin(object):
     user in filter MUST be a User object.
     '''
 
-    def get_filtered_list(self, filter):
-        if 'user' in filter:
-            user = filter['user']
-            return Friends.objects.filter(Q(user_id_requester=user) |
-                                          Q(user_id_receiver=user))
+    def get_pending_friends(self, user):
+        return Friends.objects.filter(Q(user_id_receiver=user) &
+                                      Q(accepted=False))
+
+    def get_friends_list(self, user):
+        return Friends.objects.filter((Q(user_id_requester=user) |
+                                       Q(user_id_receiver=user)) &
+                                      Q(accepted=True))
 
     def preprocess(self, request, *args, **kwargs):
-        friends = Friends.objects.all()
-        if 'friend_list_filter' in kwargs:
-            friends = self.get_filtered_list(kwargs['friend_list_filter'])
-
+        pending_friends = friends = Friends.objects.none()
+        if request.user.is_authenticated():
+            user = User.objects.get(email=request.user.email)
+            pending_friends = self.get_pending_friends(user)
+            friends = self.get_friends_list(user)
         self.context['friend_list'] = friends
-        print(friends)
+        self.context['pending_friend_list'] = pending_friends
         super(FriendsListMixin, self).preprocess(request, *args, **kwargs)

@@ -23,6 +23,9 @@ class RegisterView(BaseView):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
+            # new_user.is_active = false
+            # set is_active to false, display msg to user that sys admin
+            # has to approve of registration
             new_user = authenticate(email=form.cleaned_data['email'],
                                     password=form.cleaned_data['password1'])
             login(request, new_user)

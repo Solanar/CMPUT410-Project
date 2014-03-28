@@ -39,9 +39,6 @@ class User(AbstractBaseUser):
         verbose_name_plural = 'Users'
         verbose_name = 'User'
 
-    def __str__(self):
-        return self.email
-
     def clean(self):
         """ clean and validate the models fields. """
         # only set the guid once
@@ -116,6 +113,14 @@ class Friends(models.Model):
     user_id_requester = models.ForeignKey(User, related_name='requester')
     user_id_receiver = models.ForeignKey(User, related_name='receiver')
     accepted = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ("user_id_requester", "user_id_receiver")
+
+
+    def __str__(self):
+        return self.user_id_requester.email + " -> " \
+            + self.user_id_receiver.email + " " + str(self.accepted)
 
 
 class Post(models.Model):

@@ -1,7 +1,7 @@
 from data.models import User
 
 
-class GetUserMixin():
+class GetUserMixin(object):
 
     def preprocess(self, request, *args, **kwargs):
         user = User.objects.none()
@@ -11,11 +11,11 @@ class GetUserMixin():
         super(GetUserMixin, self).preprocess(request, *args, **kwargs)
 
 
-class GetAllUsersMixin():
+class GetAllUsersMixin(object):
 
     def preprocess(self, request, *args, **kwargs):
         all_users = User.objects.all()
         if request.user.is_authenticated():
             all_users = all_users.exclude(email=request.user.email)
         self.context['all_users'] = all_users
-        super(GetUserMixin, self).preprocess(request, *args, **kwargs)
+        super(GetAllUsersMixin, self).preprocess(request, *args, **kwargs)

@@ -17,8 +17,7 @@ else:
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'DisSoNet.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-    url(r'^$', front_views.home, name='home'),
+    url(r'^$', HomeView.as_view(), name='home'),
     url(r'^test/', front_views.test, name='test'),
     url(r'^stream_debug/', front_views.stream_debug, name='stream'),
     url(r'^admin/', include(admin.site.urls)),
@@ -43,4 +42,6 @@ urlpatterns = patterns('',
         name='friend_request'),
     url(r'^friends/(?P<user_id_1>\w+)/(?P<user_id_2>\w+)/$',
         AreFriends.as_view(), name='are_friends'),
+    url(r'^friends/?', FriendsView.as_view(),
+        s, name='friends_view'),
 )
