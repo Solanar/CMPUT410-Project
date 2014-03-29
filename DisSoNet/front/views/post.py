@@ -37,6 +37,7 @@ class PublicPosts(PostListMixin, BaseView):
     def post(self, request, *args, **kwargs):
         pass
 
+
 # http://service/posts/{POST_ID} access to a single post with id = {POST_ID}
 class PostResource(PostListMixin, BaseView):
 
@@ -73,7 +74,8 @@ class PostResource(PostListMixin, BaseView):
         self.get(request, *args, **kwargs)
 
 
-# http://service/author/posts (posts that are visible to the currently authenticated user)
+# http://service/author/posts
+# (posts that are visible to the currently authenticated user)
 class AuthorStream(PostListMixin, BaseView):
 
     template_name = "authorStream.html"
@@ -107,7 +109,8 @@ class VisiblePostToUser(PostListMixin, BaseView):
     template_name = "visiblePostStream.html"
 
     def preprocess(self, request, *args, **kwargs):
-        kwargs['post_list_filter'] = 'visible_by_author'
+        author_id = kwargs['author_id']
+        kwargs['post_list_filter'] = {'visible_by_author': author_id}
         super(VisiblePostToUser, self).preprocess(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
