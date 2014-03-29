@@ -16,15 +16,24 @@ class PostListMixin(object):
         filtered_list = Post.objects.all()
         user = User.objects.get(email=user.email)
         if 'visible' in filter:  # /author/posts
-            filtered_list = filtered_list.exclude(Q(visibility='PRIVATE') &
-                                                  ~Q(author=user))
-            # include posts by current author
-            # include posts that are public
+            filtered_list = self.get_posts_visible_to_current_user(user)
             pass
         elif 'public' in filter:  # /posts
-            filtered_list = filtered_list.filter(visibility='PUBLIC')
+            filtered_list = self.get_all_public_posts()
         elif 'visible_by_author' in filter:  # /author/<author_id>/posts
-            print('Posts by author, visible to me!')
+            author = User.objects.get(id=filter['visible_by_author'])
+            filtered_list = self.get_posts_by_author(author, user)
         elif 'post_id' in filter:  # /posts/<post_id>
-            print('SHOW THE POST!!!!!!')
+            filtered_list = Post.objects.get(guid=filter['post_id'])
         return filtered_list
+
+    def get_posts_visible_to_current_user(self, user):
+        # post =
+        pass
+
+    def get_all_public_posts(self):
+        return Post.objects.filter(visibility='PUBLIC')
+
+    def get_posts_by_author(self, author, user):
+        posts = self.get_posts_visible_to_current_user(user)
+        return posts.filter(author=author)

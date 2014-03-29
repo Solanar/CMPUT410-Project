@@ -3,12 +3,8 @@ from data.forms import PostCreationForm
 from data.models import Post
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
-
 from .mixins.post_list import PostListMixin
-
-
 import json
-
 from data.models import Comment
 
 
@@ -38,11 +34,15 @@ class PublicPosts(PostListMixin, BaseView):
             # Serve django objects
             return self.render_to_response(self.context)
 
+    def post(self, request, *args, **kwargs):
+        pass
+
 
 # http://service/posts/{POST_ID} access to a single post with id = {POST_ID}
 class PostResource(PostListMixin, BaseView):
 
     login_required = False
+    template_name = "posts/singlePost.html"
 
     def preprocess(self, request, *args, **kwargs):
         super(PostResource, self).preprocess(request, *args, **kwargs)
@@ -74,7 +74,8 @@ class PostResource(PostListMixin, BaseView):
         self.get(request, *args, **kwargs)
 
 
-# http://service/author/posts (posts that are visible to the currently authenticated user)
+# http://service/author/posts
+# (posts that are visible to the currently authenticated user)
 class AuthorStream(PostListMixin, BaseView):
 
     template_name = "authorStream.html"
@@ -84,22 +85,50 @@ class AuthorStream(PostListMixin, BaseView):
         super(AuthorStream, self).preprocess(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        #if request.META.get('HTTP_ACCEPT') == 'application/json':
+        if request.META.get('HTTP_ACCEPT') == 'application/json':
+            # This a json request from another server
+            post_dict = {}
+            post_dict_list = []
+            posts = self.context['post_list']
+            for post_object in posts:
+                post_dict_list.append(getPostDict(post_object))
+
+            post_dict["posts"] = post_dict_list
+            json_data = json.dumps(post_dict)
+            return HttpResponse(json_data, content_type="application/json")
+        else:
+            # Serve django objects
+            return self.render_to_response(self.context)
+
+
+# http://service/author/{AUTHOR_ID}/posts (all posts made by {AUTHOR_ID}
+# visible to the currently authenticated user)
+class VisiblePostToUser(PostListMixin, BaseView):
+
+    # todo make a template for this, if it becomes an actual view
+    template_name = "visiblePostStream.html"
+
+    def preprocess(self, request, *args, **kwargs):
+        author_id = kwargs['author_id']
+        kwargs['post_list_filter'] = {'visible_by_author': author_id}
+        super(VisiblePostToUser, self).preprocess(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if request.META.get('HTTP_ACCEPT') == 'application/json':
         # This a json request from another server
-        post_dict = {}
-        post_dict_list = []
-        posts = self.context['post_list']
-        for post_object in posts:
-            post_dict_list.append(getPostDict(post_object))
+            post_dict = {}
+            post_dict_list = []
+            posts = self.context['post_list']
+            for post_object in posts:
+                post_dict_list.append(getPostDict(post_object))
 
-        post_dict["posts"] = post_dict_list
-        json_data = json.dumps(post_dict)
-        return HttpResponse(json_data, content_type="application/json")
-        #else:
-        # Serve django objects
-        return self.render_to_response(self.context)
+            post_dict["posts"] = post_dict_list
+            json_data = json.dumps(post_dict)
+            return HttpResponse(json_data, content_type="application/json")
+        else:
+            return self.render_to_response(self.context)
 
-# http://service/author/{AUTHOR_ID}/posts (all posts made by {AUTHOR_ID} visible to the currently authenticated user)
+
 def getPostDict(post_object):
     """ From all post URLS should return a list of posts like the following.
 
