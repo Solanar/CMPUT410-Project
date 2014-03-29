@@ -3,12 +3,8 @@ from data.forms import PostCreationForm
 from data.models import Post
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
-
 from .mixins.post_list import PostListMixin
-
-
 import json
-
 from data.models import Comment
 
 
@@ -38,6 +34,8 @@ class PublicPosts(PostListMixin, BaseView):
             # Serve django objects
             return self.render_to_response(self.context)
 
+    def post(self, request, *args, **kwargs):
+        pass
 
 # http://service/posts/{POST_ID} access to a single post with id = {POST_ID}
 class PostResource(PostListMixin, BaseView):
@@ -84,20 +82,20 @@ class AuthorStream(PostListMixin, BaseView):
         super(AuthorStream, self).preprocess(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        #if request.META.get('HTTP_ACCEPT') == 'application/json':
-        # This a json request from another server
-        post_dict = {}
-        post_dict_list = []
-        posts = self.context['post_list']
-        for post_object in posts:
-            post_dict_list.append(getPostDict(post_object))
+        if request.META.get('HTTP_ACCEPT') == 'application/json':
+            # This a json request from another server
+            post_dict = {}
+            post_dict_list = []
+            posts = self.context['post_list']
+            for post_object in posts:
+                post_dict_list.append(getPostDict(post_object))
 
-        post_dict["posts"] = post_dict_list
-        json_data = json.dumps(post_dict)
-        return HttpResponse(json_data, content_type="application/json")
-        #else:
-        # Serve django objects
-        return self.render_to_response(self.context)
+            post_dict["posts"] = post_dict_list
+            json_data = json.dumps(post_dict)
+            return HttpResponse(json_data, content_type="application/json")
+        else:
+            # Serve django objects
+            return self.render_to_response(self.context)
 
 
 # http://service/author/{AUTHOR_ID}/posts (all posts made by {AUTHOR_ID}
@@ -122,7 +120,7 @@ class VisiblePostToUser(PostListMixin, BaseView):
 
             post_dict["posts"] = post_dict_list
             json_data = json.dumps(post_dict)
-        return HttpResponse(json_data, content_type="application/json")
+            return HttpResponse(json_data, content_type="application/json")
         else:
             return self.render_to_response(self.context)
 

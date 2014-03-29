@@ -221,6 +221,8 @@ def add_post(title, source, origin, description, content_type, content,
                                                visibility=visibility)
     if created:
         #print "created post", title
+        post.clean()
+        post.save()
         pass
     else:
         print "didn't create post", title
