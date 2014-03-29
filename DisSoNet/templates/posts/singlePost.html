@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+{% block content %}
+
+
+</br>
+{% if post %}
+    <div class="media">
+        <button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove"></span></button>
+        {% if post.pic %}
+        <a href="#" class="pull-left" id="{{ post.picName }}">
+          <img class="media-object" src="{{ post.picture }}">
+        </a>
+        {% endif %}
+        <a href="#" class="media-body">
+            {% if post.title %}
+                <h4 class="media-heading">{{ post.title }}</h4>
+                <h1>by {{ post.author }}</h1></br>
+            {% endif %}
+            <p>{{ post.content }}</p>
+        </a>
+    </div>
+{% else %}
+    <div>Sorry, you have no posts yet.</div>
+{% endif %}
+
+{% endblock %}
