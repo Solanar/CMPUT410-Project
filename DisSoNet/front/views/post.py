@@ -43,6 +43,7 @@ class PublicPosts(PostListMixin, BaseView):
 class PostResource(PostListMixin, BaseView):
 
     login_required = False
+    template_name = "posts/singlePost.html"
 
     def preprocess(self, request, *args, **kwargs):
         super(PostResource, self).preprocess(request, *args, **kwargs)
