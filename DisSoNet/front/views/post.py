@@ -104,7 +104,7 @@ class AuthorStream(PostListMixin, BaseView):
 class VisiblePostToUser(PostListMixin, BaseView):
 
     # todo make a template for this, if it becomes an actual view
-    template_name = "none"
+    template_name = "visiblePostStream.html"
 
     def preprocess(self, request, *args, **kwargs):
         kwargs['post_list_filter'] = 'visible_by_author'
