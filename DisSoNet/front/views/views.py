@@ -11,6 +11,7 @@ from .mixins.friends_list import FriendsListMixin
 
 class HomeView(FriendsListMixin, BaseView):
 
+    login_required = False
     template_name = 'index.html'
 
     def preprocess(self, request, *args, **kwargs):

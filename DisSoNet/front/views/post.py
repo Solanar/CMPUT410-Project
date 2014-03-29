@@ -99,6 +99,7 @@ class AuthorStream(PostListMixin, BaseView):
         # Serve django objects
         return self.render_to_response(self.context)
 
+
 # http://service/author/{AUTHOR_ID}/posts (all posts made by {AUTHOR_ID} visible to the currently authenticated user)
 def getPostDict(post_object):
     """ From all post URLS should return a list of posts like the following.
