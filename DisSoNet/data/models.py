@@ -95,7 +95,9 @@ class Category(models.Model):
     There isn't anything about this section in the spec, however it
     did appear in the example_artivle.json.
     """
-    pass
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
 
 
 class Friends(models.Model):
@@ -116,7 +118,8 @@ class Friends(models.Model):
 
     class Meta:
         unique_together = ("user_id_requester", "user_id_receiver")
-
+        verbose_name = "Friends"
+        verbose_name_plural = "Friends"
 
     def __str__(self):
         return self.user_id_requester.email + " -> " \
@@ -155,6 +158,9 @@ class Post(models.Model):
     * From the requirements there is another type. PRIVATE to another author
 
     """
+    class Meta:
+        verbose_name = "Post"
+        verbose_name_plural = "Posts"
 
     def __str__(self):
         return self.title + "-posted by-" + self.author.email
@@ -219,6 +225,10 @@ class Comment(models.Model):
     giud: Still to be implemented. A guid is a 40 digit sha1 thats unique
         globally between all servers.
     """
+    class Meta:
+        verbose_name = "Comment"
+        verbose_name_plural = "Comments"
+
     def __str__(self):
         return self.post.title + "-commented on by-" + self.user.email
 
