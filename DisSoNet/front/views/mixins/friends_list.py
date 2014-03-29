@@ -9,13 +9,27 @@ class FriendsListMixin(object):
     '''
 
     def get_pending_friends(self, user):
-        return Friends.objects.filter(Q(user_id_receiver=user) &
-                                      Q(accepted=False))
+        friends = Friends.objects.filter(Q(user_id_receiver=user) &
+                                         Q(accepted=False))
+        friend_list = []
+        for friend in friends:
+            req = User.objects.get(email=friend.user_id_requester)
+            friend_list.append(req)
+        return friend_list
 
     def get_friends_list(self, user):
-        return Friends.objects.filter((Q(user_id_requester=user) |
-                                       Q(user_id_receiver=user)) &
-                                      Q(accepted=True))
+        friends = Friends.objects.filter((Q(user_id_requester=user) |
+                                          Q(user_id_receiver=user)) &
+                                         Q(accepted=True))
+        friend_list = []
+        for friend in friends:
+            requester = User.objects.get(email=friend.user_id_requester)
+            receiver = User.objects.get(email=friend.user_id_receiver)
+            if requester == user:
+                friend_list.append(receiver)
+            elif receiver == user:
+                friend_list.append(requester)
+        return friend_list
 
     def preprocess(self, request, *args, **kwargs):
         pending_friends = friends = Friends.objects.none()

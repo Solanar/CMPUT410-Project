@@ -4,12 +4,11 @@
 {% block content %}
 </br>
 <div class="row">
-  <div class="col-xs-6 col-md-3">
-  {% for friend in friend_list %}
-    <a href="">{{ friend.name }}</a>
-  {% empty %}
-    <div>Sorry, you have no friends yet. <div hidden>Loser</div>
-  {% endfor %}
-  </div>
+	{% for friend in friend_list %}
+		<div class="col-xs-6 col-md-3">
+		{{ friend.firstName }} {{ friend.lastName }}</div>
+	{% empty %}
+		<div>Sorry, you have no friends yet. </div>
+	{% endfor %}
 </div>
 {% endblock %}
