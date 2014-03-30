@@ -3,6 +3,7 @@ from data.forms import PostCreationForm
 from data.models import Post
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
+from .mixins.friends_list import FriendsListMixin
 from .mixins.post_list import PostListMixin
 import json
 from data.models import Comment
@@ -76,7 +77,7 @@ class PostResource(PostListMixin, BaseView):
 
 # http://service/author/posts
 # (posts that are visible to the currently authenticated user)
-class AuthorStream(PostListMixin, BaseView):
+class AuthorStream(FriendsListMixin, PostListMixin, BaseView):
 
     template_name = "authorStream.html"
 
@@ -103,7 +104,7 @@ class AuthorStream(PostListMixin, BaseView):
 
 # http://service/author/{AUTHOR_ID}/posts (all posts made by {AUTHOR_ID}
 # visible to the currently authenticated user)
-class VisiblePostToUser(PostListMixin, BaseView):
+class VisiblePostToUser(FriendsListMixin, PostListMixin, BaseView):
 
     # todo make a template for this, if it becomes an actual view
     template_name = "visiblePostStream.html"

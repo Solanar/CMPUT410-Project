@@ -1,4 +1,4 @@
-from data.models import Post, User
+from data.models import Friends, Post, User
 from django.db.models import Q
 
 
@@ -17,7 +17,6 @@ class PostListMixin(object):
         user = User.objects.get(email=user.email)
         if 'visible' in filter:  # /author/posts
             filtered_list = self.get_posts_visible_to_current_user(user)
-            pass
         elif 'public' in filter:  # /posts
             filtered_list = self.get_all_public_posts()
         elif 'visible_by_author' in filter:  # /author/<author_id>/posts
@@ -28,12 +27,28 @@ class PostListMixin(object):
         return filtered_list
 
     def get_posts_visible_to_current_user(self, user):
-        # post =
-        pass
+        # add all posts by current user
+        vis_posts = [p for p in Post.objects.filter(author=user)]
+        # add all public posts
+        vis_posts.extend([p for p in self.get_all_public_posts()
+                         if p not in vis_posts])
+        # add all posts by friends, visible to friends
+        friend_list = self.context['friend_list']
+        for f in friend_list:
+            vis_posts.extend([p for p in Post.objects.filter(
+                Q(author=f) & Q(visibility='FRIENDS')) if p not in vis_posts])
+
+        # get FOAF posts
+        foaf_list = self.context['foaf_list']
+        for f in foaf_list:
+            vis_posts.extend([p for p in Post.objects.filter(
+                Q(author=f) & Q(visibility='FOAF')) if p not in vis_posts])
+        return vis_posts
 
     def get_all_public_posts(self):
         return Post.objects.filter(visibility='PUBLIC')
 
     def get_posts_by_author(self, author, user):
         posts = self.get_posts_visible_to_current_user(user)
-        return posts.filter(author=author)
+        posts = [p for p in posts if p.author == author]
+        return posts
