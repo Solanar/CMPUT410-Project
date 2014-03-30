@@ -22,15 +22,7 @@ class PublicPosts(PostListMixin, BaseView):
     def get(self, request, *args, **kwargs):
         if request.META.get('HTTP_ACCEPT') == 'application/json':
             # This a json request from another server
-            post_dict = {}
-            post_dict_list = []
-            posts = self.context['post_list']
-            for post_object in posts:
-                post_dict_list.append(getPostDict(post_object))
-
-            post_dict["posts"] = post_dict_list
-            json_data = json.dumps(post_dict)
-            return HttpResponse(json_data, content_type="application/json")
+            processRequestFromOtherServer(self.context['post_list'])
         else:
             # Serve django objects
             return self.render_to_response(self.context)
@@ -46,28 +38,19 @@ class PostResource(PostListMixin, BaseView):
     template_name = "posts/singlePost.html"
 
     def preprocess(self, request, *args, **kwargs):
+        post_id = kwargs['post_id']
+        kwargs['post_list_filter'] = {'post_id': post_id}
         super(PostResource, self).preprocess(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
         pass
 
     def get(self, request, *args, **kwargs):
-        post_id = kwargs['post_id']
-        post_objects = Post.objects.filter(guid=post_id)
         if request.META.get('HTTP_ACCEPT') == 'application/json':
             # This a json request from another server
-            post_dict = {}
-            post_dict_list = []
-            for post_object in post_objects:
-                post_dict_list.append(getPostDict(post_object))
-
-            post_dict["posts"] = post_dict_list
-            json_data = json.dumps(post_dict)
-            return HttpResponse(json_data, content_type="application/json")
+            processRequestFromOtherServer(self.context['post_list'])
         else:
             # Serve django objects
-            # post_objects only returns one post
-            self.context['post'] = post_objects[0]
             return self.render_to_response(self.context)
 
     def post(self, request, *args, **kwargs):
@@ -88,15 +71,7 @@ class AuthorStream(FriendsListMixin, PostListMixin, BaseView):
     def get(self, request, *args, **kwargs):
         if request.META.get('HTTP_ACCEPT') == 'application/json':
             # This a json request from another server
-            post_dict = {}
-            post_dict_list = []
-            posts = self.context['post_list']
-            for post_object in posts:
-                post_dict_list.append(getPostDict(post_object))
-
-            post_dict["posts"] = post_dict_list
-            json_data = json.dumps(post_dict)
-            return HttpResponse(json_data, content_type="application/json")
+            processRequestFromOtherServer(self.context['post_list'])
         else:
             # Serve django objects
             return self.render_to_response(self.context)
@@ -117,17 +92,20 @@ class VisiblePostToUser(FriendsListMixin, PostListMixin, BaseView):
     def get(self, request, *args, **kwargs):
         if request.META.get('HTTP_ACCEPT') == 'application/json':
         # This a json request from another server
-            post_dict = {}
-            post_dict_list = []
-            posts = self.context['post_list']
-            for post_object in posts:
-                post_dict_list.append(getPostDict(post_object))
-
-            post_dict["posts"] = post_dict_list
-            json_data = json.dumps(post_dict)
-            return HttpResponse(json_data, content_type="application/json")
+            processRequestFromOtherServer(self.context['post_list'])
         else:
             return self.render_to_response(self.context)
+
+
+def processRequestFromOtherServer(post_objects):
+    post_dict = {}
+    post_dict_list = []
+    for post_object in post_objects:
+        post_dict_list.append(getPostDict(post_object))
+
+    post_dict["posts"] = post_dict_list
+    json_data = json.dumps(post_dict)
+    return HttpResponse(json_data, content_type="application/json")
 
 
 def getPostDict(post_object):

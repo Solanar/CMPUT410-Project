@@ -1,4 +1,4 @@
-from data.models import Friends, Post, User
+from data.models import Post, User
 from django.db.models import Q
 
 
@@ -6,15 +6,17 @@ class PostListMixin(object):
 
     def preprocess(self, request, *args, **kwargs):
         posts = Post.objects.none()
+        user = None
         if 'post_list_filter' in kwargs:
+            if request.user.is_authenticated():
+                user = User.objects.get(email=request.user)
             posts = self.get_filtered_list(kwargs['post_list_filter'],
-                                           request.user)
+                                           user)
         self.context['post_list'] = posts
         super(PostListMixin, self).preprocess(request, *args, **kwargs)
 
     def get_filtered_list(self, filter, user):
         filtered_list = Post.objects.all()
-        user = User.objects.get(email=user.email)
         if 'visible' in filter:  # /author/posts
             filtered_list = self.get_posts_visible_to_current_user(user)
         elif 'public' in filter:  # /posts

@@ -15,9 +15,9 @@ class FriendsListMixin(object):
             pending_friends = self.get_pending_friends(user)
             friends = self.get_friends_list(user)
             foaf = self.get_foaf_list(friends)
-        self.context['foaf_list'] = foaf
-        self.context['friend_list'] = friends
-        self.context['pending_friend_list'] = pending_friends
+            self.context['foaf_list'] = foaf
+            self.context['friend_list'] = friends
+            self.context['pending_friend_list'] = pending_friends
         super(FriendsListMixin, self).preprocess(request, *args, **kwargs)
 
     def get_pending_friends(self, user):
