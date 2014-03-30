@@ -20,7 +20,6 @@ class FriendRequestView(BaseView):
     template_name = 'test.html'
 
     def preprocess(self, request, *args, **kwargs):
-        print("I'm posting to things!!!!!")
         super(FriendRequestView, self).preprocess(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
