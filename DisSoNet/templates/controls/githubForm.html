@@ -9,7 +9,14 @@
         <!--TODO: Create form for the new post here-->
 
         <form id="githubForm">
-        {% csrf_token %}   
+        {% csrf_token %}  
+        {% if errors %}
+          <ul>
+            {% for error in errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %} 
           <p>A token is needed to connect to your feed which requires your your user name, and password. Your password will not be saved, or released in any way, or if you have created a token yourself it can be entered below by selecting Token first.</p>
           <label>User Name<input type="text" name="handle"/></label>
           <label>Authentication Method <select name="authType">

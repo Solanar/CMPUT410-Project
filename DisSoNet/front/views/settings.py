@@ -3,29 +3,30 @@ from django.http import HttpResponseRedirectfrom django.core import serializers
 import pycurl, json
 
 def initGithub(request):
-    context = RequestContext(request)
+    errors = []
     if request.method == 'POST':
-        gitForm = GitHubForm(request.POST) 
-        if gitForm.is_valid(): 
-            authType = gitForm.cleaned_data['authType']
-            handle = gitForm.cleaned_data['handle']
-            secret = gitForm.cleaned_data['auth']
+        if not request.POST.get('handle', ''):
+            errors.append('Enter your GitHub user name.')
+        if not request.POST.get('auth', ''):
+            errors.append('Enter your GitHub authentication: password or token')
+        if not errors:
+            gitForm = GitHubForm(request.POST) 
+            authType = gitForm.POST.get['authType']
+            handle = gitForm.POST.get['handle']
+            secret = gitForm.POST.get['auth']
             if authType == "pwd":
                 data = getToken(handle, secret)
                 if data['message'] == "Validation Failed":
                     if data['code'] == "already_exists":
-                        auth = "exists"
+                        errors.append('Token has already been created. Check your GitHub application settings.')
                     else:
-                        auth = "failed"
+                        errors.append('Validation Failed: User name and/or password are incorrect.')
                 else:
-                    auth = secret
-        else:
-            # The supplied form contained errors - just print them to the terminal.
-            print form.errors
-    else:
-        gitForm = GitHubForm()
+                    auth = data['code']
+            else:
+                auth = secret
 
-    return render('controls/githubForm.html', {'gitForm': gitForm}, context)
+    return render(request, 'controls/githubForm.html', {'errors': errors})
 
 def getToken(handle, secret):
     github_url = "https://api.github.com/authorizations"
