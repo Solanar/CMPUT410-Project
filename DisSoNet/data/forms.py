@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from .models import User, Post
+from .models import User, Post, GitHub
 
 
 class UserCreationForm(forms.ModelForm):  # UserCreationForm):
@@ -72,3 +72,13 @@ class PostCreationForm(forms.ModelForm):
         model = Post
         fields = ['title', 'source', 'origin', 'description',
                   'content_type', 'content', 'author', 'visibility', ]
+
+class GitHubForm(forms.ModelForm):
+
+    class Meta:
+        model = GitHub
+        fields = ('handle', 'auth')
+
+    handle = forms.CharField()
+    auth = forms.CharField()
+

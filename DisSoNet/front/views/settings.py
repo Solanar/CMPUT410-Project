@@ -1,24 +1,40 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirectfrom django.core import serializers
 import pycurl, json
 
 def initGithub(request):
-    if request.method == 'POST': # If the form has been submitted...
-        form = ContactForm(request.POST) # A form bound to the POST data
-        if form.is_valid(): # All validation rules pass
-            github_url = "https://api.github.com/authorizations"
-            user_pwd = " : "
-            data = json.dumps({"scopes": ["repo"], "note": "getting-started"})
-            connection = pycurl.Curl()
-            connection.setopt(pycurl.URL, github_url)
-            connection.setopt(pycurl.USERPWD, user_pwd)
-            connection.setopt(pycurl.POST, 1)
-            connection.setopt(pycurl.POSTFIELDS, data)
-            connection.perform()
-            c.getinfo(pycurl.HTTP_CODE), c.getinfo(pycurl.EFFECTIVE_URL)
+    context = RequestContext(request)
+    if request.method == 'POST':
+        gitForm = GitHubForm(request.POST) 
+        if gitForm.is_valid(): 
+            authType = gitForm.cleaned_data['authType']
+            handle = gitForm.cleaned_data['handle']
+            secret = gitForm.cleaned_data['auth']
+            if authType == "pwd":
+                data = getToken(handle, secret)
+                if data['message'] == "Validation Failed":
+                    if data['code'] == "already_exists":
+                        auth = "exists"
+                    else:
+                        auth = "failed"
+                else:
+                    auth = secret
+        else:
+            # The supplied form contained errors - just print them to the terminal.
+            print form.errors
     else:
-        form = ContactForm() # An unbound form
+        gitForm = GitHubForm()
 
-    return render(request, 'contact.html', {
-        'form': form,
-    })
+    return render('controls/githubForm.html', {'gitForm': gitForm}, context)
+
+def getToken(handle, secret):
+    github_url = "https://api.github.com/authorizations"
+    user_pwd =  handle + ":" + secret
+    data = json.dumps({"scopes": ["repo"], "note": "getting-started"})
+    connection = pycurl.Curl()
+    connection.setopt(pycurl.URL, github_url)
+    connection.setopt(pycurl.USERPWD, user_pwd)
+    connection.setopt(pycurl.POST, 1)
+    connection.setopt(pycurl.POSTFIELDS, data)
+    connection.perform()
+    return serializers.serialize('json', connection.getinfo(pycurl.HTTP_CODE), fields=('message','code'))
