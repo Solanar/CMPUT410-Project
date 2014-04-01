@@ -5,23 +5,24 @@
 
 
 </br>
-{% if post_list %}
-    <div class="media">
-        {% if post_list.pic %}
-        <a href="#" class="pull-left" id="{{ post_list.picName }}">
-          <img class="media-object" src="{{ post_list.picture }}">
+<div class="">
+{% for post in post_list %}
+    <div class="media" name="feed">
+        {% if post.pic %}
+        <a href="#" class="pull-left" id="{{ post.picName }}">
+          <img class="media-object" src="{{ post.picture }}">
         </a>
         {% endif %}
         <a href="#" class="media-body">
-            {% if post_list.title %}
+            {% if post.title %}
                 <h3 class="media-heading">{{ post.title }}</h3>
                 <p>by <a href="">{{ post.author }}</a></p></br>
             {% endif %}
-            <p>{{ post_list.content }}</p>
+            <p>{{ post.content }}</p>
         </a>
     </div>
-{% else %}
+{% empty %}
     <div>Sorry, you have no posts yet.</div>
-{% endif %}
-
+{% endfor %}
+</div>
 {% endblock %}

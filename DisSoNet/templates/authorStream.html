@@ -4,9 +4,9 @@
 {% block content %}
 
 </br>
+<div name="feed">
 {% for post in post_list %}
     <div class="media">
-        <button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove"></span></button>
         {% if post.picture %}
         <a href="#" class="pull-left" id="{{ post.picName }}">
           <img class="media-object" src="{{ post.picture }}" alt="">
@@ -14,8 +14,8 @@
         {% endif %}
         <a href="#" class="media-body">
             {% if post.title %}
-                <h2 class="media-heading">{{ post.title }}</h2>
-                <h3>by {{ post.author }}</h3></br>
+                <h3 class="media-heading">{{ post.title }}</h3>
+                <p>by <a href="">{{ post.author }}</a></p></br>
             {% endif %}
             <p>{{ post.content }}</p>
         </a>
@@ -23,5 +23,5 @@
 {% empty %}
     <div>Sorry, you have no posts yet.</div>
 {% endfor %}
-
+</div>
 {% endblock %}
