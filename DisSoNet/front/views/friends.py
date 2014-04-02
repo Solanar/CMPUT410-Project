@@ -28,6 +28,7 @@ class FriendRequestView(BaseView):
 
     def post(self, request, *args, **kwargs):
 
+        # TODO: JSONify this~
         requester = request.POST['author']
         receiver = request.POST['friend']['author']
 
