@@ -10,6 +10,9 @@
 	<h3><a href="/posts">View your stream!</a></h3>
 
 <div style="border:1px solid red; padding: 10px">
+	{% for friend in pending_friend_list %}
+		{{friend.guid}}
+	{% endfor %}
 	<h3>Debug</h3>
 	<strong>Send Friend Request:</strong><br />
 	<label>My GUID:</label><span id="debugFriendMyGuid">{{user.guid}}</span><br />

@@ -51,37 +51,40 @@
             <li class=""><a href="/">Home</a></li>
             {% if user.is_authenticated %}
             <li class=""><a href="/posts">My Stream</a></li>
+            <li class=""><a href="/friends">My Friends</a></li>            
             {% endif %}
           </ul>
            <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
               <li><a href="#" class="newPost">New Post</a></li>
-              <li class="dropdown" id="nav-friends"><a href="#" data-toggle="dropdown" class="dropdown-toggle">Friend Requests (2)<span class="caret"></span></a>
+              <li class="dropdown" id="nav-friends"><a href="#" data-toggle="dropdown" class="dropdown-toggle">Friend Requests 
+                {% if pending_friend_list %}
+                  ({{pending_friend_list|length}})<span class="caret"></span>
+                {% endif %}
+              </a>
+                {% if pending_friend_list %}
                     <div class="dropdown-menu" id="friendRequestsDropdown">
-                            You have <strong>2</strong> New Friend Requests</br>
-                            <div class="friendRequest" data-friendid="JOHNDOEHASH123456789">
-                                <div class="left">
-                                    John Doe
-                                </div>
-                                <div class="right">
-                                   <span class="acceptFriend">Accept</span>
-                                   <span class="rejectFriend">Reject</span>
-                                </div>
-                            </div>
-                            <div class="clear" />
-
-                            <div class="friendRequest" data-friendid="SUZYSMITHHASH343434343">
-                                <div class="left">
-                                    Suzy Smith
-                                </div>
-                                <div class="right">
-                                   <span class="acceptFriend">Accept</span>
-                                   <span class="rejectFriend">Reject</span>
-                                </div>
-                            </div>
-                            <div class="clear" />
+                            You have <strong>{{pending_friend_list|length}}</strong> new friend requests</br>
+                            {% for friend in pending_friend_list %}
+                              <div class="friendRequest" data-friendid="{{friend.guid}}">
+                                  <div class="left">
+                                      {{friend.firstName}} {{friend.firstName}}
+                                  </div>
+                                  <div class="right">
+                                     <span class="acceptFriend">Accept</span>
+                                     <span class="rejectFriend">Reject</span>
+                                  </div>
+                              </div>
+                              <div class="clear" />                              
+                            {% endfor %}                            
 
                     </div>
+                    {%  else  %}
+                      <div class="dropdown-menu" id="friendRequestsDropdown">
+                              You have no pending friend requests.                         
+
+                      </div>                    
+                  {% endif %}
               </li>
               <li><a href="#" class="logout">Logout</a></li>
               {% else %}
