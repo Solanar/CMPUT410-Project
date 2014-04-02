@@ -22,7 +22,7 @@ class PostListMixin(object):
         elif 'public' in filter:  # /posts
             filtered_list = self.get_all_public_posts()
         elif 'visible_by_author' in filter:  # /author/<author_id>/posts
-            author = User.objects.get(id=filter['visible_by_author'])
+            author = User.objects.get(guid=filter['visible_by_author'])
             filtered_list = self.get_posts_by_author(author, user)
         elif 'post_id' in filter:  # /posts/<post_id>
             filtered_list = Post.objects.get(guid=filter['post_id'])
