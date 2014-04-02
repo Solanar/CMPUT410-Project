@@ -79,6 +79,6 @@ class GitHubForm(forms.ModelForm):
         model = GitHub
         fields = ('handle', 'auth')
 
-    handle = forms.CharField(max_length=20)
-    auth = forms.CharField(max_length=40)
+    handle = forms.CharField()
+    auth = forms.CharField()
 

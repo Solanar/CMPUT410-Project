@@ -248,5 +248,5 @@ class Comment(models.Model):
 
 class GitHub(models.Model):
     user = models.ForeignKey(User)
-    gitUser = models.CharField()
-    token = models.CharField()
+    gitUser = models.CharField(max_length=20)
+    token = models.CharField(max_length=40)
