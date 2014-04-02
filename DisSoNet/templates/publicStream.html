@@ -2,25 +2,11 @@
 {% load bootstrap3 %}
 {% load staticfiles %}
 {% block content %}
-
-
-</br>
+<h1>My Stream</h1>
+<br />
 <div name="feed" class="">
 {% for post in post_list %}
-    <div class="media" name="feed">
-        {% if post.pic %}
-        <a href="#" class="pull-left" id="{{ post.picName }}">
-          <img class="media-object" src="{{ post.picture }}">
-        </a>
-        {% endif %}
-        <a href="#" class="media-body">
-            {% if post.title %}
-                <h3 class="media-heading">{{ post.title }}</h3>
-                <p>by <a href="">{{ post.author }}</a></p></br>
-            {% endif %}
-            <p>{{ post.content }}</p>
-        </a>
-    </div>
+    {% include "controls/singlePost.html" %}
 {% empty %}
     <div>Sorry, you have no posts yet.</div>
 {% endfor %}

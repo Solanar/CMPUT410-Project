@@ -1,0 +1,38 @@
+    <div class="media stream_post" name="feed">
+        {% if post.pic %}
+        <a href="#" class="pull-left" id="{{ post.picName }}">
+          <img class="media-object" src="{{ post.picture }}">
+        </a>
+        {% endif %}
+        <div class="clear"></div>
+        <div class="body">
+        <a href="/posts/{{ post.id }}" class="media-body">
+            {% if post.title %}
+                <h3 class="media-heading">{{ post.title }}</h3>
+                <p>by <a href="">{{ post.author }}</a></p>
+            {% endif %}
+            <p>{{ post.content }}</p>
+        </a>
+        </div>
+        <div class="controls">
+            <div class="comment_input">
+                <textarea placeholder="New Comment:"></textarea>
+            </div>
+            No Comments Available
+
+            <button type="button" data-id="{{ post.id }}" class="btn btn-default btn-xs right btn-delete">
+              <span class="glyphicon glyphicon-trash"></span> Delete
+            </button>    
+                        
+            <button type="button" data-id="{{ post.id }}" class="btn btn-default btn-xs right btn-comment">
+              <span class="glyphicon glyphicon-bullhorn"></span> Comment
+            </button>  
+
+            <button type="button" data-id="{{ post.id }}" class="btn btn-success btn-xs right btn-post-comment">
+              <span class="glyphicon glyphicon-bullhorn"></span> Post Comment
+            </button>  
+
+
+            <div class="clear"></div>    
+        </div>        
+    </div>

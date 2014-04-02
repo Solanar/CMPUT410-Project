@@ -6,20 +6,7 @@
 </br>
 <div name="feed">
 {% for post in post_list %}
-    <div class="media">
-        {% if post.picture %}
-        <a href="#" class="pull-left" id="{{ post.picName }}">
-          <img class="media-object" src="{{ post.picture }}" alt="">
-            </div>
-        {% endif %}
-        <a href="#" class="media-body">
-            {% if post.title %}
-                <h3 class="media-heading">{{ post.title }}</h3>
-                <p>by <a href="">{{ post.author }}</a></p></br>
-            {% endif %}
-            <p>{{ post.content }}</p>
-        </a>
-    </div>
+    {% include "controls/singlePost.html" %}
 {% empty %}
     <div>Sorry, you have no posts yet.</div>
 {% endfor %}

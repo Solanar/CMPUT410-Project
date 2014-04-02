@@ -5,21 +5,7 @@
 
 </br>
 {% for post in post_list %}
-    <div class="media">
-        <button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove"></span></button>
-        {% if post.picture %}
-        <a href="#" class="pull-left" id="{{ post.picName }}">
-          <img class="media-object" src="{{ post.picture }}" alt="">
-            </div>
-        {% endif %}
-        <a href="#" class="media-body">
-            {% if post.title %}
-                <h2 class="media-heading">{{ post.title }}</h2>
-                <h3>by {{ post.author }}</h3></br>
-            {% endif %}
-            <p>{{ post.content }}</p>
-        </a>
-    </div>
+    {% include "controls/singlePost.html" %}
 {% empty %}
     <div>Sorry, you have no posts yet.</div>
 {% endfor %}
