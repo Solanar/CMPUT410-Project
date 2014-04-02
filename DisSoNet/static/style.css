@@ -84,3 +84,55 @@ body{
 	float: right;
 	margin-right: 100px;
 }
+
+.stream_post{
+	margin: 20px auto;
+	border:1px solid #dddddd;
+	width:70%;
+}
+
+.stream_post > .controls{
+	background-color:#eeeeee;
+	width:100%;
+	margin:0px;
+	padding:7px 10px 3px;
+}
+
+.stream_post > .body{
+	margin:10px;
+}
+
+.controls > .btn{
+	margin-left:6px;
+}
+
+.stream_post .comment_input textarea{
+	width: 100%;
+	margin:auto;
+}
+.stream_post .comment_input {
+	width:80%;
+	margin: 10px auto;
+	display:none;
+}
+
+.stream_post .btn-post-comment{
+	display:none;
+}
+
+.friends{
+	width:90%;
+	margin:auto;
+
+}
+
+.friends > .friend{
+	width:100%;
+	background-color:#eeeeee;	
+	padding:0px 15px 10px 15px;
+	margin-bottom:20px;
+}
+
+.friend > .btn{
+	margin-top:20px;
+}

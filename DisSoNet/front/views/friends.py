@@ -46,7 +46,7 @@ class FriendRequestView(BaseView):
 
 class FriendsView(FriendsListMixin, BaseView):
 
-    template_name = 'controls/friends.html'
+    template_name = 'friends.html'
 
     def preprocess(self, request, *args, **kwargs):
         super(FriendsView, self).preprocess(request, *args, **kwargs)

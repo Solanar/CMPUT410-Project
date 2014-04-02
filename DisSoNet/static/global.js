@@ -13,6 +13,13 @@ $(document).on('ready', function(){
     $('#btn-login').on('click', submitLogin);
     $('#btn-signup').on('click', submitSignup);    
     $('.logout').on('click', actionLogout);
+    $('.stream_post .btn-delete').on('click', function(){ deletePost( $(this).data('id'), $(this).parents('.stream_post').fadeOut() ) })
+    $('.stream_post .btn-comment').on('click', function(){ 
+    	$(this).css('display', 'none'); 
+    	$(this).parents('.stream_post').find('.comment_input').slideDown().children('textarea').focus();
+    	$(this).parents('.stream_post').find('.btn-post-comment').fadeIn();
+   	});
+
 });
 
 
@@ -75,8 +82,17 @@ function sendPost(data, callback){
     */
     //    $.post("/post/create/", data, callback, "json");
     //    TODO: return should be json, but I forgive you
-    $.post("/post/create/", data, callback);
+    $.post("/post/", data, callback);
 
+}
+
+//deletes a post
+function deletePost(post_id, callback){
+	$.ajax({
+	  type: "DELETE",
+	  url: "/post/"+post_id+"/",
+	  success: callback,
+	});	
 }
 
 // using jQuery
