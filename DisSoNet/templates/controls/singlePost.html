@@ -6,7 +6,7 @@
         {% endif %}
         <div class="clear"></div>
         <div class="body">
-        <a href="/posts/{{ post.id }}" class="media-body">
+        <a href="/posts/{{ post.guid }}" class="media-body">
             {% if post.title %}
                 <h3 class="media-heading">{{ post.title }}</h3>
                 <p>by <a href="">{{ post.author }}</a></p>
@@ -20,15 +20,15 @@
             </div>
             No Comments Available
 
-            <button type="button" data-id="{{ post.id }}" class="btn btn-default btn-xs right btn-delete">
+            <button type="button" data-id="{{ post.guid }}" class="btn btn-default btn-xs right btn-delete">
               <span class="glyphicon glyphicon-trash"></span> Delete
             </button>    
                         
-            <button type="button" data-id="{{ post.id }}" class="btn btn-default btn-xs right btn-comment">
+            <button type="button" data-id="{{ post.guid }}" class="btn btn-default btn-xs right btn-comment">
               <span class="glyphicon glyphicon-bullhorn"></span> Comment
             </button>  
 
-            <button type="button" data-id="{{ post.id }}" class="btn btn-success btn-xs right btn-post-comment">
+            <button type="button" data-id="{{ post.guid }}" class="btn btn-success btn-xs right btn-post-comment">
               <span class="glyphicon glyphicon-bullhorn"></span> Post Comment
             </button>  
 
