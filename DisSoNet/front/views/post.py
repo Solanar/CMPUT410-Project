@@ -1,8 +1,9 @@
 from .base import BaseView
 from data.forms import PostCreationForm
-from data.models import Post
+from data.models import Post, User
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import redirect
 from .mixins.friends_list import FriendsListMixin
 from .mixins.post_list import PostListMixin
 import json
@@ -28,7 +29,31 @@ class PublicPosts(PostListMixin, BaseView):
             return self.render_to_response(self.context)
 
     def post(self, request, *args, **kwargs):
-        pass
+        """
+        QueryDict: {u'title': [u'sdkfsdlkfgl'], u'visibility': [u'PUBLIC'], u'content': [u'dlfkgsdlfkgj'], u'image_url': [u''], u'csrfmiddlewaretoken': [u'CyFDRP5LArm3vmxekKeN8WbRbFAyiTRX'], u'content-type': [u'text/html'], u'categories': [u'stuff']}>,
+        """
+        print("Got request: %s" % request)
+        form = PostCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+        #return self.render_to_response(self.context)
+        return HttpResponseRedirect('/')
+        #self.post_data = {}
+        #self.post_data['title'] = request.POST['title']
+        #user = User.objects.get(id=request.POST['author'].id)
+        #Post.objects.create(title=request.POST['title'],
+        #                    source="http://somewhere.com",
+        #                    origin="http://120.0.0.1:8000/",
+        #                    description="DESCRIPTION",
+        #                    content_type=request.POST['content_type'],
+        #                    content=request.POST['content'],
+        #                    author=User,
+        #                    visibility=request.POST['visibility'])
+
+        #Post.objects.create(title=100
+        #return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        #return HttpResponseRedirect('/')
 
 
 # http://service/posts/{POST_ID} access to a single post with id = {POST_ID}

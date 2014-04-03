@@ -70,8 +70,8 @@ class PostCreationForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ['title', 'source', 'origin', 'description',
-                  'content_type', 'content', 'author', 'visibility', ]
+        #fields = ['title', 'source', 'origin', 'description',
+        fields = ['title', 'content_type', 'content', 'author', 'visibility', ]
 
 class GitHubForm(forms.ModelForm):
 
