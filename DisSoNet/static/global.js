@@ -6,6 +6,7 @@ console.log(csrftoken);
 
 $(document).on('ready', function(){
 	$('.newPost').on('click', function(){$('#newPostModal').modal() });
+	$('.githubForm').on('click', function(){$('#githubModal').modal() });
 	$('.friendRequest .acceptFriend').on("click", function(){ processFriend($(this).parents('.friendRequest').data('friendid'), "accept", console.log) });
 	$('.friendRequest .rejectFriend').on("click", function(){ processFriend($(this).parents('.friendRequest').data('friendid'), "reject", console.log) });
     $('#newPostForm .post_type').on("change", function(){console.log($(this).val()); $(this).val() == "image" ? $('#newPostForm .image_field').removeClass('hide') : $('#newPostForm .image_field').addClass('hide') });
@@ -22,6 +23,14 @@ $(document).on('ready', function(){
 
 });
 
+$(document).on('submit', 'form.githubForm', function(form) {
+  var $form = $(form);
+  $.ajax({
+    type: form.method,
+    url: form.action,
+    data: $form.serialize()
+  });
+});
 
 function getActivityStream(callback){
 	$.get("/author/posts", function(data){callback(data)}, "json");
