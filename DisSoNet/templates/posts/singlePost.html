@@ -5,21 +5,8 @@
 
 
 </br>
-{% if post_list %}
-    <div class="media">
-        {% if post_list.pic %}
-        <a href="#" class="pull-left" id="{{ post_list.picName }}">
-          <img class="media-object" src="{{ post_list.picture }}">
-        </a>
-        {% endif %}
-        <a href="#" class="media-body">
-            {% if post_list.title %}
-                <h3 class="media-heading">{{ post.title }}</h3>
-                <p>by <a href="">{{ post.author }}</a></p></br>
-            {% endif %}
-            <p>{{ post_list.content }}</p>
-        </a>
-    </div>
+{% if post %}
+    {% include "controls/singlePost.html" %}
 {% else %}
     <div>Sorry, you have no posts yet.</div>
 {% endif %}

@@ -2,13 +2,13 @@
 {% load bootstrap3 %}
 {% load staticfiles %}
 {% block content %}
-</br>
-<div class="row">
+<h1>My Friends</h1><br />
+<div class="friends">
 	{% for friend in friend_list %}
-		<div class="col-xs-6 col-md-3">
-		{{ friend.firstName }} {{ friend.lastName }}</div>
+		{% include "controls/singleFriend.html" %}
 	{% empty %}
 		<div>Sorry, you have no friends yet. </div>
 	{% endfor %}
+	<div class="clear"></div>
 </div>
 {% endblock %}

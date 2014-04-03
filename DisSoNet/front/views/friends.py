@@ -28,6 +28,7 @@ class FriendRequestView(BaseView):
 
     def post(self, request, *args, **kwargs):
 
+        # TODO: JSONify this~
         requester = request.POST['author']
         receiver = request.POST['friend']['author']
 
@@ -45,7 +46,7 @@ class FriendRequestView(BaseView):
 
 class FriendsView(FriendsListMixin, BaseView):
 
-    template_name = 'controls/friends.html'
+    template_name = 'friends.html'
 
     def preprocess(self, request, *args, **kwargs):
         super(FriendsView, self).preprocess(request, *args, **kwargs)
