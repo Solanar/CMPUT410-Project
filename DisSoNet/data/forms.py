@@ -1,8 +1,6 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from .models import User, Post, GitHub
-
-
 class UserCreationForm(forms.ModelForm):  # UserCreationForm):
     errorMessages = {
         'duplicateEmail': _("A user with that email already exists."),
@@ -77,7 +75,6 @@ class GitHubForm(forms.ModelForm):
 
     class Meta:
         model = GitHub
-        fields = ('handle', 'auth')
 
     handle = forms.CharField()
     auth = forms.CharField()
