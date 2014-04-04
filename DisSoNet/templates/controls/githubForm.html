@@ -8,7 +8,7 @@
       <div class="modal-body">
         <!--TODO: Create form for the new post here-->
 
-        <form action="/github/setup/" method="post" id="githubForm">
+        <form action="{% url 'initGithub' %}" method="post" id="githubForm">
         {% csrf_token %}  
         {% if errors %}
           <ul>
