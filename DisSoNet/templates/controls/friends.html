@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+{% block content %}
+</br>
+<div class="row">
+	{% for friend in friend_list %}
+		<div class="col-xs-6 col-md-3">
+		{{ friend.firstName }} {{ friend.lastName }}</div>
+	{% empty %}
+		<div>Sorry, you have no friends yet. </div>
+	{% endfor %}
+</div>
+{% endblock %}

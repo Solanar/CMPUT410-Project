@@ -7,6 +7,8 @@ from data.forms import UserCreationForm
 class BaseView(TemplateView):
 
     login_required = True
+    http_method_names = [u'get', u'post', u'put', u'patch', u'delete',
+                         u'head', u'options', u'trace']
 
     def __init__(self, *args, **kwargs):
         super(BaseView, self).__init__(*args, **kwargs)
