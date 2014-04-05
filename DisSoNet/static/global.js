@@ -12,11 +12,11 @@ $(document).on('ready', function(){
     $('#newPostForm .post_type').on("change", function(){console.log($(this).val()); $(this).val() == "image" ? $('#newPostForm .image_field').removeClass('hide') : $('#newPostForm .image_field').addClass('hide') });
     $('#createPost').on('click', createPostGlobal);
     $('#btn-login').on('click', submitLogin);
-    $('#btn-signup').on('click', submitSignup);    
+    $('#btn-signup').on('click', submitSignup);
     $('.logout').on('click', actionLogout);
     $('.stream_post .btn-delete').on('click', function(){ deletePost( $(this).data('id'), $(this).parents('.stream_post').fadeOut() ) })
-    $('.stream_post .btn-comment').on('click', function(){ 
-    	$(this).css('display', 'none'); 
+    $('.stream_post .btn-comment').on('click', function(){
+    	$(this).css('display', 'none');
     	$(this).parents('.stream_post').find('.comment_input').slideDown().children('textarea').focus();
     	$(this).parents('.stream_post').find('.btn-post-comment').fadeIn();
    	});
@@ -29,7 +29,7 @@ $(document).on('ready', function(){
 
 function sendComment(guid, body, callback){
     var data = {"content" : body};
-    $.post('/post/'+guid+'/comments', data, callback);
+    $.post('/posts/'+guid+'/comments', data, callback);
 }
 
 $(document).on('submit', 'form.githubForm', function(form) {
@@ -64,7 +64,7 @@ function processFriend(friendid, action, callback){
 						            }
 						}}
 		$.post('/friendrequest/', data, callback);
-		
+
 	}else{
 		//reject friend request, need a function
 		$.ajax({
@@ -78,7 +78,7 @@ function processFriend(friendid, action, callback){
 function createPostGlobal(){
     var data = $('#newPostForm').serialize();
     /*TODO Massage form data here to meet server spec*/
-    sendPost(data, function(data, text, xhr){ 
+    sendPost(data, function(data, text, xhr){
     	console.log("test");
     	console.log(xhr.getResponseHeader('Location'));
     	window.location =  xhr.getResponseHeader('Location');
@@ -96,7 +96,7 @@ function sendPost(data, callback){
     description: Brief description of the post, limited by characters of 100
     content-type: choice of [text/html, text/x-markdown, text/plain]
     content: Text field to input the contents of the post
-    author: Foreign key referenceing author 
+    author: Foreign key referenceing author
     */
     //    $.post("/post/create/", data, callback, "json");
     //    TODO: return should be json, but I forgive you
@@ -110,7 +110,7 @@ function deletePost(post_id, callback){
 	  type: "DELETE",
 	  url: "/post/"+post_id+"/",
 	  success: callback,
-	});	
+	});
 }
 
 // using jQuery
