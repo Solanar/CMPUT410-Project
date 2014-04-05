@@ -1,3 +1,5 @@
+# https://gist.github.com/g00fy-/1161423
+
 from django.http import QueryDict
 from django.http.multipartparser import MultiValueDict
 
