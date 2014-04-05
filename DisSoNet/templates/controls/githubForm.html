@@ -1,4 +1,4 @@
-<div class="modal fade" id="newPostModal">
+<div class="modal fade" id="githubModal">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -8,7 +8,7 @@
       <div class="modal-body">
         <!--TODO: Create form for the new post here-->
 
-        <form id="githubForm">
+        <form action="{% url 'initGithub' %}" method="post" id="githubForm">
         {% csrf_token %}  
         {% if errors %}
           <ul>
@@ -18,17 +18,17 @@
           </ul>
         {% endif %} 
           <p>A token is needed to connect to your feed which requires your your user name, and password. Your password will not be saved, or released in any way, or if you have created a token yourself it can be entered below by selecting Token first.</p>
-          <label>User Name<input type="text" name="handle"/></label>
+          <label>User Name <input type="text" name="handle"/></label></br></br>
           <label>Authentication Method <select name="authType">
               <option value="pwd">Password</option>
               <option value="token">Token</option>
-          </select></label>
-          <label>Password<input type="text" name="auth"/></label>
+          </select></label></br>
+          <label>Password <input type="text" name="auth"/></label>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="createPost">Get Token</button>
+        <button type="button" class="btn btn-primary" type="submit" name="submit" >Set Token</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
