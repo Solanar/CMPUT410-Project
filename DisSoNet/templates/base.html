@@ -86,6 +86,7 @@
                       </div>                    
                   {% endif %}
               </li>
+              <li><a href="#" class="githubForm">GitHub</a></li>
               <li><a href="#" class="logout">Logout</a></li>
               {% else %}
                 <li><a href="#" class="login" data-toggle="modal" data-target="#login">Login</a></li>
@@ -111,6 +112,7 @@
     </div>
 
     {% include "controls/newPost.html" %}
+    {% include "controls/githubForm.html" %}
   </body>
 
 </html>

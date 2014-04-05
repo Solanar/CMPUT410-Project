@@ -48,9 +48,10 @@ class PostResource(PostListMixin, BaseView):
     def get(self, request, *args, **kwargs):
         if request.META.get('HTTP_ACCEPT') == 'application/json':
             # This a json request from another server
-            processRequestFromOtherServer(self.context['post_list'])
+            processRequestFromOtherServer(self.context["post_list"])
         else:
             # Serve django objects
+            self.context["post"] = self.context["post_list"]
             return self.render_to_response(self.context)
 
     def post(self, request, *args, **kwargs):
