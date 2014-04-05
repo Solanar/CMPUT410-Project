@@ -8,7 +8,7 @@
       <div class="modal-body">
         <!--TODO: Create form for the new post here-->
 
-        <form action="/github/setup/" method="post" id="githubForm">
+        <form action="{% url 'initGitHub' %}" method="post" id="githubForm">
         {% csrf_token %}  
         {% if errors %}
           <ul>
@@ -24,12 +24,12 @@
               <option value="token">Token</option>
           </select></label></br>
           <label>Password <input type="text" name="auth"/></label>
-        </form>
+        
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-primary" type="submit" name="submit" >Set Token</button>
-      </div>
+      </div></form>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

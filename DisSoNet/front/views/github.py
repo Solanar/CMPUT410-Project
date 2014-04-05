@@ -7,7 +7,7 @@ from .base import BaseView
 class GitHubView(BaseView):
 
 
-    def initGithub(request):
+    def initGitHub(request):
         print "init"
         errors = []
         if request.method == 'POST':
