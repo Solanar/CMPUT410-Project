@@ -20,8 +20,17 @@ $(document).on('ready', function(){
     	$(this).parents('.stream_post').find('.comment_input').slideDown().children('textarea').focus();
     	$(this).parents('.stream_post').find('.btn-post-comment').fadeIn();
    	});
+    $('.stream_post .btn-post-comment').on('click', function(){
+        sendComment($(this).data('id'), $(this).parents('.stream_post').find('textarea').val(), console.log);
+    })
 
 });
+
+
+function sendComment(guid, body, callback){
+    var data = {"content" : body};
+    $.post('/post/'+guid+'/comments', data, callback);
+}
 
 $(document).on('submit', 'form.githubForm', function(form) {
   var $form = $(form);
