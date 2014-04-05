@@ -25,11 +25,12 @@ class HomeView(FriendsListMixin, BaseView):
 
 
 def test(request):
-    context = {'state':'none'}
+    context = {'state': 'none'}
     return render(request, 'profile.html', context)
 
+
 def stream_debug(request):
-    context = {'state':'none'}
+    context = {'state': 'none'}
     context['login_form'] = AuthenticationForm()
     context['register_form'] = UserCreationForm()
     return render(request, 'authorStream.html', context)
@@ -73,3 +74,25 @@ def reset_complete(request, **kwargs):
         template_name="registration/password_reset_complete.html",
         extra_context={'state': state, })
 
+
+def test_rest(request, id=None, *args, **kwargs):
+    print ("test_rest", id)
+    state = ""
+
+    if request.method == "DELETE":
+        print ("DELETE")
+        state = "DELETE"
+    if request.method == "PUT":
+        JSONdata = request.PUT['test_data']
+        print("PUT", JSONdata)
+        state = "PUT"
+    if request.method == "POST":
+        JSONdata = request.POST['test_data']
+        print("POST", JSONdata)
+        state = "POST"
+    if request.method == "GET":
+        print ("GET")
+        state = "GET"
+
+    context = {'state': state}
+    return render(request, 'test_rest.html', context)
