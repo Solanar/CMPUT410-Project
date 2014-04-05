@@ -106,20 +106,19 @@ class PostComments(CommentListMixin, BaseView):
     def preprocess(self, request, *args, **kwargs):
         post_guid = kwargs['post_id']
         try:
-            self.post = Post.objects.get(guid=post_guid)
+            self.post_obj = Post.objects.get(guid=post_guid)
         except:
             self.context['error'] = "No post exists with that GUID"
 
         if request.user.is_authenticated():
             self.user = User.objects.get(email=request.user)
 
-        kwargs['post'] = self.post
+        kwargs['post_object'] = self.post_obj
         super(PostComments, self).preprocess(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         post_content = request.POST['content']
-        print(post_content)
-        comment = Comment.objects.create(post=self.post,
+        comment = Comment.objects.create(post=self.post_obj,
                                          user=self.user,
                                          content=post_content)
         comment.save()
