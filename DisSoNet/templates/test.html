@@ -7,4 +7,14 @@
 {% if error %}
 	{{ error }}
 {% endif %}
+
+{% for comment in comments %}
+	<div><h2>{{ comment.user }} says:</h1>
+	<p>{{ comment.content }}</p>
+	<p>said on {{ comment.published_date }}</p>
+	</div>
+{% empty %}
+	<p>Nobody has commented on this post yet</p>
+{% endfor %}
+
 {% endblock %}
