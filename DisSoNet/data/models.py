@@ -246,6 +246,7 @@ class Comment(models.Model):
     published_date = models.DateTimeField(auto_now_add=True)
     guid = models.CharField("guid", max_length=40, blank=True)
 
+
 class GitHub(models.Model):
     user = models.ForeignKey(User)
     gitUser = models.CharField(max_length=20)

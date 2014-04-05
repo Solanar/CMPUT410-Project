@@ -1,4 +1,4 @@
-from data.models import Post, User
+from data.models import Comment, Post, User
 from django.db.models import Q
 
 
@@ -12,6 +12,15 @@ class PostListMixin(object):
                 user = User.objects.get(email=request.user)
             posts = self.get_filtered_list(kwargs['post_list_filter'],
                                            user)
+
+        if isinstance(posts, Post):
+            setattr(posts, 'comments',
+                    Comment.objects.filter(post=posts).all())
+        else:
+            for index, post in enumerate(posts):
+                setattr(posts[index], 'comments',
+                        Comment.objects.filter(post=post).all())
+
         self.context['post_list'] = posts
         super(PostListMixin, self).preprocess(request, *args, **kwargs)
 

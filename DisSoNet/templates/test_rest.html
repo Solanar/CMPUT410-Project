@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if state %}
+<h4>{{ state }}</h4>
+{% endif %}
+
+<button onclick="test_rest_del()">Test DELETE</button>
+<button onclick="test_rest_put()">Test PUT</button>
+<br>
+<button onclick="test_rest_pos()">Test POST</button>
+
+<script>
+function test_rest_del()
+{
+    alert("start DELETE");
+    $.ajax({
+        type: "DELETE",
+        url: "/test_rest/0/",
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+        },
+        success: function() { alert("DELETE Success"); },
+    });
+}
+
+function test_rest_put()
+{
+    alert("start PUT");
+    var test_data = "Test Data";
+    $.ajax({
+        type: "PUT",
+        url: "/test_rest/0/",
+        data: { test_data: test_data },
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+        },
+        success: function() { alert("PUT Success"); },
+    });
+}
+
+function test_rest_pos()
+{
+    alert("start POST");
+    var test_data = "Test Data";
+    $.ajax({
+        type: "POST",
+        url: "/test_rest/0/",
+        data: { test_data: test_data },
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+        },
+        success: function() { alert("POST Success"); },
+    });
+}
+</script>
+
+{% endblock %}

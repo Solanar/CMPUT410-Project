@@ -1,13 +1,13 @@
 from .base import BaseView
 from data.forms import PostCreationForm
-from data.models import Post, User
+from data.models import Post, Comment, User
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import redirect
 from .mixins.friends_list import FriendsListMixin
 from .mixins.post_list import PostListMixin
+from .mixins.comment_list import CommentListMixin
 import json
-from data.models import Comment
 
 
 # http://service/posts (all posts marked as public on the server)
@@ -121,6 +121,33 @@ class VisiblePostToUser(FriendsListMixin, PostListMixin, BaseView):
             processRequestFromOtherServer(self.context['post_list'])
         else:
             return self.render_to_response(self.context)
+
+
+class PostComments(CommentListMixin, BaseView):
+
+    login_required = False
+    template_name = 'test.html'
+
+    def preprocess(self, request, *args, **kwargs):
+        post_guid = kwargs['post_id']
+        try:
+            self.post_obj = Post.objects.get(guid=post_guid)
+        except:
+            self.context['error'] = "No post exists with that GUID"
+
+        if request.user.is_authenticated():
+            self.user = User.objects.get(email=request.user)
+
+        kwargs['post_object'] = self.post_obj
+        super(PostComments, self).preprocess(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        post_content = request.POST['content']
+        comment = Comment.objects.create(post=self.post_obj,
+                                         user=self.user,
+                                         content=post_content)
+        comment.save()
+        return HttpResponseRedirect(request.path)
 
 
 def processRequestFromOtherServer(post_objects):

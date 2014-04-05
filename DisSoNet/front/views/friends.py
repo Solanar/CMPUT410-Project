@@ -20,6 +20,7 @@ class FriendRequestView(BaseView):
     template_name = 'test.html'
 
     def preprocess(self, request, *args, **kwargs):
+        print(request)
         super(FriendRequestView, self).preprocess(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
@@ -29,19 +30,27 @@ class FriendRequestView(BaseView):
     def post(self, request, *args, **kwargs):
 
         # TODO: JSONify this~
-        requester = request.POST['author']
-        receiver = request.POST['friend']['author']
-
-        requester = User.objects.get(id=requester.id)
-        try:
-            receiver = User.objects.get(id=receiver.id)
-        except:
-            self.context['error'] = 'User does not exist.'
-            return HttpResponseRedirect('/')
-
-        Friends.objects.create(user_id_requester=requester,
-                               user_id_receiver=receiver)
+        friends = self._get_friendship(request)
+        friends.accepted = True
+        friends.save()
         return self.render_to_response(self.context)
+
+    def delete(self, request, *args, **kwargs):
+        print("deleteig stdairdah.pxna.pid")
+        friends = self._get_friendship(request)
+        print(friends)
+        friends.delete()
+        return self.render_to_response(self.context)
+
+    def _get_friendship(self, request):
+        receiverGUID = request.POST['author[id]']
+        receiver = User.objects.get(guid=receiverGUID)
+
+        requesterGUID = request.POST['friend[author][id]']
+        requester = User.objects.get(guid=requesterGUID)
+
+        return Friends.objects.get(user_id_requester=requester,
+                                   user_id_receiver=receiver)
 
 
 class FriendsView(FriendsListMixin, BaseView):
@@ -49,6 +58,7 @@ class FriendsView(FriendsListMixin, BaseView):
     template_name = 'friends.html'
 
     def preprocess(self, request, *args, **kwargs):
+        print(request)
         super(FriendsView, self).preprocess(request, *args, **kwargs)
 
 
@@ -83,18 +93,18 @@ class AreFriends(BaseView):
         return self.render_to_response(self.context)
 
     def delete(self, request, *args, **kwargs):
-        try:
-            friend1 = (Friends.objects.get(user_id_requester=self.user1,
-                                           user_id_receiver=self.user2) or
-                       Friends.objects.get(user_id_requester=self.user2,
-                                           user_id_receiver=self.user1))
-        except:
-            self.context['error'] = 'These two are not friends'
+            print("deleteig stdairdah.pxna.pid")
+            friends = self._get_friendship(request)
+            print(friends)
+            friends.delete()
             return self.render_to_response(self.context)
 
-        try:
-            friend1.delete()
-        except:
-            self.context['error'] = 'Could not delete friendship'
+    def _get_friendship(self, request):
+        receiverGUID = request.POST['author[id]']
+        receiver = User.objects.get(guid=receiverGUID)
 
-        return self.render_to_response(self.context)
+        requesterGUID = request.POST['friend[author][id]']
+        requester = User.objects.get(guid=requesterGUID)
+
+        return Friends.objects.get(user_id_requester=requester,
+                                   user_id_receiver=receiver)
