@@ -1,7 +1,7 @@
 from .base import BaseView
 from data.models import Friends, User
 from django.conf import settings
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 
 from .mixins.friends_list import FriendsListMixin
 
@@ -108,4 +108,3 @@ class AreFriends(BaseView):
 
         return Friends.objects.get(user_id_requester=requester,
                                    user_id_receiver=receiver)
-
