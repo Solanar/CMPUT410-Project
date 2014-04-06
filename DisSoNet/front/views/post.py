@@ -30,26 +30,19 @@ class PublicPosts(PostListMixin, BaseView):
 
     def post(self, request, *args, **kwargs):
         """ . """
-        form = PostCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
+        post_data = request.POST.copy()
+        post_author = User.objects.get(id=request.user.id)
+        post = Post.objects.create(title=post_data["title"],
+                                   description=post_data["description"],
+                                   content_type=post_data["content_type"],
+                                   content=post_data["content"],
+                                   author=post_author,
+                                   visibility=post_data["visibility"])
 
+        post.clean()
+        post.save()
         return HttpResponseRedirect('/')
 
-        #return self.render_to_response(self.context)
-        #self.post_data = {}
-        #self.post_data['title'] = request.POST['title']
-        #user = User.objects.get(id=request.POST['author'].id)
-        #Post.objects.create(title=request.POST['title'],
-        #                    source="http://somewhere.com",
-        #                    origin="http://120.0.0.1:8000/",
-        #                    description="DESCRIPTION",
-        #                    content_type=request.POST['content_type'],
-        #                    content=request.POST['content'],
-        #                    author=User,
-        #                    visibility=request.POST['visibility'])
-
-        #Post.objects.create(title=100
         #return HttpResponseRedirect(request.META['HTTP_REFERER'])
         #return HttpResponseRedirect('/')
 
