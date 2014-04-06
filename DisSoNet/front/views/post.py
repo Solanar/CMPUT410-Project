@@ -3,6 +3,7 @@ from data.forms import PostCreationForm
 from data.models import Post, Comment, User
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import redirect
 from .mixins.friends_list import FriendsListMixin
 from .mixins.post_list import PostListMixin
 from .mixins.comment_list import CommentListMixin
@@ -28,7 +29,29 @@ class PublicPosts(PostListMixin, BaseView):
             return self.render_to_response(self.context)
 
     def post(self, request, *args, **kwargs):
-        pass
+        """ . """
+        form = PostCreationForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+
+        return HttpResponseRedirect('/')
+
+        #return self.render_to_response(self.context)
+        #self.post_data = {}
+        #self.post_data['title'] = request.POST['title']
+        #user = User.objects.get(id=request.POST['author'].id)
+        #Post.objects.create(title=request.POST['title'],
+        #                    source="http://somewhere.com",
+        #                    origin="http://120.0.0.1:8000/",
+        #                    description="DESCRIPTION",
+        #                    content_type=request.POST['content_type'],
+        #                    content=request.POST['content'],
+        #                    author=User,
+        #                    visibility=request.POST['visibility'])
+
+        #Post.objects.create(title=100
+        #return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        #return HttpResponseRedirect('/')
 
 
 # http://service/posts/{POST_ID} access to a single post with id = {POST_ID}

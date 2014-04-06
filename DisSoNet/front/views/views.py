@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.views import password_reset, password_reset_confirm, \
     password_reset_done, password_reset_complete
 from django.contrib.auth.forms import AuthenticationForm
-from data.forms import UserCreationForm
+from data.forms import UserCreationForm, PostCreationForm
 
 from .base import BaseView
 from .mixins.friends_list import FriendsListMixin
@@ -18,6 +18,7 @@ class HomeView(FriendsListMixin, BaseView):
         self.context = {'state': 'none'}
         self.context['login_form'] = AuthenticationForm()
         self.context['register_form'] = UserCreationForm()
+        self.context['post_form'] = PostCreationForm()
         if request.user.is_authenticated():
             print(request.user.id)
         kwargs['friend_list_filter'] = 'pending'
@@ -33,6 +34,7 @@ def stream_debug(request):
     context = {'state': 'none'}
     context['login_form'] = AuthenticationForm()
     context['register_form'] = UserCreationForm()
+    context['post_form'] = PostCreationForm()
     return render(request, 'authorStream.html', context)
 
 

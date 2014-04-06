@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import AuthenticationForm
-from data.forms import UserCreationForm
+from data.forms import UserCreationForm, PostCreationForm
 
 
 class BaseView(TemplateView):
@@ -13,6 +13,7 @@ class BaseView(TemplateView):
         self.context = dict()
         self.context['login_form'] = AuthenticationForm()
         self.context['register_form'] = UserCreationForm()
+        self.context['post_form'] = PostCreationForm()
 
     def get_context_data(self, *args, **kwargs):
         return self.context
