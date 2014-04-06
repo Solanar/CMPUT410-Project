@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+{% block content %}
+
+<h1>Author Profile</h1>
+<br>
+{% if user_obj %}
+<div class="media stream_post" name="feed">
+    <div class="clear"></div>
+    <div class="body">
+    <a href="{% url 'author_profile' user.guid %}" class="media-body">
+        <h3 class="media-heading">{{ user.email }}</h3>
+        <p>
+            <a href="{% url 'author_profile' user.guid %}">
+                {{ user.firstName }} {{ user.lastName }}
+            </a>
+        </p>
+        <p>GUID: {{ user.guid }}</p>
+    </a>
+    </div>
+</div>
+{% else %}
+<div class="well well-sm">
+    There are no user's with that GUID.
+</div>
+{% endif %}
+
+{% endblock %}

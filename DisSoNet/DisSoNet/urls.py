@@ -41,7 +41,10 @@ urlpatterns = patterns('',
     url(r'^accounts/reset/complete/$', front_views.reset_complete,
         name='reset_complete'),
 
+    # from example json
     url(r'^posts/?$', PublicPosts.as_view(), name='public_posts'),
+    # from requirements
+    url(r'^post/?$', PublicPosts.as_view(), name='public_posts'),
     url(r'^posts/(?P<post_id>\w+)/?$', PostResource.as_view(),
         name='post_resource'),
     url(r'^posts/(?P<post_id>\w+)/comments$',
@@ -50,6 +53,8 @@ urlpatterns = patterns('',
     url(r'^author/posts/?$', AuthorStream.as_view(), name='author_posts'),
     url(r'^author/(?P<author_id>\w+)/posts/?$', VisiblePostToUser.as_view(),
         name='visibile_posts'),
+    url(r'^author/(?P<author_id>\w+)/?$', AuthorProfile.as_view(),
+        name='author_profile'),
 
     url(r'^friendrequest/$', csrf_exempt(FriendRequestView.as_view()),
         name='friend_request'),

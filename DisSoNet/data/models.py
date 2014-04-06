@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
-from django.forms import CharField, PasswordInput
+#from django.forms import CharField, PasswordInput
 
 import hashlib
 from datetime import datetime
