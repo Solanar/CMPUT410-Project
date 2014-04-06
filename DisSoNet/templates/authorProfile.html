@@ -6,6 +6,8 @@
 {% block content %}
 
 <h1>Author Profile</h1>
+<br>
+{% if user_obj %}
 <div class="media stream_post" name="feed">
     <div class="clear"></div>
     <div class="body">
@@ -20,5 +22,10 @@
     </a>
     </div>
 </div>
+{% else %}
+<div class="well well-sm">
+    There are no user's with that GUID.
+</div>
+{% endif %}
 
 {% endblock %}
