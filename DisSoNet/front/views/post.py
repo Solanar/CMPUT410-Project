@@ -30,7 +30,6 @@ class PublicPosts(PostListMixin, BaseView):
 
     def post(self, request, *args, **kwargs):
         """ . """
-        print("request: %s" % request)
         post_data = request.POST.copy()
         post_author = User.objects.get(id=request.user.id)
         post = Post.objects.create(title=post_data["title"],
@@ -45,7 +44,7 @@ class PublicPosts(PostListMixin, BaseView):
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-# http://service/posts/{POST_ID} access to a single post with id = {POST_ID}
+# http://service/post(s)/{POST_ID} access to a single post with id = {POST_ID}
 class PostResource(PostListMixin, BaseView):
 
     login_required = False
@@ -204,7 +203,6 @@ def getPostDict(post_object):
     # get all comments on this post of return them
     comment_list = Comment.objects.filter(post=post_object)
     comment_dict_list = getCommentDictList(comment_list)
-    print comment_dict_list
     post_dict["comments"] = comment_dict_list
 
     return post_dict
