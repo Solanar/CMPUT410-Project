@@ -30,6 +30,7 @@ class PublicPosts(PostListMixin, BaseView):
 
     def post(self, request, *args, **kwargs):
         """ . """
+        print("request: %s" % request)
         post_data = request.POST.copy()
         post_author = User.objects.get(id=request.user.id)
         post = Post.objects.create(title=post_data["title"],
@@ -41,10 +42,7 @@ class PublicPosts(PostListMixin, BaseView):
 
         post.clean()
         post.save()
-        return HttpResponseRedirect('/')
-
-        #return HttpResponseRedirect(request.META['HTTP_REFERER'])
-        #return HttpResponseRedirect('/')
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 # http://service/posts/{POST_ID} access to a single post with id = {POST_ID}
