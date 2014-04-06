@@ -3,9 +3,11 @@ from data.forms import UserCreationForm, UserChangeForm
 from data.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+import json
 
 from .mixins.post_list import PostListMixin
+from .mixins.user import GetUserMixin
 
 
 class RegisterView(BaseView):
@@ -46,14 +48,14 @@ class LoginView(BaseView):
     def post(self, request, *args, **kwargs):
         email = request.POST.get('username')  # 'email')
         password = request.POST.get('password')
-        redirect = request.POST.get('next')
+        redirect_next = request.POST.get('next')
 
         user = authenticate(email=email, password=password)
         if user is not None:
             if user.is_active:
                 login(request, user)
-                if redirect:
-                    return HttpResponseRedirect(redirect)
+                if redirect_next:
+                    return HttpResponseRedirect(redirect_next)
                 else:
                     return HttpResponseRedirect('/')
             else:
@@ -65,7 +67,7 @@ class LoginView(BaseView):
         self.context['state'] = state
         self.context['form'] = AuthenticationForm()
         self.context['email'] = email
-        self.context['next'] = redirect
+        self.context['next'] = redirect_next
         return self.render_to_response(self.context)
 
     def get(self, reuqest, *args, **kwags):
@@ -120,4 +122,59 @@ class UserPostsView(PostListMixin, BaseView):
             self.context['post_list_filter'] = {'user': user}
         except:
             self.context['state'] = 'User does not exist, so has no posts'
-        super(UserPosts, self).preprocess(request, *args, **kwargs)
+        super(UserPostsView, self).preprocess(request, *args, **kwargs)
+
+
+class AuthorProfile(GetUserMixin, BaseView):
+    template_name = "authorProfile.html"
+
+    def preprocess(self, request, *args, **kwargs):
+        author_id = kwargs['author_id']
+        kwargs['user_filter'] = {'user_id': author_id}
+        super(AuthorProfile, self).preprocess(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if request.META.get('HTTP_ACCEPT') == 'application/json':
+            processRequestFromOtherServer(self.context['user'])
+        else:
+            return self.render_to_response(self.context)
+
+
+def processRequestFromOtherServer(post_objects):
+    post_dict = {}
+    post_dict_list = []
+    for post_object in post_objects:
+        post_dict_list.append(getAuthorDict(post_object))
+
+    post_dict["author"] = post_dict_list
+    json_data = json.dumps(post_dict)
+    return HttpResponse(json_data, content_type="application/json")
+
+
+def getAuthorDict(post_object, include_url=False):
+    """ Take a list of author objects, returns it's dict representations.
+
+    "author":
+        {
+            "id":"sha1",
+            "host":"host",
+            "displayname":"name",
+            "url":"url_to_author"
+        },
+
+    :returns: dict representation of an author object
+
+    """
+    author_object = User.objects.get(guid=post_object.id)
+    author_dict = {}
+    # TODO change this from email to guid/sha1
+    author_dict["id"] = author_object.email
+    # TODO decide on what we are using as a user/person's display name
+    author_dict["displayname"] = author_object.__str__()
+    # TODO add host
+    #author_dict["host"] = author_object.host
+    # TODO add url to author (complete with guid) from example json
+    # if include_url:
+        # author_dict["url"] = author_object.url
+
+    return author_dict
