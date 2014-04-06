@@ -75,7 +75,8 @@ class PostResource(PostListMixin, BaseView):
 
     def delete(self, request, *args, **kwargs):
         post_to_delete = Post.objects.get(guid=kwargs['post_id'])
-        post_to_delete.delete()
+        if post_to_delete.author.id == request.user.id:
+            post_to_delete.delete()
         return self.render_to_response(self.context)
 
 
