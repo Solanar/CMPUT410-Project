@@ -181,7 +181,7 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         if self.image_url:
             image = urllib2.urlopen(self.image_url)
-            image_file_path = 'static/images/%s.jpg' % self.guid
+            image_file_path = 'user_images/%s.jpg' % self.guid
             image_file = open(image_file_path, 'wb')
             image_file.write(image.read())
             image_file.close()
