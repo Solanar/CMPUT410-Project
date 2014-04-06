@@ -126,6 +126,7 @@ class UserPostsView(PostListMixin, BaseView):
 
 
 class AuthorProfile(GetUserMixin, BaseView):
+    login_required = False
     template_name = "authorProfile.html"
 
     def preprocess(self, request, *args, **kwargs):
@@ -135,7 +136,7 @@ class AuthorProfile(GetUserMixin, BaseView):
 
     def get(self, request, *args, **kwargs):
         if request.META.get('HTTP_ACCEPT') == 'application/json':
-            processRequestFromOtherServer(self.context['user'])
+            return processRequestFromOtherServer(self.context['user_obj'])
         else:
             return self.render_to_response(self.context)
 
@@ -143,8 +144,7 @@ class AuthorProfile(GetUserMixin, BaseView):
 def processRequestFromOtherServer(post_objects):
     post_dict = {}
     post_dict_list = []
-    for post_object in post_objects:
-        post_dict_list.append(getAuthorDict(post_object))
+    post_dict_list.append(getAuthorDict(post_objects))
 
     post_dict["author"] = post_dict_list
     json_data = json.dumps(post_dict)
@@ -165,12 +165,12 @@ def getAuthorDict(post_object, include_url=False):
     :returns: dict representation of an author object
 
     """
-    author_object = User.objects.get(guid=post_object.id)
+    author_object = User.objects.get(guid=post_object.guid)
     author_dict = {}
     # TODO change this from email to guid/sha1
     author_dict["id"] = author_object.email
     # TODO decide on what we are using as a user/person's display name
-    author_dict["displayname"] = author_object.__str__()
+    author_dict["displayname"] = author_object.get_full_name()
     # TODO add host
     #author_dict["host"] = author_object.host
     author_dict["host"] = ""
