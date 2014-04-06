@@ -251,3 +251,16 @@ class GitHub(models.Model):
     user = models.ForeignKey(User)
     gitUser = models.CharField(max_length=20)
     token = models.CharField(max_length=40)
+
+
+class Server(models.Model):
+    name = models.CharField("Name", max_length=40)
+    ip = models.IPAddressField("IP Address")
+    url = models.URLField("URL")
+
+    class Meta:
+        verbose_name = "Server"
+        verbose_name_plural = "Servers"
+
+    def __str__(self):
+        return self.name
