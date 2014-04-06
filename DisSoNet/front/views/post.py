@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from .mixins.friends_list import FriendsListMixin
 from .mixins.post_list import PostListMixin
 from .mixins.comment_list import CommentListMixin
-import json
+from .author import processRequestFromOtherServer, getAuthorDict
 
 
 # http://service/posts (all posts marked as public on the server)
@@ -63,7 +63,7 @@ class PostResource(PostListMixin, BaseView):
     def get(self, request, *args, **kwargs):
         if request.META.get('HTTP_ACCEPT') == 'application/json':
             # This a json request from another server
-            processRequestFromOtherServer(self.context["post_list"])
+            processRequestFromOtherServer(self.context["post_list"], "posts")
         else:
             # Serve django objects
             self.context["post"] = self.context["post_list"]
@@ -93,7 +93,7 @@ class AuthorStream(FriendsListMixin, PostListMixin, BaseView):
     def get(self, request, *args, **kwargs):
         if request.META.get('HTTP_ACCEPT') == 'application/json':
             # This a json request from another server
-            processRequestFromOtherServer(self.context['post_list'])
+            processRequestFromOtherServer(self.context['post_list'], "posts")
         else:
             # Serve django objects
             return self.render_to_response(self.context)
@@ -114,7 +114,7 @@ class VisiblePostToUser(FriendsListMixin, PostListMixin, BaseView):
     def get(self, request, *args, **kwargs):
         if request.META.get('HTTP_ACCEPT') == 'application/json':
         # This a json request from another server
-            processRequestFromOtherServer(self.context['post_list'])
+            processRequestFromOtherServer(self.context['post_list'], "posts")
         else:
             return self.render_to_response(self.context)
 
@@ -144,17 +144,6 @@ class PostComments(CommentListMixin, BaseView):
                                          content=post_content)
         comment.save()
         return HttpResponseRedirect(request.path)
-
-
-def processRequestFromOtherServer(post_objects):
-    post_dict = {}
-    post_dict_list = []
-    for post_object in post_objects:
-        post_dict_list.append(getPostDict(post_object))
-
-    post_dict["posts"] = post_dict_list
-    json_data = json.dumps(post_dict)
-    return HttpResponse(json_data, content_type="application/json")
 
 
 def getPostDict(post_object):
@@ -238,29 +227,3 @@ def getCommentDictList(comment_list):
 
     return comment_dict_list
 
-
-def getAuthorDict(author_object, include_url=False):
-    """ Take a list of author objects, returns it's dict representations.
-
-    "author":
-        {
-            "id":"sha1",
-            "host":"host",
-            "displayname":"name",
-            "url":"url_to_author"
-        },
-
-    :returns: dict representation of an author object
-
-    """
-    author_dict = {}
-    # TODO change this from email to guid/sha1
-    author_dict["id"] = author_object.email
-    # TODO decide on what we are using as a user/person's display name
-    author_dict["displayname"] = author_object.__str__()
-    # TODO add host
-    # TODO add url to author (complete with guid) from example json
-    # if include_url:
-        # author_dict["url"] = author_object.url
-
-    return author_dict
