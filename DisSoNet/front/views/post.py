@@ -30,7 +30,7 @@ class PublicPosts(PostListMixin, BaseView):
 
     def post(self, request, *args, **kwargs):
         """ . """
-        form = PostCreationForm(request.POST, instance=request.user)
+        form = PostCreationForm(request.POST)
         if form.is_valid():
             form.save()
 
