@@ -173,8 +173,10 @@ def getAuthorDict(post_object, include_url=False):
     author_dict["displayname"] = author_object.__str__()
     # TODO add host
     #author_dict["host"] = author_object.host
+    author_dict["host"] = ""
     # TODO add url to author (complete with guid) from example json
     # if include_url:
         # author_dict["url"] = author_object.url
+    author_dict["url"] = ""
 
     return author_dict
