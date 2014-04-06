@@ -38,9 +38,11 @@ class PublicPosts(PostListMixin, BaseView):
                                    content=post_data["content"],
                                    author=post_author,
                                    visibility=post_data["visibility"])
-
         post.clean()
-        post.save()
+
+        if post_data['image_url']:
+            post.image_url = post_data['image_url']
+            post.save()
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
