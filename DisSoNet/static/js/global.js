@@ -109,6 +109,9 @@ function deletePost(post_id, callback){
 	$.ajax({
 	  type: "DELETE",
 	  url: "/post/"+post_id+"/",
+      beforeSend: function(xhr) {
+          xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+      },
 	  success: callback,
 	});
 }

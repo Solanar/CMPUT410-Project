@@ -72,6 +72,11 @@ class PostResource(PostListMixin, BaseView):
         #if request.META.get('HTTP_ACCEPT') == 'application/json':
         self.get(request, *args, **kwargs)
 
+    def delete(self, request, *args, **kwargs):
+        post_to_delete = Post.objects.get(guid=kwargs['post_id'])
+        post_to_delete.delete()
+        return self.render_to_response(self.context)
+
 
 # http://service/author/posts
 # (posts that are visible to the currently authenticated user)
