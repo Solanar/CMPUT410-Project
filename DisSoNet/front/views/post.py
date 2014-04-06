@@ -29,16 +29,14 @@ class PublicPosts(PostListMixin, BaseView):
             return self.render_to_response(self.context)
 
     def post(self, request, *args, **kwargs):
-        """
-        QueryDict: {u'title': [u'sdkfsdlkfgl'], u'visibility': [u'PUBLIC'], u'content': [u'dlfkgsdlfkgj'], u'image_url': [u''], u'csrfmiddlewaretoken': [u'CyFDRP5LArm3vmxekKeN8WbRbFAyiTRX'], u'content-type': [u'text/html'], u'categories': [u'stuff']}>,
-        """
-        print("Got request: %s" % request)
-        form = PostCreationForm(request.POST)
+        """ . """
+        form = PostCreationForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
 
-        #return self.render_to_response(self.context)
         return HttpResponseRedirect('/')
+
+        #return self.render_to_response(self.context)
         #self.post_data = {}
         #self.post_data['title'] = request.POST['title']
         #user = User.objects.get(id=request.POST['author'].id)
