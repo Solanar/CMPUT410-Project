@@ -5,7 +5,9 @@ class GetUserMixin(object):
 
     def preprocess(self, request, *args, **kwargs):
         user = User.objects.none()
-        if request.user.is_authenticated():
+        if 'user_filter' in kwargs:
+            user = User.objects.get(guid=kwargs['user_filter']['user_id'])
+        elif request.user.is_authenticated():
             user = User.objects.get(email=request.user.email)
         self.context['user'] = user
         super(GetUserMixin, self).preprocess(request, *args, **kwargs)
