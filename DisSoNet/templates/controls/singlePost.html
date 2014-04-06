@@ -9,7 +9,7 @@
         <a href="/posts/{{ post.guid }}" class="media-body">
             {% if post.title %}
                 <h3 class="media-heading">{{ post.title }}</h3>
-                <p>by <a href="">{{ post.author }}</a></p>
+                <p>by <a href="{% url 'author_profile' post.author.guid %}">{{ post.author }}</a></p>
             {% endif %}
             <p>{{ post.content }}</p>
         </a>
@@ -22,17 +22,17 @@
 
             <button type="button" data-id="{{ post.guid }}" class="btn btn-default btn-xs right btn-delete">
               <span class="glyphicon glyphicon-trash"></span> Delete
-            </button>    
-                        
+            </button>
+
             <button type="button" data-id="{{ post.guid }}" class="btn btn-default btn-xs right btn-comment">
               <span class="glyphicon glyphicon-bullhorn"></span> Comment
-            </button>  
+            </button>
 
             <button type="button" data-id="{{ post.guid }}" class="btn btn-success btn-xs right btn-post-comment">
               <span class="glyphicon glyphicon-bullhorn"></span> Post Comment
-            </button>  
+            </button>
 
 
-            <div class="clear"></div>    
-        </div>        
+            <div class="clear"></div>
+        </div>
     </div>
