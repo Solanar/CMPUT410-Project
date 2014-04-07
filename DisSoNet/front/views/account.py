@@ -125,6 +125,7 @@ class UserPostsView(PostListMixin, BaseView):
         super(UserPostsView, self).preprocess(request, *args, **kwargs)
 
 
+# http://service/author/{AUTHOR_ID}
 class AuthorProfile(GetUserMixin, BaseView):
     login_required = False
     template_name = "authorProfile.html"
