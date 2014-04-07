@@ -196,6 +196,7 @@ def add_user(email, firstName, lastName, password, is_admin=False,
                                             password)
         if guid:
             user.guid = guid
+        user.clean()
         user.save()
     return user
 
@@ -246,6 +247,8 @@ def add_comment(post, user, content):  # , published_date, guid):
         )
     if created:
         #print "created comment", content
+        comment.clean()
+        comment.save()
         pass
     else:
         print "didn't create comment", content
