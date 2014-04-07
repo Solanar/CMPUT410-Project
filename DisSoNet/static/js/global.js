@@ -29,7 +29,10 @@ $(document).on('ready', function(){
 
 function sendComment(guid, body, callback){
     var data = {"content" : body};
-    $.post('/posts/'+guid+'/comments', data, callback);
+    $.post('/posts/'+guid+'/comments', data, function(data, text, xhr) {
+        window.location = xhr.getResponseHeader('Location');
+        callback;
+    });
 }
 
 $(document).on('submit', 'form.githubForm', function(form) {
