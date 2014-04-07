@@ -3,8 +3,9 @@ from data.forms import UserCreationForm, UserChangeForm
 from data.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 import json
+import socket
 
 from .mixins.post_list import PostListMixin
 from .mixins.user import GetUserMixin
@@ -131,27 +132,34 @@ class AuthorProfile(GetUserMixin, BaseView):
 
     def preprocess(self, request, *args, **kwargs):
         author_id = kwargs['author_id']
-        kwargs['user_filter'] = {'user_id': author_id}
+        """
+        remote = False
+        if request.META.get('HTTP_ACCEPT') == 'application/json':
+            remote = True
+        """
+        kwargs['user_filter'] = {'user_id': author_id}  # , 'remote': remote}
         super(AuthorProfile, self).preprocess(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         if request.META.get('HTTP_ACCEPT') == 'application/json':
+            if not self.context['user_obj']:
+                raise Http404
             return processRequestFromOtherServer(self.context['user_obj'])
         else:
             return self.render_to_response(self.context)
 
 
-def processRequestFromOtherServer(post_objects):
+def processRequestFromOtherServer(user_obj):
     post_dict = {}
     post_dict_list = []
-    post_dict_list.append(getAuthorDict(post_objects))
+    post_dict_list.append(getAuthorDict(user_obj))
 
     post_dict["author"] = post_dict_list
     json_data = json.dumps(post_dict)
     return HttpResponse(json_data, content_type="application/json")
 
 
-def getAuthorDict(post_object, include_url=False):
+def getAuthorDict(user_obj, include_url=False):
     """ Take a list of author objects, returns it's dict representations.
 
     "author":
@@ -165,18 +173,15 @@ def getAuthorDict(post_object, include_url=False):
     :returns: dict representation of an author object
 
     """
-    author_object = User.objects.get(guid=post_object.guid)
     author_dict = {}
-    # TODO change this from email to guid/sha1
-    author_dict["id"] = author_object.email
-    # TODO decide on what we are using as a user/person's display name
-    author_dict["displayname"] = author_object.get_full_name()
-    # TODO add host
-    #author_dict["host"] = author_object.host
-    author_dict["host"] = ""
-    # TODO add url to author (complete with guid) from example json
+    author_dict["id"] = user_obj.guid
+    author_dict["displayname"] = user_obj.get_full_name()
+    host = socket.gethostname()  # only works if website running on port 80
+    ip = "http://10.4.10.2"  # dat hard coding of values
+    port = ":8080/"
+    author_dict["host"] = ip + port  # host
+    # why is this here?
     # if include_url:
         # author_dict["url"] = author_object.url
-    author_dict["url"] = ""
-
+    author_dict["url"] = ip + port + "author/" + user_obj.guid + "/"
     return author_dict
