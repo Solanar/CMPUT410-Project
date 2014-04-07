@@ -1,40 +1,49 @@
-    <div class="media stream_post" name="feed">
-        {% if post.pic %}
-        <a href="#" class="pull-left" id="{{ post.picName }}">
-          <img class="media-object" src="{{ post.picture }}">
-        </a>
+<div class="media stream_post" name="feed">
+    {% if post.pic %}
+    <a href="#" class="pull-left" id="{{ post.picName }}">
+      <img class="media-object" src="{{ post.picture }}">
+    </a>
+    {% endif %}
+    <div class="clear"></div>
+    <div class="body">
+    <a href="/posts/{{ post.guid }}" class="media-body">
+        {% if post.title %}
+            <h3 class="media-heading">{{ post.title }}</h3>
+            <p>by <a href="{% url 'author_profile' post.author.guid %}">{{ post.author }}</a></p>
         {% endif %}
-        <div class="clear"></div>
-        <div class="body">
-        <a href="/posts/{{ post.guid }}" class="media-body">
-            {% if post.title %}
-                <h3 class="media-heading">{{ post.title }}</h3>
-                <p>by <a href="{% url 'author_profile' post.author.guid %}">{{ post.author }}</a></p>
-            {% endif %}
-            <p>{{ post.content }}</p>
-        </a>
-        </div>
-        <div class="controls">
-            <div class="comment_input">
-                <textarea placeholder="New Comment:"></textarea>
-            </div>
-            No Comments Available
-            
-            {% if user.id == post.author.id %}
-            <button type="button" data-id="{{ post.guid }}" class="btn btn-default btn-xs right btn-delete">
-              <span class="glyphicon glyphicon-trash"></span> Delete
-            </button>
-            {% endif %}
-
-            <button type="button" data-id="{{ post.guid }}" class="btn btn-default btn-xs right btn-comment">
-              <span class="glyphicon glyphicon-bullhorn"></span> Comment
-            </button>
-
-            <button type="button" data-id="{{ post.guid }}" class="btn btn-success btn-xs right btn-post-comment">
-              <span class="glyphicon glyphicon-bullhorn"></span> Post Comment
-            </button>
-
-
-            <div class="clear"></div>
-        </div>
+        <p>{{ post.content }}</p>
+    </a>
     </div>
+    <div class="controls">
+        <div class="comment_input">
+            <textarea placeholder="New Comment:"></textarea>
+        </div>
+        {% for comment in post.comments.all %}
+        <div>
+            {{ comment.user }}
+            {{ comment.content }}
+            {{ comment.published_date }}
+            {{ comment.guid }}
+        </div>
+        {% empty %}
+            No Comments Available
+        {% endfor %}
+
+        {% if user.id == post.author.id %}
+        <button type="button" data-id="{{ post.guid }}" class="btn btn-default btn-xs right btn-delete">
+          <span class="glyphicon glyphicon-trash"></span> Delete
+        </button>
+        {% endif %}
+
+        <button type="button" data-id="{{ post.guid }}" class="btn btn-default btn-xs right btn-comment">
+          <span class="glyphicon glyphicon-bullhorn"></span> Comment
+        </button>
+
+        <button type="button" data-id="{{ post.guid }}" class="btn btn-success btn-xs right btn-post-comment">
+          <span class="glyphicon glyphicon-bullhorn"></span> Post Comment
+        </button>
+
+
+        <div class="clear"></div>
+    </div>
+</div>
