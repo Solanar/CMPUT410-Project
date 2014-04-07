@@ -5,18 +5,21 @@ import socket
 from data.models import Comment
 
 
-def processRequestFromOtherServer(user_obj, dict_type):
-    post_dict = {}
-    post_dict_list = []
+def processRequestFromOtherServer(obj, dict_type):
+    json_dict = {}
+    json_dict_list = []
     if dict_type is "author":
-        post_dict_list.append(getAuthorDict(user_obj))
+        json_dict_list.append(getAuthorDict(obj))
     elif dict_type is "posts":
-        post_dict_list.append(getPostDict(user_obj))
+        for posts in obj:
+            json_dict_list.append(getPostDict(posts))
+    elif dict_type is "comments":
+        json_dict_list = getCommentDictList(obj)
     else:
         print ("Unknown type")
 
-    post_dict[dict_type] = post_dict_list
-    json_data = json.dumps(post_dict)
+    json_dict[dict_type] = json_dict_list
+    json_data = json.dumps(json_dict)
     return HttpResponse(json_data, content_type="application/json")
 
 
@@ -120,7 +123,8 @@ def getCommentDictList(comment_list):
     comment_dict_list = []
     for comment in comment_list:
         comment_dict = {}
-        comment_dict["author"] = getAuthorDict(comment.user)
+        author_dict = getAuthorDict(comment.user)
+        comment_dict["author"] = author_dict
         comment_dict["comment"] = comment.content
         # TODO python datetime is not JSON serializable
         formatter = "%a %b %d %h:%m:%s mst %y"
@@ -128,5 +132,4 @@ def getCommentDictList(comment_list):
         comment_dict["pubDate"] = timestring
         comment_dict["guid"] = comment.guid
         comment_dict_list.append(comment_dict)
-
     return comment_dict_list
