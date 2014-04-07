@@ -35,6 +35,11 @@ def populate():
 
     user_list = {ua, ub, uc, ud, ue, uf, ug, uh, ui, uj, uk, ul, um, un, uo}
 
+    uq = add_user("guid@test.ca", "GUID", "Test",
+                  universal_password, guid="123abc")
+    ur = add_user("guid2@test.ca", "GUID2", "Test",
+                  universal_password, guid="abc123")
+
     # create admin users
     u1 = add_user("eklinger@ualberta.ca", "Eric", "Klinger", "410",
                   is_admin=True)
@@ -174,7 +179,8 @@ def populate():
     printAllComments()
 
 
-def add_user(email, firstName, lastName, password, is_admin=False):
+def add_user(email, firstName, lastName, password, is_admin=False,
+             guid=None):
     user = None
     try:
         user = User.objects.get(email=email)
@@ -185,11 +191,12 @@ def add_user(email, firstName, lastName, password, is_admin=False):
         if is_admin:
             user = User.objects.create_superuser(email, firstName, lastName,
                                                  password)
-            user.save()
         else:
             user = User.objects.create_user(email, firstName, lastName,
                                             password)
-            user.save()
+        if guid:
+            user.guid = guid
+        user.save()
     return user
 
 
