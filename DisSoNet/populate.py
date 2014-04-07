@@ -171,12 +171,36 @@ def populate():
         add_comment(post, up,
                     "You'll pay for this! With your children's blood!")
 
+    # servers
+    # if using the host (ie cs410-02) it must be done over port 80
+    saa = add_server("Local", "10.4.10.2", "http://10.4.10.2:8080/",
+                    "8080", "cs410-02")
+    sa = add_server("Duplicate", "10.4.10.2", "http://10.4.10.2:8081/",
+                    "8081", "cs410-02")
+    sb = add_server("Group 1", "10.4.10.1", "http://10.4.10.1:8080/",
+                    "8080", "cs410-01")
+    sc = add_server("Group 3", "10.4.10.3", "http://10.4.10.3:8080/",
+                    "8080", "cs410-03")
+    sd = add_server("Group 4", "10.4.10.4", "http://10.4.10.4:8080/",
+                    "8080", "cs410-04")
+    se = add_server("Group 5", "10.4.10.5", "http://10.4.10.5:8080/",
+                    "8080", "cs410-05")
+    sf = add_server("Group 6", "10.4.10.6", "http://10.4.10.6:8080/",
+                    "8080", "cs410-06")
+    sg = add_server("Group 7", "10.4.10.7", "http://10.4.10.7:8080/",
+                    "8080", "cs410-07")
+    sh = add_server("Group 8", "10.4.10.8", "http://10.4.10.8:8080/",
+                    "8080", "cs410-08")
+    si = add_server("Group 9", "10.4.10.9", "http://10.4.10.9:8080/",
+                    "8080", "cs410-09")
+
     # print all data for visual confirmation
     printAllUsers()
     printAllCategories()
     printAllFriends()
     printAllPosts()
     printAllComments()
+    printAllServers()
 
 
 def add_user(email, firstName, lastName, password, is_admin=False,
@@ -249,10 +273,26 @@ def add_comment(post, user, content):  # , published_date, guid):
         #print "created comment", content
         comment.clean()
         comment.save()
-        pass
     else:
         print "didn't create comment", content
     return comment
+
+
+def add_server(name, ip, url, port, host):
+    server, created = Server.objects.get_or_create(
+        name=name,
+        ip=ip,
+        url=url,
+        port=port,
+        host=host,
+        )
+    if created:
+        #print "created server", name
+        #server.clean()
+        server.save()
+    else:
+        print "didn't create server", name
+    return server
 
 
 def printAllUsers():
@@ -280,9 +320,14 @@ def printAllComments():
         print comment
 
 
+def printAllServers():
+    for server in Server.objects.all():
+        print server
+
+
 if __name__ == '__main__':
     print("Starting DisSoNet database population script...")
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DisSoNet.settings')
     #import DisSoNet things
-    from data.models import Post, User, Comment, Friends, Category
+    from data.models import Post, User, Comment, Friends, Category, Server
     populate()
