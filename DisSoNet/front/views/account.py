@@ -1,11 +1,10 @@
 from .base import BaseView
+from .author import processRequestFromOtherServer
 from data.forms import UserCreationForm, UserChangeForm
 from data.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponseRedirect, HttpResponse, Http404
-import json
-import socket
+from django.http import HttpResponseRedirect, Http404
 
 from .mixins.post_list import PostListMixin
 from .mixins.user import GetUserMixin
@@ -144,44 +143,7 @@ class AuthorProfile(GetUserMixin, BaseView):
         if request.META.get('HTTP_ACCEPT') == 'application/json':
             if not self.context['user_obj']:
                 raise Http404
-            return processRequestFromOtherServer(self.context['user_obj'])
+            return processRequestFromOtherServer(self.context['user_obj'],
+                                                 "author")
         else:
             return self.render_to_response(self.context)
-
-
-def processRequestFromOtherServer(user_obj):
-    post_dict = {}
-    post_dict_list = []
-    post_dict_list.append(getAuthorDict(user_obj))
-
-    post_dict["author"] = post_dict_list
-    json_data = json.dumps(post_dict)
-    return HttpResponse(json_data, content_type="application/json")
-
-
-def getAuthorDict(user_obj, include_url=False):
-    """ Take a list of author objects, returns it's dict representations.
-
-    "author":
-        {
-            "id":"sha1",
-            "host":"host",
-            "displayname":"name",
-            "url":"url_to_author"
-        },
-
-    :returns: dict representation of an author object
-
-    """
-    author_dict = {}
-    author_dict["id"] = user_obj.guid
-    author_dict["displayname"] = user_obj.get_full_name()
-    host = socket.gethostname()  # only works if website running on port 80
-    ip = "http://10.4.10.2"  # dat hard coding of values
-    port = ":8080/"
-    author_dict["host"] = ip + port  # host
-    # why is this here?
-    # if include_url:
-        # author_dict["url"] = author_object.url
-    author_dict["url"] = ip + port + "author/" + user_obj.guid + "/"
-    return author_dict

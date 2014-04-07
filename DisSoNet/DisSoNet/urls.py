@@ -41,12 +41,13 @@ urlpatterns = patterns('',
     url(r'^accounts/reset/complete/$', front_views.reset_complete,
         name='reset_complete'),
 
-    # from example json
-    url(r'^posts/?$', PublicPosts.as_view(), name='public_posts'),
-    # from requirements
+    # urls for post(s)/
     url(r'^post/?$', PublicPosts.as_view(), name='public_posts'),
-    url(r'^posts/(?P<post_id>\w+)/?$', PostResource.as_view(),
-        name='post_resource'),
+    url(r'^posts/?$', PublicPosts.as_view(), name='public_posts'),
+    # urls for post(s)/<post_id>
+    url(r'^post/(?P<post_id>\w+)/?$', PostResource.as_view(), name='post_resource'),
+    url(r'^posts/(?P<post_id>\w+)/?$', PostResource.as_view(), name='post_resource'),
+
     url(r'^posts/(?P<post_id>\w+)/comments$',
         csrf_exempt(PostComments.as_view()), name='post_comments'),
 

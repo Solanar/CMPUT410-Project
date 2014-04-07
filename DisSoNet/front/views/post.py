@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from .mixins.friends_list import FriendsListMixin
 from .mixins.post_list import PostListMixin
 from .mixins.comment_list import CommentListMixin
-import json
+from .author import processRequestFromOtherServer, getAuthorDict
 
 
 # http://service/posts (all posts marked as public on the server)
@@ -30,31 +30,23 @@ class PublicPosts(PostListMixin, BaseView):
 
     def post(self, request, *args, **kwargs):
         """ . """
-        form = PostCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
+        post_data = request.POST.copy()
+        post_author = User.objects.get(id=request.user.id)
+        post = Post.objects.create(title=post_data["title"],
+                                   description=post_data["description"],
+                                   content_type=post_data["content_type"],
+                                   content=post_data["content"],
+                                   author=post_author,
+                                   visibility=post_data["visibility"])
+        post.clean()
 
-        return HttpResponseRedirect('/')
-
-        #return self.render_to_response(self.context)
-        #self.post_data = {}
-        #self.post_data['title'] = request.POST['title']
-        #user = User.objects.get(id=request.POST['author'].id)
-        #Post.objects.create(title=request.POST['title'],
-        #                    source="http://somewhere.com",
-        #                    origin="http://120.0.0.1:8000/",
-        #                    description="DESCRIPTION",
-        #                    content_type=request.POST['content_type'],
-        #                    content=request.POST['content'],
-        #                    author=User,
-        #                    visibility=request.POST['visibility'])
-
-        #Post.objects.create(title=100
-        #return HttpResponseRedirect(request.META['HTTP_REFERER'])
-        #return HttpResponseRedirect('/')
+        if post_data['image_url']:
+            post.image_url = post_data['image_url']
+            post.save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-# http://service/posts/{POST_ID} access to a single post with id = {POST_ID}
+# http://service/post(s)/{POST_ID} access to a single post with id = {POST_ID}
 class PostResource(PostListMixin, BaseView):
 
     login_required = False
@@ -71,7 +63,7 @@ class PostResource(PostListMixin, BaseView):
     def get(self, request, *args, **kwargs):
         if request.META.get('HTTP_ACCEPT') == 'application/json':
             # This a json request from another server
-            processRequestFromOtherServer(self.context["post_list"])
+            processRequestFromOtherServer(self.context["post_list"], "posts")
         else:
             # Serve django objects
             self.context["post"] = self.context["post_list"]
@@ -80,6 +72,12 @@ class PostResource(PostListMixin, BaseView):
     def post(self, request, *args, **kwargs):
         #if request.META.get('HTTP_ACCEPT') == 'application/json':
         self.get(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        post_to_delete = Post.objects.get(guid=kwargs['post_id'])
+        if post_to_delete.author.id == request.user.id:
+            post_to_delete.delete()
+        return self.render_to_response(self.context)
 
 
 # http://service/author/posts
@@ -95,7 +93,7 @@ class AuthorStream(FriendsListMixin, PostListMixin, BaseView):
     def get(self, request, *args, **kwargs):
         if request.META.get('HTTP_ACCEPT') == 'application/json':
             # This a json request from another server
-            processRequestFromOtherServer(self.context['post_list'])
+            processRequestFromOtherServer(self.context['post_list'], "posts")
         else:
             # Serve django objects
             return self.render_to_response(self.context)
@@ -116,7 +114,7 @@ class VisiblePostToUser(FriendsListMixin, PostListMixin, BaseView):
     def get(self, request, *args, **kwargs):
         if request.META.get('HTTP_ACCEPT') == 'application/json':
         # This a json request from another server
-            processRequestFromOtherServer(self.context['post_list'])
+            processRequestFromOtherServer(self.context['post_list'], "posts")
         else:
             return self.render_to_response(self.context)
 
@@ -146,17 +144,6 @@ class PostComments(CommentListMixin, BaseView):
                                          content=post_content)
         comment.save()
         return HttpResponseRedirect(request.path)
-
-
-def processRequestFromOtherServer(post_objects):
-    post_dict = {}
-    post_dict_list = []
-    for post_object in post_objects:
-        post_dict_list.append(getPostDict(post_object))
-
-    post_dict["posts"] = post_dict_list
-    json_data = json.dumps(post_dict)
-    return HttpResponse(json_data, content_type="application/json")
 
 
 def getPostDict(post_object):
@@ -208,7 +195,6 @@ def getPostDict(post_object):
     # get all comments on this post of return them
     comment_list = Comment.objects.filter(post=post_object)
     comment_dict_list = getCommentDictList(comment_list)
-    print comment_dict_list
     post_dict["comments"] = comment_dict_list
 
     return post_dict
@@ -241,29 +227,3 @@ def getCommentDictList(comment_list):
 
     return comment_dict_list
 
-
-def getAuthorDict(author_object, include_url=False):
-    """ Take a list of author objects, returns it's dict representations.
-
-    "author":
-        {
-            "id":"sha1",
-            "host":"host",
-            "displayname":"name",
-            "url":"url_to_author"
-        },
-
-    :returns: dict representation of an author object
-
-    """
-    author_dict = {}
-    # TODO change this from email to guid/sha1
-    author_dict["id"] = author_object.email
-    # TODO decide on what we are using as a user/person's display name
-    author_dict["displayname"] = author_object.__str__()
-    # TODO add host
-    # TODO add url to author (complete with guid) from example json
-    # if include_url:
-        # author_dict["url"] = author_object.url
-
-    return author_dict

@@ -3,6 +3,7 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 #from django.forms import CharField, PasswordInput
 
 import hashlib
+import urllib2
 from datetime import datetime
 
 
@@ -177,6 +178,17 @@ class Post(models.Model):
             stringtohash = self.title + timestring + self.author.email
             self.guid = hashlib.sha1(stringtohash).hexdigest()
 
+    def save(self, *args, **kwargs):
+        if self.image_url:
+            image = urllib2.urlopen(self.image_url)
+            image_file_path = 'user_images/%s.jpg' % self.guid
+            image_file = open(image_file_path, 'wb')
+            image_file.write(image.read())
+            image_file.close()
+            self.image_location = image_file_path
+
+        super(Post, self).save(*args, **kwargs)
+
     # Choices for content_type field
     CONTENT_TYPE_CHOICES = (
         ('HTML', 'text/html'),
@@ -209,7 +221,8 @@ class Post(models.Model):
     visibility = models.CharField("Visibility", max_length=20,
                                   choices=VISIBILITY_CHOICES)
     # This is for image posts
-    #media_content = models.FileField(upload_to='post/%Y/%m/%d')
+    image_url = models.URLField("Image URL", blank=True)
+    image_location = models.CharField("image_location", max_length=100, blank=True)
 
 
 class Comment(models.Model):
