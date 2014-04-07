@@ -4,6 +4,7 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 import hashlib
 import urllib2
+from django.conf import settings
 from datetime import datetime
 
 
@@ -181,7 +182,8 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         if self.image_url:
             image = urllib2.urlopen(self.image_url)
-            image_file_path = 'user_images/%s.jpg' % self.guid
+            image_file_path = settings.MEDIA_URL + '%s.jpg' % self.guid
+            image_file_path.lstrip('/')
             image_file = open(image_file_path, 'wb')
             image_file.write(image.read())
             image_file.close()
