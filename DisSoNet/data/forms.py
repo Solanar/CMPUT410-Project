@@ -75,7 +75,13 @@ class GitHubForm(forms.ModelForm):
 
     class Meta:
         model = GitHub
+        fields = ['gitUser', 'token', ]
 
-    handle = forms.CharField()
-    auth = forms.CharField()
+    # Choices for Authentication Method field
+    AUTH_TYPE_CHOICES = (
+        ('pwd', 'Password'),
+        ('token', 'Token'),
+    )
 
+    authType = forms.MultipleChoiceField(label="Authentication Method", required=True,
+     widget=forms.Select, choices=AUTH_TYPE_CHOICES)

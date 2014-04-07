@@ -18,8 +18,8 @@ class GitHubView(BaseView):
             if not errors:
                 gitForm = GitHubForm(request.POST) 
                 authType = gitForm.POST.get['authType']
-                handle = gitForm.POST.get['handle']
-                secret = gitForm.POST.get['auth']
+                handle = gitForm.POST.get['gitUser']
+                secret = gitForm.POST.get['token']
                 if authType == "pwd":
                     data = getToken(handle, secret)
                     if data['message'] == "Validation Failed":
