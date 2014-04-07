@@ -44,11 +44,13 @@ urlpatterns = patterns('',
     # urls for post(s)/
     url(r'^post/?$', PublicPosts.as_view(), name='public_posts'),
     url(r'^posts/?$', PublicPosts.as_view(), name='public_posts'),
-    # urls for post(s)/<post_id>
+    # urls for post(s)/<post_id>/
     url(r'^post/(?P<post_id>\w+)/?$', PostResource.as_view(), name='post_resource'),
     url(r'^posts/(?P<post_id>\w+)/?$', PostResource.as_view(), name='post_resource'),
-
-    url(r'^posts/(?P<post_id>\w+)/comments$',
+    # urls for post(s)/<post_id>/comments/
+    url(r'^post/(?P<post_id>\w+)/comments/?$',
+        csrf_exempt(PostComments.as_view()), name='post_comments'),
+    url(r'^posts/(?P<post_id>\w+)/comments/?$',
         csrf_exempt(PostComments.as_view()), name='post_comments'),
 
     url(r'^author/posts/?$', AuthorStream.as_view(), name='author_posts'),
