@@ -261,6 +261,9 @@ class Comment(models.Model):
 
 
 class GitHub(models.Model):
+    class Meta:
+        verbose_name = "GitHub"
+
     user = models.ForeignKey(User)
     gitUser = models.CharField("GitHub User Name", max_length=20)
     token = models.CharField("Authentication", max_length=40)

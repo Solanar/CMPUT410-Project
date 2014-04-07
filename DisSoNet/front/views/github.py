@@ -1,24 +1,23 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from django.core import serializers
-import pycurl, json
 from .base import BaseView
+from data.models import User
+from django.http import HttpResponseRedirect, Http404
+import pycurl, json
 
 class GitHubView(BaseView):
 
+    template_name = "base.html"
 
-    def initGithub(request):
-        print "init"
+    def post(self, request, *args, **kwargs):
         errors = []
         if request.method == 'POST':
-            if not request.POST.get('handle', ''):
+            if not request.POST.get('gitUser', ''):
                 errors.append('Enter your GitHub user name.')
-            if not request.POST.get('auth', ''):
+            if not request.POST.get('token', ''):
                 errors.append('Enter your GitHub authentication: password or token')
             if not errors:
                 gitForm = GitHubForm(request.POST) 
                 authType = gitForm.POST.get['authType']
-                handle = gitForm.POST.get['gitUser']
+                gitUser = gitForm.POST.get['gitUser']
                 secret = gitForm.POST.get['token']
                 if authType == "pwd":
                     data = getToken(handle, secret)
@@ -30,10 +29,8 @@ class GitHubView(BaseView):
                     else:
                         auth = data['code']
                 else:
-                    auth = secret
-        print "render"
-        return render(request, 'controls/githubForm.html', {'errors': errors})
-
+                    token = secret
+                    return HttpResponseRedirect(request.path)
 
     def getToken(handle, secret):
         print "token"

@@ -25,7 +25,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^github/setup/', GitHubView.initGithub, s, name='initGithub'),
+    url(r'^github/setup/', GitHubView.as_view(), s, name='initGithub'),
 
     url(r'^accounts/login/', LoginView.as_view(), s, name='login'),
     url(r'^accounts/logout/', LogoutView.as_view(), s, name='logout'),
