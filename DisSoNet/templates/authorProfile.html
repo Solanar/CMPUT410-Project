@@ -11,20 +11,20 @@
 <div class="media stream_post" name="feed">
     <div class="clear"></div>
     <div class="body">
-    <a href="{% url 'author_profile' user_obj.guid %}" class="media-body">
-        <h3 class="media-heading">{{ user_obj.email }}</h3>
+    <a href="{% url 'author_profile' user.guid %}" class="media-body">
+        <h3 class="media-heading">{{ user.email }}</h3>
         <p>
-            <a href="{% url 'author_profile' user_obj.guid %}">
-                {{ user_obj.firstName }} {{ user_obj.lastName }}
+            <a href="{% url 'author_profile' user.guid %}">
+                {{ user.firstName }} {{ user.lastName }}
             </a>
         </p>
-        <p>GUID: {{ user_obj.guid }}</p>
+        <p>GUID: {{ user.guid }}</p>
     </a>
     </div>
 </div>
 {% else %}
 <div class="well well-sm">
-    There are no user's with that GUID.
+    There are no users with that GUID.
 </div>
 {% endif %}
 
