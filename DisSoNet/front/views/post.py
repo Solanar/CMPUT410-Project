@@ -1,6 +1,6 @@
 from .base import BaseView
 from data.models import Post, Comment, User
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from .mixins.friends_list import FriendsListMixin
 from .mixins.post_list import PostListMixin
 from .mixins.comment_list import CommentListMixin
@@ -153,7 +153,9 @@ class PostComments(CommentListMixin, BaseView):
                                          content=post_content)
         comment.clean()
         comment.save()
-        return HttpResponseRedirect(request.path)
+        resp = HttpResponse()
+        resp['Location'] = request.META['HTTP_REFERER']
+        return resp
 
     def get(self, request, *args, **kwargs):
         if request.META.get('HTTP_ACCEPT') == 'application/json':
