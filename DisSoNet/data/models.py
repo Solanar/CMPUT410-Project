@@ -257,6 +257,7 @@ class Server(models.Model):
     name = models.CharField("Name", max_length=40)
     ip = models.IPAddressField("IP Address")
     url = models.URLField("URL")
+    port = models.IntegerField("Port")
 
     class Meta:
         verbose_name = "Server"
