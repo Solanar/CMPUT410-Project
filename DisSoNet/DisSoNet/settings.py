@@ -96,7 +96,7 @@ TEMPLATE_DIRS = (
 )
 
 
-MEDIA_ROOT = '/home/user/CMPUT410-Project/DisSoNet/media/'
+MEDIA_ROOT = BASE_DIR + '/media/'
 MEDIA_URL = '/media/'
 
 
