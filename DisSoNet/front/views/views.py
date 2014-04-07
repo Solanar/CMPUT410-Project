@@ -24,6 +24,9 @@ class HomeView(FriendsListMixin, BaseView):
         kwargs['friend_list_filter'] = 'pending'
         super(HomeView, self).preprocess(request, *args, **kwargs)
 
+def privacy(request):
+    context = {'state': 'none'}
+    return render(request, 'privacy.html', context)
 
 def test(request):
     context = {'state': 'none'}

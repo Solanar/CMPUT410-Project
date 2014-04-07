@@ -19,7 +19,13 @@ urlpatterns = patterns('',
     # url(r'^$', 'DisSoNet.views.home', name='home'),
     url(r'^$', HomeView.as_view(), name='home'),
 
+
+    url(r'^$', HomeView.as_view(), name='home'),
+
+
     url(r'^test/', front_views.test, name='test'),
+
+    url(r'^privacy/', front_views.privacy, name='privacy'),
 
     url(r'^stream_debug/', front_views.stream_debug, name='stream'),
 
