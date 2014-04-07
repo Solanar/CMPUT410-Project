@@ -34,7 +34,10 @@ class PostListMixin(object):
             author = User.objects.get(guid=filter['visible_by_author'])
             filtered_list = self.get_posts_by_author(author, user)
         elif 'post_id' in filter:  # /posts/<post_id>
-            filtered_list = Post.objects.get(guid=filter['post_id'])
+            try:
+                filtered_list = Post.objects.get(guid=filter['post_id'])
+            except:
+                filtered_list = Post.objects.none()
         return filtered_list
 
     def get_posts_visible_to_current_user(self, user):
