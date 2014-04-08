@@ -19,14 +19,16 @@ class HomeView(FriendsListMixin, BaseView):
         self.context['login_form'] = AuthenticationForm()
         self.context['register_form'] = UserCreationForm()
         self.context['post_form'] = PostCreationForm()
-        if request.user.is_authenticated():
-            print(request.user.id)
+        #if request.user.is_authenticated():
+            #print(request.user.id)
         kwargs['friend_list_filter'] = 'pending'
         super(HomeView, self).preprocess(request, *args, **kwargs)
+
 
 def privacy(request):
     context = {'state': 'none'}
     return render(request, 'privacy.html', context)
+
 
 def test(request):
     context = {'state': 'none'}
