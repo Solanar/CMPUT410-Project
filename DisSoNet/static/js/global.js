@@ -24,6 +24,8 @@ $(document).on('ready', function(){
         sendComment($(this).data('id'), $(this).parents('.stream_post').find('textarea').val(), console.log);
     })
 
+    if($('.stream_post').length > 0){renderPostTypes()};
+
 });
 
 
@@ -155,4 +157,15 @@ function actionLogout(event){
 		window.location = "/";
 	});
 	event.preventDefault();
+}
+
+function renderPostTypes(){
+    $('.stream_post').each(function(i,e){
+        var post = $(this);
+        var type = post.data('type');
+        var content = post.find('.content');
+        if(type == "HTML"){
+            content.html(content.text());
+        }
+    })
 }

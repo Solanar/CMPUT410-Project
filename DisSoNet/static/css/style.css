@@ -154,3 +154,12 @@ body > .container{
 .privacyPolicy{
 	margin-left:20px;
 }
+
+.comment{
+	border-bottom: 1px solid #999999;
+	margin-bottom:5px;
+}
+
+.comment .meta{
+	font-size:80%;
+}
