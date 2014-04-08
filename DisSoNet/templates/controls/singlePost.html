@@ -9,7 +9,16 @@
     <a href="/posts/{{ post.guid }}" class="media-body">
         {% if post.title %}
             <h3 class="media-heading">{{ post.title }}</h3>
+            <p>{{ post.published_date }}</p>
             <p>by <a href="{% url 'author_profile' post.author.guid %}">{{ post.author }}</a></p>
+            Categories:
+            {% if post.categories %}
+                {% for category in post.categories.all %}
+                    {{ category.category_name }}
+                {% endfor %}
+            {% else %}
+                None
+            {% endif %}
         {% endif %}
         <p>{{ post.content }}</p>
     </a>
