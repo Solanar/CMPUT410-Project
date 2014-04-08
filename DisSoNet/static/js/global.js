@@ -54,7 +54,7 @@ function getUserPost(callback, userid){
 
 
 function processFriend(friendid, action, callback){
-	alert('Processing Friend Request From: ' + friendid + " action: " + action)
+	//alert('Processing Friend Request From: ' + friendid + " action: " + action)
 	if(action == "accept"){
 		//Accept friend request by sending it to ourselves?
 		//should validate author id serverside

@@ -33,8 +33,7 @@ class PublicPosts(PostListMixin, BaseView):
         post_data = request.POST.copy()
         post_author = User.objects.get(id=request.user.id)
         post = Post.objects.create(title=post_data["title"],
-                                   description=post_data["description"],
-                                   content_type=post_data["content_type"],
+                                   content_type=post_data["content-type"],
                                    content=post_data["content"],
                                    author=post_author,
                                    visibility=post_data["visibility"])
