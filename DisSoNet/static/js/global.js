@@ -24,7 +24,12 @@ $(document).on('ready', function(){
         sendComment(guid, $(this).parents('.stream_post').find('textarea').val(), function(){ window.location = "/post/"+guid+"/"});
     })
     if($('.stream_post').length > 0){renderPostTypes()};
-    $('#addFriend').on('click', function(){processFriend($('#friendGUID').val(), "accept", console.log);});
+    $('#addFriend').on('click', function(){
+        processFriend($('#friendGUID').val(), "accept", function(){
+            alert("Friend request sent!");
+            location.reload();
+        });
+    });
 });
 
 

@@ -11,15 +11,15 @@
 <div class="media stream_post" name="feed">
     <div class="clear"></div>
     <div class="body">
-    <a href="{% url 'author_profile' user.guid %}" class="media-body">
-        <h3 class="media-heading">{{ user.email }}</h3>
+    <a href="{% url 'author_profile' user_obj.guid %}" class="media-body">
+        <h3 class="media-heading">{{ user_obj.email }}</h3>
         <p>
-            <a href="{% url 'author_profile' user.guid %}">
-                {{ user.firstName }} {{ user.lastName }}
+            <a href="{% url 'author_profile' user_obj.guid %}">
+                {{ user_obj.firstName }} {{ user_obj.lastName }}
             </a>
         </p>
-        <p>GUID: {{ user.guid }}</p>
-        <p><a href="{{ user.guid }}/posts/">View Posts</a></p>
+        <p>GUID: {{ user_obj.guid }}</p>
+        <p><a href="{{ user_obj.guid }}/posts/">View Posts</a></p>
     </a>
     </div>
 </div>
