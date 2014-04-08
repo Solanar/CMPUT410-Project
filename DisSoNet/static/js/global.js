@@ -29,10 +29,16 @@ $(document).on('ready', function(){
 
 function sendComment(guid, body, callback){
     var data = {"content" : body};
-    $.post('/posts/'+guid+'/comments', data, function(data, text, xhr) {
-        window.location = xhr.getResponseHeader('Location');
-        callback;
+    $.ajax({
+      type: "POST",
+      url: '/posts/'+guid+'/comments/',
+      data: data,
+      beforeSend: function(xhr) {
+          xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+      },
+      success: callback,
     });
+
 }
 
 $(document).on('submit', 'form.githubForm', function(form) {
