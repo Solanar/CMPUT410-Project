@@ -1,4 +1,4 @@
-<div class="media stream_post" name="feed">
+<div class="media stream_post" name="feed" data-type="{{post.content_type}}">
     {% if post.pic %}
     <a href="#" class="pull-left" id="{{ post.picName }}">
       <img class="media-object" src="{{ post.picture }}">
@@ -10,7 +10,8 @@
         {% if post.title %}
             <h3 class="media-heading">{{ post.title }}</h3>
             <p>{{ post.published_date }}</p>
-            <p>by <a href="{% url 'author_profile' post.author.guid %}">{{ post.author }}</a></p>
+            <p>by <a href="{% url 'author_profile' post.author.guid %}">{{ post.author.displayname }}</a></p>
+            {{post.image_url}}
             Categories:
             {% if post.categories %}
                 {% for category in post.categories.all %}
@@ -20,7 +21,7 @@
                 None
             {% endif %}
         {% endif %}
-        <p>{{ post.content }}</p>
+        <div class="content">{{ post.content }}</div>
     </a>
     </div>
     <div class="controls">
@@ -28,11 +29,19 @@
             <textarea placeholder="New Comment:"></textarea>
         </div>
         {% for comment in post.comments.all %}
-        <div>
-            {{ comment.user }}
+        <div class="comment">
+
             {{ comment.content }}
-            {{ comment.published_date }}
-            {{ comment.guid }}
+            <div class="clear"></div>
+            <div class="meta">
+                <div class="left">
+                Posted by: <a href="/author/{{ comment.user.guid }}">{{comment.user.displayname}}</a>
+                </div>
+                <div class="right">
+                    {{ comment.published_date }}
+                </div>
+            </div>
+            <div class="clear"></div>
         </div>
         {% empty %}
             No Comments Available

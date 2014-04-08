@@ -21,11 +21,17 @@
     </script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js">
     </script>
+    <script>
+    {% if user.is_authenticated %}
+      var AUTHENTICATED_USER = "{{user.guid}}";
+    {% endif %}
+    </script>
     <script src="{% static 'js/global.js' %}">
     </script>
     <script src="{% static 'js/debug.js' %}">
     </script>
     {% block headext %}{% endblock %}
+  
   </head>
 
   <body>

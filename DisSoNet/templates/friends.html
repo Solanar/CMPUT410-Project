@@ -2,8 +2,16 @@
 {% load bootstrap3 %}
 {% load staticfiles %}
 {% block content %}
-<h1>My Friends</h1><br />
+<h1 class="left">My Friends</h1>
 <div class="friends">
+	<div class="right">
+	<h3>Send Friend Request</h3>
+	<label>Friend's GUID
+		<input type="text" id="friendGUID" />
+	</label>
+	<button id="addFriend">Add</button>
+</div>
+<div class="clear"></div><br />
 	{% for friend in friend_list %}
 		{% include "controls/singleFriend.html" %}
 	{% empty %}

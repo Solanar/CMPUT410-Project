@@ -4,6 +4,10 @@ body{
 	min-height: 700px;
 }
 
+body > .container{
+	font-size:120%;
+}
+
 .panel-primary > .panel-heading a{
 	color:white;
 }
@@ -135,4 +139,27 @@ body{
 
 .friend > .btn{
 	margin-top:20px;
+}
+
+#loginbox, #signupbox{
+	width: 500px;
+	margin-left: -250px;
+	left: 50%;	
+}
+
+.bigtext{
+	font-size:180%;
+}
+
+.privacyPolicy{
+	margin-left:20px;
+}
+
+.comment{
+	border-bottom: 1px solid #999999;
+	margin-bottom:5px;
+}
+
+.comment .meta{
+	font-size:80%;
 }
