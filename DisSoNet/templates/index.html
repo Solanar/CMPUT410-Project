@@ -9,6 +9,7 @@
 	<h2>Welcome {{user.get_username}}</h2>
 	<h3><a href="/posts">View your stream!</a></h3>
 
+<!--
 <div style="border:1px solid red; padding: 10px">
 	{% for friend in pending_friend_list %}
 		{{friend.guid}}
@@ -19,7 +20,7 @@
 	<label>GUID</label><input type="text" id="debugFriendInput">
 	<button id="debugFriendBtn">Add!</button>
 </div>
-
+-->
 {% else %}
 	<h2>Have an account?
 		<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#login">
