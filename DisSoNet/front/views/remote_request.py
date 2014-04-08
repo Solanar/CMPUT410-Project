@@ -34,7 +34,6 @@ def getRemoteObject(guid, obj_type):
             obj = serverRequest(url, obj_type)  # 80
         elif obj:
             obj_list.extend(obj)
-    print ("end")
     return obj_list
 
 
@@ -119,7 +118,6 @@ def getPosts(jsonData):
             for category in categories:
                 new_post.categories.add(category)
 
-        print ("done post")
         comments_obj = post['comments']
         comments = getComments(comments_obj, new_post)
         #setattr(new_post, 'comments', comments)
@@ -191,8 +189,10 @@ def getPubDate(pubDate):
     try:
         pubDate = datetime.strptime(pubDate, formatter)
     except:
+        print ("12h didn't work")
         try:
             pubDate = datetime.strptime(pubDate, formatter2)
         except:
+            print ("24h didn't work")
             pubDate = datetime.now()
     return pubDate
