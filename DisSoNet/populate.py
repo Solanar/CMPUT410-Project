@@ -177,6 +177,8 @@ def populate():
                     "8080", "cs410-02")
     sa = add_server("Duplicate", "10.4.10.2", "http://10.4.10.2:8081/",
                     "8081", "cs410-02")
+    sab = add_server("Duplicate2", "10.4.10.2", "http://10.4.10.2:3000/",
+                     "3000", "cs410-02")
     sb = add_server("Group 1", "10.4.10.1", "http://10.4.10.1:8080/",
                     "8080", "cs410-01")
     sc = add_server("Group 3", "10.4.10.3", "http://10.4.10.3:8080/",
