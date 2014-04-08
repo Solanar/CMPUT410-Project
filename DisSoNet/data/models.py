@@ -103,9 +103,13 @@ class Category(models.Model):
     There isn't anything about this section in the spec, however it
     did appear in the example_artivle.json.
     """
+    def __str__(self):
+        return self.category_name
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Categories"
+
+    category_name = models.CharField("Category", max_length=100, blank=True)
 
 
 class Friends(models.Model):
@@ -189,7 +193,7 @@ class Post(models.Model):
         if self.image_url:
             image = urllib2.urlopen(self.image_url)
             image_file_path = settings.MEDIA_URL + '%s.jpg' % self.guid
-            image_file_path.lstrip('/')
+            image_file_path = image_file_path.lstrip('/')
             image_file = open(image_file_path, 'wb')
             image_file.write(image.read())
             image_file.close()
@@ -224,7 +228,7 @@ class Post(models.Model):
     content = models.TextField("Content")
     author = models.ForeignKey(User)
     # Commenting out until we get clarification on the implementation of categories
-    #categories = models.ForeignKey(Category)
+    categories = models.ManyToManyField(Category)
     published_date = models.DateTimeField(auto_now_add=True)
     guid = models.CharField("guid", max_length=40, blank=True)
     visibility = models.CharField("Visibility", max_length=20,

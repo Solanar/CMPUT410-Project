@@ -9,7 +9,7 @@ $(document).on('ready', function(){
 	$('.githubForm').on('click', function(){$('#githubModal').modal() });
 	$('.friendRequest .acceptFriend').on("click", function(){ processFriend($(this).parents('.friendRequest').data('friendid'), "accept", console.log) });
 	$('.friendRequest .rejectFriend').on("click", function(){ processFriend($(this).parents('.friendRequest').data('friendid'), "reject", console.log) });
-    $('#newPostForm .post_type').on("change", function(){console.log($(this).val()); $(this).val() == "image" ? $('#newPostForm .image_field').removeClass('hide') : $('#newPostForm .image_field').addClass('hide') });
+    $('#newPostForm .post_type').on("change", function(){console.log($(this).val()); $(this).val() == "IMAGE" ? $('#newPostForm .image_field').removeClass('hide') : $('#newPostForm .image_field').addClass('hide') });
     $('#createPost').on('click', createPostGlobal);
     $('#btn-login').on('click', submitLogin);
     $('#btn-signup').on('click', submitSignup);
