@@ -9,17 +9,12 @@
         <!--TODO: Create form for the new post here-->
         <form id="newPostForm", method="post" action="{% url 'public_posts' %}" >
         {% csrf_token %}
-            <table>
-            {{ post_form }}
-            </table>
-            <input type="submit" value="Post it!" name="post_appointment"/>
-            <!--
             <label >Title <input type="text" name="title" /></label>
             <label>Post Type <select class="post_type" name="content-type">
-              <option value="text/html">HTML</option>
-              <option value="text/x-markdown">Markdown</option>
-              <option value="text/plain">Text</option>
-              <option value="image">Image</option>
+              <option value="HTML">HTML</option>
+              <option value="X-MARKDOWN">Markdown</option>
+              <option value="PLAIN">Text</option>
+              <option value="IMAGE">Image</option>
             </select></label>
             <label class="image_field hide">Image URL<input type="text" name="image_url" /></label>            
             <label>Content<textarea name="content" rows="5"></textarea></label>
@@ -31,12 +26,11 @@
               <option value="PRIVATE">Myself</option>
               <option value="SERVERONLY">This Server</option>
             </select></label>            
-            -->
       </form>
       </div>
       <div class="modal-footer">
-        <!--button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="createPost">Create Post</button-->
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="createPost">Create Post</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

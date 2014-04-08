@@ -196,6 +196,7 @@ class Post(models.Model):
         ('HTML', 'text/html'),
         ('X-MARKDOWN', 'text/x-markdown'),
         ('PLAIN', 'text/plain'),
+        ('IMAGE', 'image'),
     )
 
     # Choices for visibility field
