@@ -1,4 +1,4 @@
-from data.models import Server, User, Post, Comment
+from data.models import Server, User, Post, Comment, Category
 import urllib2
 import json
 from datetime import datetime
@@ -34,6 +34,7 @@ def getRemoteObject(guid, obj_type):
             obj = serverRequest(url, obj_type)  # 80
         elif obj:
             obj_list.extend(obj)
+    print ("end")
     return obj_list
 
 
@@ -81,7 +82,6 @@ def getPosts(jsonData):
     posts = jsonData['posts']
     posts_list = []
     for post in posts:
-        #print ("hi", post)
         guid = post['guid']
         title = post['title']
         source = post['source']
@@ -91,19 +91,35 @@ def getPosts(jsonData):
         content = post['content']
         author_obj = post['author']
         author = getAuthor(author_obj)
-        categories = post['categories']
+        categories = getCategories(post['categories'])
         pubDate = post['pubDate']
         pubDate = getPubDate(pubDate)
         visibility = post['visibility']
+        try:
+            new_post = Post.objects.get(guid=guid)
+            new_post.title = title
+            new_post.source = source
+            new_post.origin = origin
+            new_post.description = description
+            new_post.content_type = content_type
+            new_post.content = content
+            new_post.author = author
+            for category in categories:
+                new_post.categories.add(category)
+            new_post.published_date = pubDate
+            new_post.visibility = visibility
+            new_post.save()
+        except:
+            new_post = Post.objects.create(
+                title=title, source=source, origin=origin,
+                description=description, content_type=content_type,
+                content=content, author=author,
+                published_date=pubDate, guid=guid,
+                visibility=visibility)
+            for category in categories:
+                new_post.categories.add(category)
 
-        new_post, created = Post.objects.get_or_create(
-            title=title, source=source, origin=origin,
-            description=description, content_type=content_type,
-            content=content, author=author,
-            #categories=categories,
-            published_date=pubDate, guid=guid,
-            visibility=visibility)
-        #new_post.save()
+        print ("done post")
         comments_obj = post['comments']
         comments = getComments(comments_obj, new_post)
         #setattr(new_post, 'comments', comments)
@@ -118,13 +134,20 @@ def getAuthor(jsonData):
     displayname = jsonData['displayname']
     url = jsonData['url']
     email = guid + "@remote.ca"
-    user, created = User.objects.get_or_create(
-        guid=guid,
-        firstName=displayname,
-        url=url,
-        host=host,
-        email=email)
-    #user.save()
+    try:
+        user = User.objects.get(guid=guid)
+        user.host = host
+        user.displayname = displayname
+        user.url = url
+        user.email = email
+        user.save()
+    except:
+        user, created = User.objects.get_or_create(
+            guid=guid,
+            firstName=displayname,
+            url=url,
+            host=host,
+            email=email)
     return user
 
 
@@ -137,13 +160,29 @@ def getComments(jsonData, post):
         pubDate = comment['pubDate']
         pubDate = getPubDate(pubDate)
         guid = comment['guid']
-        new_comment, created = Comment.objects.get_or_create(
-            post=post, user=author, content=content,
-            published_date=pubDate, guid=guid)
-        #new_comment.save()
+        try:
+            new_comment = Comment.objects.get(guid=guid)
+            new_comment.author = author
+            new_comment.content = content
+            new_comment.published_date = pubDate
+            new_comment.save()
+        except:
+            new_comment, created = Comment.objects.get_or_create(
+                post=post, user=author, content=content,
+                published_date=pubDate, guid=guid)
+
         comment_list.append(new_comment)
         #post.comments.add(new_comment)
     return comment_list
+
+
+def getCategories(jsonData):
+    category_list = []
+    for category in jsonData:
+        new_category, created = Category.objects.get_or_create(
+            category_name=category)
+        category_list.append(new_category)
+    return category_list
 
 
 def getPubDate(pubDate):
