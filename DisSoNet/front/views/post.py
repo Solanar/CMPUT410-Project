@@ -1,10 +1,12 @@
 from .base import BaseView
-from data.models import Post, Comment, User
+from data.models import Post, Comment, User, Category
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from .mixins.friends_list import FriendsListMixin
 from .mixins.post_list import PostListMixin
 from .mixins.comment_list import CommentListMixin
 from .author import processRequestFromOtherServer
+
+import re
 
 
 # http://service/posts (all posts marked as public on the server)
@@ -40,6 +42,15 @@ class PublicPosts(PostListMixin, BaseView):
 
         if post_data['image_url']:
             post.image_url = post_data['image_url']
+
+        if post_data['categories']:
+            print("Categories: %s" % post_data["categories"])
+            cats = re.findall(r"[\w]+", post_data["categories"])
+            print(cats)
+            for cat in cats:
+                c, _ = Category.objects.get_or_create(category_name=cat)
+                print(c)
+                post.categories.add(c)
 
         post.clean()
         post.save()

@@ -97,9 +97,13 @@ class Category(models.Model):
     There isn't anything about this section in the spec, however it
     did appear in the example_artivle.json.
     """
+    def __str__(self):
+        return self.category_name
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Categories"
+
+    category_name = models.CharField("Category", max_length=100, blank=True)
 
 
 class Friends(models.Model):
@@ -218,7 +222,7 @@ class Post(models.Model):
     content = models.TextField("Content")
     author = models.ForeignKey(User)
     # Commenting out until we get clarification on the implementation of categories
-    #categories = models.ForeignKey(Category)
+    categories = models.ManyToManyField(Category)
     published_date = models.DateTimeField(auto_now_add=True)
     guid = models.CharField("guid", max_length=40, blank=True)
     visibility = models.CharField("Visibility", max_length=20,
