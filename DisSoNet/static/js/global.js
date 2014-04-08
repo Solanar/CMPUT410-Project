@@ -1,5 +1,4 @@
 var HOST = "http://127.0.0.1:41021";
-var AUTHENTICATED_USER = "AUTHUSERHASH1234";
 var csrftoken = getCookie('csrftoken');
 
 console.log(csrftoken);
@@ -23,9 +22,8 @@ $(document).on('ready', function(){
     $('.stream_post .btn-post-comment').on('click', function(){
         sendComment($(this).data('id'), $(this).parents('.stream_post').find('textarea').val(), console.log);
     })
-
     if($('.stream_post').length > 0){renderPostTypes()};
-
+    $('#addFriend').on('click', function(){processFriend($('#friendGUID').val(), "accept", console.log);});
 });
 
 
