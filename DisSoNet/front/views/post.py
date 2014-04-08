@@ -33,7 +33,6 @@ class PublicPosts(PostListMixin, BaseView):
 
     def post(self, request, *args, **kwargs):
         """ . """
-        print("request: %s" % request)
         post_data = request.POST.copy()
         post_author = User.objects.get(id=request.user.id)
         try:
@@ -55,12 +54,9 @@ class PublicPosts(PostListMixin, BaseView):
             post.image_url = post_data['image_url']
 
         if post_data['categories']:
-            print("Categories: %s" % post_data["categories"])
             cats = re.findall(r"[\w]+", post_data["categories"])
-            print(cats)
             for cat in cats:
                 c, _ = Category.objects.get_or_create(category_name=cat)
-                print(c)
                 post.categories.add(c)
 
         post.clean()
@@ -176,10 +172,11 @@ class PostComments(CommentListMixin, BaseView):
 
         if request.user.is_authenticated():
             self.user = User.objects.get(email=request.user)
-
-        comment = Comment.objects.create(post=self.post_obj,
-                                         user=self.user,
-                                         content=post_content)
+        try:
+            comment = Comment.objects.create(post=self.post_obj,
+                                             user=self.user,
+                                             content=post_content)
+        except Exception as e:
         comment.clean()
         comment.save()
         resp = HttpResponse()
