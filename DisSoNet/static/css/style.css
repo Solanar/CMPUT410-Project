@@ -136,3 +136,13 @@ body{
 .friend > .btn{
 	margin-top:20px;
 }
+
+#loginbox, #signupbox{
+	width: 500px;
+	margin-left: -250px;
+	left: 50%;	
+}
+
+.bigtext{
+	font-size:200%;
+}
