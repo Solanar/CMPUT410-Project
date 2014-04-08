@@ -95,7 +95,12 @@ class PostResource(PostListMixin, BaseView):
         post_to_delete = Post.objects.get(guid=kwargs['post_id'])
         if post_to_delete.author.id == request.user.id:
             post_to_delete.delete()
-        return self.render_to_response(self.context)
+        resp = HttpResponse()
+        resp['Location'] = request.META["HTTP_REFERER"]
+        resp.status_code = 200
+        return resp
+
+        #return self.render_to_response(self.context)
 
 
 # http://service/author/posts
