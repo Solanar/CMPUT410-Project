@@ -1,6 +1,8 @@
 from data.models import Comment, Post, User
 from django.db.models import Q
 
+from .. import remote_request
+
 
 class PostListMixin(object):
 
@@ -60,7 +62,13 @@ class PostListMixin(object):
         return vis_posts
 
     def get_all_public_posts(self):
-        return Post.objects.filter(visibility='PUBLIC')
+        posts = Post.objects.filter(visibility='PUBLIC')
+        remote_posts = remote_request.getRemoteObject(None, "posts")
+        post_list = list(posts)
+        if remote_posts:
+            for post in remote_posts:
+                post_list.append(post)
+        return posts
 
     def get_posts_by_author(self, author, user):
         posts = self.get_posts_visible_to_current_user(user)
