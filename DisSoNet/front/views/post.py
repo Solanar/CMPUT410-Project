@@ -55,7 +55,10 @@ class PublicPosts(PostListMixin, BaseView):
 
         post.clean()
         post.save()
-        return HttpResponseRedirect(request.path + "/" + post.guid)
+        resp = HttpResponse()
+        resp['Location'] = request.path + post.guid
+        resp.status_code = 201
+        return resp
 
 
 # http://service/post(s)/{POST_ID} access to a single post with id = {POST_ID}
