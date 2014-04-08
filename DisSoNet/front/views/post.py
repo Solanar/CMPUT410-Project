@@ -36,18 +36,19 @@ class PublicPosts(PostListMixin, BaseView):
         post_data = request.POST.copy()
         post_author = User.objects.get(id=request.user.id)
         try:
+            us = "http://10.4.10.2:8080/"
             post = Post.objects.create(title=post_data["title"],
-                                       source=request.META["HTTP_ORIGIN"],
-                                       origin=request.META["HTTP_ORIGIN"],
+                                       source=us,
+                                       origin=us,
                                        description=post_data["description"],
                                        content_type=post_data["content-type"],
                                        content=post_data["content"],
                                        author=post_author,
                                        visibility=post_data["visibility"])
         except:
-            resp = HttpResponse()
-            resp['Location'] = request.path + post.guid
-            resp.status_code = 404
+            resp = HttpResponse(status=404)
+            resp['Location'] = request.META['HTTP_REFERER']
+            #resp.status_code = 404
             return resp
 
         if post_data['image_url']:
@@ -61,9 +62,9 @@ class PublicPosts(PostListMixin, BaseView):
 
         post.clean()
         post.save()
-        resp = HttpResponse()
+        resp = HttpResponse(status=201)
         resp['Location'] = request.path + post.guid
-        resp.status_code = 201
+        #resp.status_code = 201
         return resp
 
 
@@ -101,9 +102,9 @@ class PostResource(PostListMixin, BaseView):
         post_to_delete = Post.objects.get(guid=kwargs['post_id'])
         if post_to_delete.author.id == request.user.id:
             post_to_delete.delete()
-        resp = HttpResponse()
+        resp = HttpResponse(status=200)
         resp['Location'] = request.META["HTTP_REFERER"]
-        resp.status_code = 200
+        #resp.status_code = 200
         return resp
 
         #return self.render_to_response(self.context)
@@ -177,6 +178,7 @@ class PostComments(CommentListMixin, BaseView):
                                              user=self.user,
                                              content=post_content)
         except Exception as e:
+            print ("Could not create comment:", content, e)
         comment.clean()
         comment.save()
         resp = HttpResponse()
