@@ -20,7 +20,8 @@ $(document).on('ready', function(){
     	$(this).parents('.stream_post').find('.btn-post-comment').fadeIn();
    	});
     $('.stream_post .btn-post-comment').on('click', function(){
-        sendComment($(this).data('id'), $(this).parents('.stream_post').find('textarea').val(), console.log);
+        var guid = $(this).data('id');
+        sendComment(guid, $(this).parents('.stream_post').find('textarea').val(), function(){ window.location = "/post/"+guid+"/"});
     })
     if($('.stream_post').length > 0){renderPostTypes()};
     $('#addFriend').on('click', function(){processFriend($('#friendGUID').val(), "accept", console.log);});
@@ -165,11 +166,15 @@ function actionLogout(event){
 
 function renderPostTypes(){
     $('.stream_post').each(function(i,e){
+        var convert = new Markdown.getSanitizingConverter().makeHtml;
         var post = $(this);
         var type = post.data('type');
         var content = post.find('.content');
         if(type == "HTML"){
             content.html(content.text());
+        }else if(type == "X-MARKDOWN"){
+            console.log(convert(content.text()));
+            content.html( convert(content.text()) );
         }
     })
 }

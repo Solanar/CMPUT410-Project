@@ -5,24 +5,19 @@
     </a>
     {% endif %}
     <div class="clear"></div>
-    <div class="body">
-    <a href="/posts/{{ post.guid }}" class="media-body">
+    <div class="body media-body">
+    
         {% if post.title %}
-            <h3 class="media-heading">{{ post.title }}</h3>
-            <p>{{ post.published_date }}</p>
-            <p>by <a href="{% url 'author_profile' post.author.guid %}">{{ post.author.displayname }}</a></p>
-            {{post.image_url}}
-            Categories:
-            {% if post.categories %}
-                {% for category in post.categories.all %}
-                    {{ category.category_name }}
-                {% endfor %}
-            {% else %}
-                None
+            <a href="/posts/{{ post.guid }}">
+                <h3 class="media-heading">{{ post.title }}</h3>
+            </a>
+            <p>by <a href="{% url 'author_profile' post.author.guid %}">{{ post.author.firstName}} {{ post.author.lastName}}</a></p>
+            {% if post.title %}
+            <img class="post_image" src="{{post.image_url}}" />
             {% endif %}
         {% endif %}
         <div class="content">{{ post.content }}</div>
-    </a>
+    
     </div>
     <div class="controls">
         <div class="comment_input">
@@ -31,7 +26,7 @@
         {% for comment in post.comments.all %}
         <div class="comment">
 
-            {{ comment.content }}
+            {{ comment.content | linebreaksbr}}
             <div class="clear"></div>
             <div class="meta">
                 <div class="left">
