@@ -37,3 +37,6 @@ nosetests.xml
 
 # sqlite3 databases
 *.sqlite3
+
+# media directory
+media
