@@ -106,13 +106,14 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
-
+    {% include "controls/newPost.html" %}
     <div class="container">
       <div class="starter-template">
         {% block sidebar %}{% endblock %}
         {% block content %}{% endblock %}
       </div>
     </div>
+    <div class="clear" id="endContent"></div>
 
     <div class="modal" id="login" role="dialog">
         {% include "controls/login.html" %}
@@ -120,9 +121,11 @@
     <div class="modal" id="register" role="dialog">
         {% include "controls/register.html" %}
     </div>
+    <div class="modal" id="register" role="dialog">
+        {% include "controls/register.html" %}
+    </div>
 
-    {% include "controls/newPost.html" %}
-    {% include "controls/githubForm.html" %}
+
   </body>
 
 </html>
