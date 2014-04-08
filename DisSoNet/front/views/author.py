@@ -87,7 +87,7 @@ def getPostDict(post_object):
     post_dict["content-type"] = post_object.content_type
     post_dict["content"] = post_object.content
     # TODO python datetime is not JSON serializable
-    formatter = "%a %b %d %h:%m:%s mst %y"
+    formatter = "%a %b %d %H:%M:%S mst %Y"
     timestring = post_object.published_date.strftime(formatter)
     post_dict["pubDate"] = timestring
     # post_dict["pubdate"] = post_object.published_date
@@ -128,7 +128,7 @@ def getCommentDictList(comment_list):
         comment_dict["author"] = author_dict
         comment_dict["comment"] = comment.content
         # TODO python datetime is not JSON serializable
-        formatter = "%a %b %d %h:%m:%s mst %y"
+        formatter = "%a %b %d %H:%M:%S mst %Y"
         timestring = comment.published_date.strftime(formatter)
         comment_dict["pubDate"] = timestring
         comment_dict["guid"] = comment.guid
