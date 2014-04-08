@@ -33,13 +33,23 @@ class PublicPosts(PostListMixin, BaseView):
 
     def post(self, request, *args, **kwargs):
         """ . """
+        print("request: %s" % request)
         post_data = request.POST.copy()
         post_author = User.objects.get(id=request.user.id)
-        post = Post.objects.create(title=post_data["title"],
-                                   content_type=post_data["content-type"],
-                                   content=post_data["content"],
-                                   author=post_author,
-                                   visibility=post_data["visibility"])
+        try:
+            post = Post.objects.create(title=post_data["title"],
+                                       source=request.META["HTTP_ORIGIN"],
+                                       origin=request.META["HTTP_ORIGIN"],
+                                       description=post_data["description"],
+                                       content_type=post_data["content-type"],
+                                       content=post_data["content"],
+                                       author=post_author,
+                                       visibility=post_data["visibility"])
+        except:
+            resp = HttpResponse()
+            resp['Location'] = request.path + post.guid
+            resp.status_code = 404
+            return resp
 
         if post_data['image_url']:
             post.image_url = post_data['image_url']
