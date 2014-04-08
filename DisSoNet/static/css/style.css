@@ -163,3 +163,7 @@ body > .container{
 .comment .meta{
 	font-size:80%;
 }
+
+.post_image{
+	max-width:100%;
+}

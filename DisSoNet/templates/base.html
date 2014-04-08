@@ -21,6 +21,8 @@
     </script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js">
     </script>
+    <script src="{% static 'js/Markdown.Converter.js' %}"></script>
+    <script src="{% static 'js/Markdown.Sanitizer.js' %}"></script>   
     <script>
     {% if user.is_authenticated %}
       var AUTHENTICATED_USER = "{{user.guid}}";
@@ -92,7 +94,9 @@
                       </div>
                   {% endif %}
               </li>
+              <!--
               <li><a href="#" class="githubForm">GitHub</a></li>
+              -->
               <li><a href="#" class="logout">Logout</a></li>
               {% else %}
                 <li><a href="#" class="login" data-toggle="modal" data-target="#login">Login</a></li>
@@ -102,13 +106,14 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
-
+    {% include "controls/newPost.html" %}
     <div class="container">
       <div class="starter-template">
         {% block sidebar %}{% endblock %}
         {% block content %}{% endblock %}
       </div>
     </div>
+    <div class="clear" id="endContent"></div>
 
     <div class="modal" id="login" role="dialog">
         {% include "controls/login.html" %}
@@ -116,9 +121,11 @@
     <div class="modal" id="register" role="dialog">
         {% include "controls/register.html" %}
     </div>
+    <div class="modal" id="register" role="dialog">
+        {% include "controls/register.html" %}
+    </div>
 
-    {% include "controls/newPost.html" %}
-    {% include "controls/githubForm.html" %}
+
   </body>
 
 </html>
