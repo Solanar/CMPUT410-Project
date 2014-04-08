@@ -48,12 +48,18 @@ class User(AbstractBaseUser):
             timestring = datetime.now().strftime("%a %b %d %h:%m:%s mst %y")
             stringtohash = timestring + self.email
             self.guid = hashlib.sha1(stringtohash).hexdigest()
+        if not self.displayname:
+            self.displayname = self.firstName + " " + self.lastName
 
     email = models.EmailField("Email", max_length=75, unique=True)
     firstName = models.CharField("First Name", max_length=50)
     lastName = models.CharField("Last Name", max_length=50)
+    displayname = models.CharField("Display Name", max_length=100)
 
     guid = models.CharField("guid", max_length=40, blank=True)
+
+    host = models.CharField("Host", max_length=40)
+    url = models.CharField("URL", max_length=150)
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
