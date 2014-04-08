@@ -4,6 +4,10 @@ body{
 	min-height: 700px;
 }
 
+body > .container{
+	font-size:120%;
+}
+
 .panel-primary > .panel-heading a{
 	color:white;
 }
@@ -144,5 +148,9 @@ body{
 }
 
 .bigtext{
-	font-size:200%;
+	font-size:180%;
+}
+
+.privacyPolicy{
+	margin-left:20px;
 }
