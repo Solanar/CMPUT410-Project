@@ -89,7 +89,7 @@ def getPostDict(post_object):
     # TODO python datetime is not JSON serializable
     formatter = "%a %b %d %h:%m:%s mst %y"
     timestring = post_object.published_date.strftime(formatter)
-    post_dict["pubdate"] = timestring
+    post_dict["pubDate"] = timestring
     # post_dict["pubdate"] = post_object.published_date
     post_dict["guid"] = post_object.guid
     post_dict["visibility"] = post_object.visibility
@@ -98,11 +98,12 @@ def getPostDict(post_object):
     author_dict = getAuthorDict(post_object.author, include_url=True)
     post_dict["author"] = author_dict
 
+    post_dict["categories"] = getCategoryList(post_object.categories)
+
     # get all comments on this post of return them
     comment_list = Comment.objects.filter(post=post_object)
     comment_dict_list = getCommentDictList(comment_list)
     post_dict["comments"] = comment_dict_list
-
     return post_dict
 
 
@@ -133,3 +134,10 @@ def getCommentDictList(comment_list):
         comment_dict["guid"] = comment.guid
         comment_dict_list.append(comment_dict)
     return comment_dict_list
+
+
+def getCategoryList(categories):
+    category_list = []
+    for category in categories.all():
+        category_list.append(category.category_name)
+    return category_list
