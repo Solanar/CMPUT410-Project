@@ -1,5 +1,4 @@
 var HOST = "http://127.0.0.1:41021";
-var AUTHENTICATED_USER = "AUTHUSERHASH1234";
 var csrftoken = getCookie('csrftoken');
 
 console.log(csrftoken);
@@ -23,16 +22,23 @@ $(document).on('ready', function(){
     $('.stream_post .btn-post-comment').on('click', function(){
         sendComment($(this).data('id'), $(this).parents('.stream_post').find('textarea').val(), console.log);
     })
-
+    if($('.stream_post').length > 0){renderPostTypes()};
+    $('#addFriend').on('click', function(){processFriend($('#friendGUID').val(), "accept", console.log);});
 });
 
 
 function sendComment(guid, body, callback){
     var data = {"content" : body};
-    $.post('/posts/'+guid+'/comments', data, function(data, text, xhr) {
-        window.location = xhr.getResponseHeader('Location');
-        callback;
+    $.ajax({
+      type: "POST",
+      url: '/posts/'+guid+'/comments/',
+      data: data,
+      beforeSend: function(xhr) {
+          xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+      },
+      success: callback,
     });
+
 }
 
 $(document).on('submit', 'form.githubForm', function(form) {
@@ -155,4 +161,15 @@ function actionLogout(event){
 		window.location = "/";
 	});
 	event.preventDefault();
+}
+
+function renderPostTypes(){
+    $('.stream_post').each(function(i,e){
+        var post = $(this);
+        var type = post.data('type');
+        var content = post.find('.content');
+        if(type == "HTML"){
+            content.html(content.text());
+        }
+    })
 }
