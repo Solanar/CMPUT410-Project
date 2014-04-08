@@ -183,7 +183,7 @@ class Post(models.Model):
         if self.image_url:
             image = urllib2.urlopen(self.image_url)
             image_file_path = settings.MEDIA_URL + '%s.jpg' % self.guid
-            image_file_path.lstrip('/')
+            image_file_path = image_file_path.lstrip('/')
             image_file = open(image_file_path, 'wb')
             image_file.write(image.read())
             image_file.close()
