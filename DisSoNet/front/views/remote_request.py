@@ -2,6 +2,7 @@ from data.models import Server, User, Post, Comment, Category
 import urllib2
 import json
 from datetime import datetime
+import django.utils.timezone as timezone
 
 """
 #view
@@ -185,14 +186,15 @@ def getCategories(jsonData):
 
 def getPubDate(pubDate):
     formatter = "%a %b %d %h:%m:%s mst %y"
-    formatter2 = "%a %b %d %H:%m:%s mst %y"
+    formatter2 = "%a %b %d %H:%M:%S mst %Y"
+    #'Mon Apr  7 22:55:58 MST 2014
     try:
         pubDate = datetime.strptime(pubDate, formatter)
-    except:
-        print ("12h didn't work")
+    except Exception as e:
+        #print ("12h didn't work", e)
         try:
             pubDate = datetime.strptime(pubDate, formatter2)
-        except:
-            print ("24h didn't work")
+        except Exception as e:
+            print ("24h didn't work", e)
             pubDate = datetime.now()
     return pubDate
