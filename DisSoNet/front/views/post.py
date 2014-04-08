@@ -1,6 +1,7 @@
-from .base import BaseView
 from data.models import Post, Comment, User
 from django.http import HttpResponseRedirect, Http404, HttpResponse
+
+from .base import BaseView
 from .mixins.friends_list import FriendsListMixin
 from .mixins.post_list import PostListMixin
 from .mixins.comment_list import CommentListMixin
