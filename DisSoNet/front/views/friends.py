@@ -30,27 +30,44 @@ class FriendRequestView(BaseView):
     def post(self, request, *args, **kwargs):
 
         # TODO: JSONify this~
-        friends = self._get_friendship(request)
-        friends.accepted = True
+        friends, existed = self._get_friendship(request)
+        if existed:
+            friends.accepted = True
         friends.save()
         return self.render_to_response(self.context)
 
     def delete(self, request, *args, **kwargs):
         print("deleteig stdairdah.pxna.pid")
-        friends = self._get_friendship(request)
+        friends, _ = self._get_friendship(request)
         print(friends)
         friends.delete()
         return self.render_to_response(self.context)
 
     def _get_friendship(self, request):
-        receiverGUID = request.POST['author[id]']
-        receiver = User.objects.get(guid=receiverGUID)
-
-        requesterGUID = request.POST['friend[author][id]']
+        print("get_friendship request: %s" % request)
+        # Get the request, in this case the authenticated user
+        requesterGUID = request.POST['author[id]']
         requester = User.objects.get(guid=requesterGUID)
+        print("Requester (us): %s" % requester)
+        # Get the receiver user object, either locally or remotely
+        receiverGUID = request.POST['friend[author][id]']
+        receiver = User.objects.get(guid=receiverGUID)
+        print("Receiver (them): %s" % receiver)
 
-        return Friends.objects.get(user_id_requester=requester,
-                                   user_id_receiver=receiver)
+        relationship = self._relationship_exists(requester, receiver)
+        if relationship:
+            return relationship, True
+        else:
+            return Friends(user_id_requester=requester, user_id_receiver=receiver), False
+
+    def _relationship_exists(self, user1, user2):
+        try:
+            return Friends.objects.get(user_id_requester=user1, user_id_receiver=user2)
+        except:
+            try:
+                return Friends.objects.get(user_id_requester=user2, user_id_receiver=user1)
+            except:
+                return False
 
 
 class FriendsView(FriendsListMixin, BaseView):
