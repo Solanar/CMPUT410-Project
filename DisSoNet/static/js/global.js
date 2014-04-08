@@ -173,7 +173,6 @@ function renderPostTypes(){
         if(type == "HTML"){
             content.html(content.text());
         }else if(type == "X-MARKDOWN"){
-            console.log(convert(content.text()));
             content.html( convert(content.text()) );
         }
     })
