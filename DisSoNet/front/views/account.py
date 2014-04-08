@@ -132,12 +132,8 @@ class AuthorProfile(GetUserMixin, BaseView):
 
     def preprocess(self, request, *args, **kwargs):
         author_id = kwargs['author_id']
-        """
-        remote = False
-        if request.META.get('HTTP_ACCEPT') == 'application/json':
-            remote = True
-        """
-        kwargs['user_filter'] = {'user_id': author_id}  # , 'remote': remote}
+
+        kwargs['user_filter'] = {'user_id': author_id}
         super(AuthorProfile, self).preprocess(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
